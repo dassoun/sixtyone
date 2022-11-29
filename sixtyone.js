@@ -18,7 +18,8 @@
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
-    "ebg/counter"
+    "ebg/counter",
+    g_gamethemeurl + "./modules/js/coord.js"
 ],
 function (dojo, declare) {
     return declare("bgagame.sixtyone", ebg.core.gamegui, {
@@ -48,15 +49,47 @@ function (dojo, declare) {
         {
             console.log( "Starting game setup" );
             
+            ///////////////////////////////////////////
             // Setting up player boards
-            for( var player_id in gamedatas.players )
-            {
+            ///////////////////////////////////////////
+            let array_player_board_to_place = [];
+
+            for ( var player_id in gamedatas.players ) {
                 var player = gamedatas.players[player_id];
-                         
-                // TODO: Setting up players boards if needed
+
+                if ( player_id == this.player_id || this.isSpectator ) {
+                    dojo.place( this.format_block('jstpl_sxt_player_area', {
+                        player_id: player_id,
+                    } ), $ ( 'sxt_game_area' ) );
+                } else {
+                    array_player_board_to_place.push(player_id);
+                }
             }
+
+            // then, the remaining player boards
+            for (let i = 0; i < array_player_board_to_place.length; i++) {
+                dojo.place( this.format_block('jstpl_sxt_player_area', {
+                    player_id: array_player_board_to_place[i],
+                } ), $ ( 'sxt_game_area' ) );
+            }
+
             
+            for ( var player_id in gamedatas.players ) {
+                // leaves
+                for (let i = 0; i < leave_coords.length; i++){
+                    console.log(leave_coords[i][0]);
+                    dojo.place( this.format_block('jstpl_sxt_leave', {
+                        player_id: player_id,
+                        leave_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_leave_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, leave_coords[i][0], leave_coords[i][1] ).play();
+                }
+            }
+
+            ///////////////////////////////////////////
             // TODO: Set up your game interface here, according to "gamedatas"
+            ///////////////////////////////////////////
             
  
             // Setup game notifications to handle (see "setupNotifications" method below)

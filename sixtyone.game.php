@@ -39,6 +39,10 @@ class SixtyOne extends Table
             //    "my_first_game_variant" => 100,
             //    "my_second_game_variant" => 101,
             //      ...
+
+            "die_1_value" => 10,
+            "die_2_value" => 11,
+            "die_3_value" => 12,
         ) );        
 	}
 	
@@ -72,7 +76,7 @@ class SixtyOne extends Table
             $color = array_shift( $default_colors );
             $values[] = "('".$player_id."','$color','".$player['player_canal']."','".addslashes( $player['player_name'] )."','".addslashes( $player['player_avatar'] )."')";
         }
-        $sql .= implode( $values, ',' );
+        $sql .= implode( ',', $values );
         self::DbQuery( $sql );
         self::reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
         self::reloadPlayersBasicInfos();
@@ -80,7 +84,9 @@ class SixtyOne extends Table
         /************ Start the game initialization *****/
 
         // Init global values with their initial values
-        //self::setGameStateInitialValue( 'my_first_global_variable', 0 );
+        $this->setGameStateInitialValue( "die_1_value", null );
+        $this->setGameStateInitialValue( "die_2_value", null );
+        $this->setGameStateInitialValue( "die_3_value", null );
         
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -117,6 +123,10 @@ class SixtyOne extends Table
         $result['players'] = self::getCollectionFromDb( $sql );
   
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
+
+        for ($i=1; $i<4; $i++) {
+            $result['dice'] = $this->getDiceDatas() ;
+        }
   
         return $result;
     }
@@ -146,7 +156,16 @@ class SixtyOne extends Table
     /*
         In this space, you can put any utility methods useful for your game logic
     */
+    function getDiceDatas() 
+    {
+        $result = array();
+    
+        for ($i=1; $i<4; $i++) {
+            $result[] = $this->getGameStateValue( "die_".$i."_value" );
+        }
 
+        return $result;
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -233,6 +252,13 @@ class SixtyOne extends Table
         $this->gamestate->nextState( 'some_gamestate_transition' );
     }    
     */
+
+    function stInitTurn() 
+    {
+        for ($i=1; $i<4; $i++) {
+            $this->setGameStateValue( "die_".$i."_value", bga_rand(1, 6) );
+        }
+    }
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Zombie

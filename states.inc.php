@@ -49,21 +49,41 @@
 
 //    !! It is not a good idea to modify this file when a game is running !!
 
- 
+if (!defined('STATE_INIT_GAME')) { // ensure this block is only invoked once, since it is included multiple times
+    define("STATE_INIT_GAME", 1);
+    define("STATE_INIT_TURN", 10);
+    define("STATE_INIT_MULTI", 20);
+    define("STATE_CHOSE_AREA", 30);
+    define("STATE_CHOSE_DIE", 40);
+    define("STATE_CHOSE_DIE_LOCATION", 50);
+    define("STATE_LAST_DIE_SCORE", 60);
+    define("STATE_CHOSE_CROSS_LOCATION", 70);
+    define("STATE_NEXT_TURN", 80);
+    define("STATE_END_GAME", 99);
+}
+
 $machinestates = array(
 
     // The initial state. Please do not modify.
-    1 => array(
+    STATE_INIT_GAME => array(
         "name" => "gameSetup",
         "description" => "",
         "type" => "manager",
         "action" => "stGameSetup",
-        "transitions" => array( "" => 2 )
+        "transitions" => array( "" => STATE_INIT_TURN )
+    ),
+
+    STATE_INIT_TURN => array(
+        "name" => "initTurn",
+        "description" => "",
+        "type" => "game",
+        "action" => "stInitTurn",
+        "transitions" => array( "" => STATE_INIT_MULTI )
     ),
     
     // Note: ID=2 => your first state
 
-    2 => array(
+    STATE_INIT_MULTI => array(
     		"name" => "playerTurn",
     		"description" => clienttranslate('${actplayer} must play a card or pass'),
     		"descriptionmyturn" => clienttranslate('${you} must play a card or pass'),
@@ -97,7 +117,7 @@ $machinestates = array(
    
     // Final state.
     // Please do not modify (and do not overload action/args methods).
-    99 => array(
+    STATE_END_GAME => array(
         "name" => "gameEnd",
         "description" => clienttranslate("End of game"),
         "type" => "manager",

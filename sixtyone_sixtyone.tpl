@@ -26,7 +26,9 @@
 -->
 
 
-This is your game interface. You can edit this HTML in your ".tpl" file.
+<div id="sxt_game_area">
+
+</div>
 
 
 <script type="text/javascript">
@@ -38,6 +40,19 @@ This is your game interface. You can edit this HTML in your ".tpl" file.
 var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_ID}"></div>';
 
 */
+
+var jstpl_sxt_player_area = 
+    '<div class="sxt_player_area" id="sxt_player_area_${player_id}"> \
+        <div class="sxt_player_dices_area" id="sxt_player_dices_area_${player_id}"> \
+            <div class="sxt_dice" id="sxt_dice_${player_id}_1"></div> \
+            <div class="sxt_dice" id="sxt_dice_${player_id}_2"></div> \
+            <div class="sxt_dice" id="sxt_dice_${player_id}_3"></div> \
+        </div> \
+        <div class="sxt_player_board" id="sxt_player_board_${player_id}"> \
+        </div> \
+    </div>';
+
+var jstpl_sxt_leave = '<div class="sxt_leave" id="sxt_leave_${player_id}_${leave_id}"></div>';
 
 </script>  
 

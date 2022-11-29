@@ -48,6 +48,85 @@
 
 /********* You can start writing your CSS below this line: **********/
 
+.sxt_player_area {
+    display: flex;
+    flex-direction: column;
+}
+
+.sxt_player_dices_area {
+    width: 900px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.sxt_dice {
+    width: 55px;
+    height: 55px;
+    background-repeat: none;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    margin: 10px 60px 10px 10px;
+}
+
+.sxt_dice_clickable {
+    cursor: pointer;
+    border: 1px dashed black;
+}
+
+.sxt_dice_selected {
+    border: 1px dashed red;
+}
+
+.sxt_dice_used {
+    opacity: .4;
+}
+
+.sxt_dice_1 {
+    background-image: url("img/55_55_dice.png");
+    background-position: 0px 0px;
+}
+
+.sxt_dice_2 {
+    background-image: url("img/55_55_dice.png");
+    background-position: -55px 0px;
+}
+
+.sxt_dice_3 {
+    background-image: url("img/55_55_dice.png");
+    background-position: -110px 0px;
+}
+
+.sxt_dice_4 {
+    background-image: url("img/55_55_dice.png");
+    background-position: -165px 0px;
+}
+
+.sxt_dice_5 {
+    background-image: url("img/55_55_dice.png");
+    background-position: -220px 0px;
+}
+
+.sxt_dice_6 {
+    background-image: url("img/55_55_dice.png");
+    background-position: -275px 0px;
+}
+
+.sxt_player_board {
+    float:left;
+    position: relative;
+    width: 900px;
+    height: 634px;
+    background-image: url("img/playerboard.jpg");
+}
+
+.sxt_leave {
+    position: absolute;
+    background-color: beige;
+    opacity: .5;
+    width: 27px;
+    height: 27px;
+}
 
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
