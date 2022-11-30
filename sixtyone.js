@@ -153,6 +153,16 @@ function (dojo, declare) {
 
                     this.slideToObjectPos( 'sxt_location_'+player_id+'_6_'+(i+1), 'sxt_player_board_'+player_id, locations_area_6_coords[i][0], locations_area_6_coords[i][1] ).play();
                 }
+
+                // Area #6
+                for (let i = 0; i < score_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_score', {
+                        player_id: player_id,
+                        id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_score_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, score_coords[i][0], score_coords[i][1] ).play();
+                }
             }
 
             ///////////////////////////////////////////

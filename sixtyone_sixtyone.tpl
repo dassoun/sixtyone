@@ -61,6 +61,8 @@ var jstpl_sxt_location_area_4 = '<div class="sxt_location sxt_location_area_4" i
 var jstpl_sxt_location_area_5 = '<div class="sxt_location sxt_location_area_5" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
 var jstpl_sxt_location_area_6 = '<div class="sxt_location sxt_location_area_6" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
 
+var jstpl_sxt_score = '<div class="sxt_score" id="sxt_score_${player_id}_${id}"></div>';
+
 </script>  
 
 {OVERALL_GAME_FOOTER}
