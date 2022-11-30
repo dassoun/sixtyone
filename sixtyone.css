@@ -128,6 +128,88 @@
     height: 27px;
 }
 
+.sxt_location {
+    border: 1px dashed transparent;
+}
+
+.sxt_location_area_1_big {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 42px;
+    height: 42px;
+    border-radius: 21px;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_1_small {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_2 {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 52px;
+    height: 52px;
+    border-radius: 26px;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_3 {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 41px;
+    height: 51px;
+    border-radius: 50% / 30%;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_3_left {
+    transform: rotate(12deg);
+}
+
+.sxt_location_area_3_right {
+    transform: rotate(-14deg);
+}
+
+.sxt_location_area_4 {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 44px;
+    height: 55px;
+    border-radius: 50% / 10%;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_5 {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 44px;
+    height: 44px;
+    border-radius: 22px;
+    border: 1px dashed black;
+}
+
+.sxt_location_area_6 {
+    position: absolute;
+    background-color: white;
+    opacity: .5;
+    width: 41px;
+    height: 31px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;;
+    border: 1px dashed black;
+}
+
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
 

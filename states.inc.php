@@ -75,7 +75,7 @@ $machinestates = array(
 
     STATE_INIT_TURN => array(
         "name" => "initTurn",
-        "description" => "",
+        "description" => "toto",
         "type" => "game",
         "action" => "stInitTurn",
         "transitions" => array( "" => STATE_INIT_MULTI )

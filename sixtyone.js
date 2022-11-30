@@ -77,13 +77,81 @@ function (dojo, declare) {
             for ( var player_id in gamedatas.players ) {
                 // leaves
                 for (let i = 0; i < leave_coords.length; i++){
-                    console.log(leave_coords[i][0]);
                     dojo.place( this.format_block('jstpl_sxt_leave', {
                         player_id: player_id,
                         leave_id: (i+1),
                     } ), $ ( 'sxt_player_board_'+player_id ) );
 
                     this.slideToObjectPos( 'sxt_leave_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, leave_coords[i][0], leave_coords[i][1] ).play();
+                }
+
+                // locations
+                // Area #1
+                for (let i = 0; i < locations_area_1_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_1', {
+                        player_id: player_id,
+                        area_id: 1,
+                        location_id: (i+1),
+                        size: locations_area_1_coords[i][2],
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_1_'+(i+1), 'sxt_player_board_'+player_id, locations_area_1_coords[i][0], locations_area_1_coords[i][1] ).play();
+                }
+
+                // Area #2
+                for (let i = 0; i < locations_area_2_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_2', {
+                        player_id: player_id,
+                        area_id: 2,
+                        location_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_2_'+(i+1), 'sxt_player_board_'+player_id, locations_area_2_coords[i][0], locations_area_2_coords[i][1] ).play();
+                }
+
+                // Area #3
+                for (let i = 0; i < locations_area_3_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_3', {
+                        player_id: player_id,
+                        area_id: 3,
+                        location_id: (i+1),
+                        side: locations_area_3_coords[i][2],
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_3_'+(i+1), 'sxt_player_board_'+player_id, locations_area_3_coords[i][0], locations_area_3_coords[i][1] ).play();
+                }
+
+                // Area #4
+                for (let i = 0; i < locations_area_4_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_4', {
+                        player_id: player_id,
+                        area_id: 4,
+                        location_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_4_'+(i+1), 'sxt_player_board_'+player_id, locations_area_4_coords[i][0], locations_area_4_coords[i][1] ).play();
+                }
+
+                // Area #5
+                for (let i = 0; i < locations_area_5_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_5', {
+                        player_id: player_id,
+                        area_id: 5,
+                        location_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_5_'+(i+1), 'sxt_player_board_'+player_id, locations_area_5_coords[i][0], locations_area_5_coords[i][1] ).play();
+                }
+
+                // Area #6
+                for (let i = 0; i < locations_area_6_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_location_area_6', {
+                        player_id: player_id,
+                        area_id: 6,
+                        location_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_location_'+player_id+'_6_'+(i+1), 'sxt_player_board_'+player_id, locations_area_6_coords[i][0], locations_area_6_coords[i][1] ).play();
                 }
             }
 

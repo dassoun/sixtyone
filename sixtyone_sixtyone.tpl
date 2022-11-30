@@ -54,6 +54,13 @@ var jstpl_sxt_player_area =
 
 var jstpl_sxt_leave = '<div class="sxt_leave" id="sxt_leave_${player_id}_${leave_id}"></div>';
 
+var jstpl_sxt_location_area_1 = '<div class="sxt_location sxt_location_area_1_${size}" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_location_area_2 = '<div class="sxt_location sxt_location_area_2" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_location_area_3 = '<div class="sxt_location sxt_location_area_3 sxt_location_area_3_${side}" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_location_area_4 = '<div class="sxt_location sxt_location_area_4" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_location_area_5 = '<div class="sxt_location sxt_location_area_5" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_location_area_6 = '<div class="sxt_location sxt_location_area_6" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+
 </script>  
 
 {OVERALL_GAME_FOOTER}

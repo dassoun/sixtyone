@@ -258,6 +258,8 @@ class SixtyOne extends Table
         for ($i=1; $i<4; $i++) {
             $this->setGameStateValue( "die_".$i."_value", bga_rand(1, 6) );
         }
+
+        $this->gamestate->nextState("");
     }
 
 //////////////////////////////////////////////////////////////////////////////
