@@ -21,6 +21,15 @@ const leave_coords = [
     [840, 40],
 ];
 
+const area_coords = [
+    [121, 84],
+    [447, 90],
+    [119, 238],
+    [407, 249],
+    [130, 438],
+    [456, 457],
+];
+
 const locations_area_1_coords = [
     [226, 150, 'big'],
     [276, 152, 'small'],

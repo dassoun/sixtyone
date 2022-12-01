@@ -49,6 +49,11 @@ function (dojo, declare) {
         {
             console.log( "Starting game setup" );
             
+            this.connections = [];
+
+            // Constants
+            this.gameConstants = gamedatas.constants;
+
             ///////////////////////////////////////////
             // Setting up player boards
             ///////////////////////////////////////////
@@ -154,7 +159,7 @@ function (dojo, declare) {
                     this.slideToObjectPos( 'sxt_location_'+player_id+'_6_'+(i+1), 'sxt_player_board_'+player_id, locations_area_6_coords[i][0], locations_area_6_coords[i][1] ).play();
                 }
 
-                // Area #6
+                // Scores
                 for (let i = 0; i < score_coords.length; i++){
                     dojo.place( this.format_block('jstpl_sxt_score', {
                         player_id: player_id,
@@ -163,6 +168,16 @@ function (dojo, declare) {
 
                     this.slideToObjectPos( 'sxt_score_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, score_coords[i][0], score_coords[i][1] ).play();
                 }
+
+                // // Areas
+                // for (let i = 0; i < area_coords.length; i++){
+                //     dojo.place( this.format_block('jstpl_sxt_area', {
+                //         player_id: player_id,
+                //         area_id: (i+1),
+                //     } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                //     this.slideToObjectPos( 'sxt_area_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, area_coords[i][0], area_coords[i][1] ).play();
+                // }                
             }
 
             ///////////////////////////////////////////
@@ -199,8 +214,56 @@ function (dojo, declare) {
                 
                 break;
            */
-           
-           
+            case 'multiplayerPhase':
+                dice = args.args;
+                console.log(dice);
+                for (i=1; i<4; i++) {
+                    dojo.addClass('sxt_dice_'+i, 'sxt_dice_'+dice[i]);
+                }
+                break;
+                
+            case 'chooseArea':
+                dice = args.args;
+                console.log(dice);
+
+                console.log('spectator : '+this.isSpectator);
+                console.log(dice);
+
+                // Areas
+                if (!this.isSpectator) {
+                    const areas = ['1', '2', '3', '4', '5', '6'];
+
+                    for (i=1; i<=6; i++) {
+                        dojo.place( this.format_block('jstpl_sxt_area', {
+                            player_id: this.player_id,
+                            area_id: i,
+                        } ), $ ( 'sxt_player_board_'+this.player_id ) );
+    
+                        elmt = 'sxt_area_'+this.player_id+'_'+i;
+
+                        this.slideToObjectPos( elmt, 'sxt_player_board_'+this.player_id, area_coords[i-1][0], area_coords[i-1][1] ).play();
+
+                        this.connections.push( dojo.connect( elmt , 'click', () => this.onClickArea(elmt) ) );
+                    }
+                    
+                    for (const [key, value] of Object.entries(dice)) {
+
+                        var index = areas.indexOf(value);
+                        console.log(areas + ', ' + value + ', ' + index);
+                        if (index > -1) { // only splice array when item is found
+                            
+                            areas.splice(index, 1); // 2nd parameter means remove one item only
+                        }
+
+                        dojo.addClass('sxt_area_'+this.player_id+'_'+value, 'sxt_area_clickable');
+                    }
+
+                    for (i=0; i<areas.length; i++) {
+                        dojo.addClass('sxt_area_'+this.player_id+'_'+areas[i], 'sxt_area_unclickable');
+                    }
+                }
+                break;
+
             case 'dummmy':
                 break;
             }
@@ -225,10 +288,20 @@ function (dojo, declare) {
                 
                 break;
            */
+                case 'chooseArea':
+                    if (!this.isSpectator) {
+                        for (i=1; i<7; i++) {
+                            dojo.destroy('sxt_area_'+this.player_id+'_'+i);
+                        }
+                    }
+
+                    dojo.forEach(this.connections, dojo.disconnect);
+                    this.connections = []; 
+
+                    break;
            
-           
-            case 'dummmy':
-                break;
+                case 'dummmy':
+                    break;
             }               
         }, 
 
@@ -317,6 +390,27 @@ function (dojo, declare) {
         },        
         
         */
+
+        onClickArea: function( elmt )
+        {
+            // console.log( '$$$$ Event : onClickDice' );
+
+            if( ! this.checkAction( 'chooseArea' ) )
+            { return; }
+
+            var area_id = elmt.split('_')[2];
+            
+            // console.log( '$$$$ Selected dice : (' + dice_id + ')' );
+            
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/chooseArea.html", {lock: true, area_id: area_id }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
 
         
         ///////////////////////////////////////////////////

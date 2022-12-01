@@ -27,7 +27,11 @@
 
 
 <div id="sxt_game_area">
-
+    <div  id="sxt_dice_area" class="sxt_dice_area">
+        <div id="sxt_dice_1" class="sxt_dice"></div>
+        <div id="sxt_dice_2" class="sxt_dice"></div>
+        <div id="sxt_dice_3" class="sxt_dice"></div>
+    </div>
 </div>
 
 
@@ -42,26 +46,23 @@ var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_I
 */
 
 var jstpl_sxt_player_area = 
-    '<div class="sxt_player_area" id="sxt_player_area_${player_id}"> \
-        <div class="sxt_player_dices_area" id="sxt_player_dices_area_${player_id}"> \
-            <div class="sxt_dice" id="sxt_dice_${player_id}_1"></div> \
-            <div class="sxt_dice" id="sxt_dice_${player_id}_2"></div> \
-            <div class="sxt_dice" id="sxt_dice_${player_id}_3"></div> \
-        </div> \
-        <div class="sxt_player_board" id="sxt_player_board_${player_id}"> \
+    '<div id="sxt_player_area_${player_id}" class="sxt_player_area"> \
+        <div id="sxt_player_board_${player_id}" class="sxt_player_board"> \
         </div> \
     </div>';
 
 var jstpl_sxt_leave = '<div class="sxt_leave" id="sxt_leave_${player_id}_${leave_id}"></div>';
 
-var jstpl_sxt_location_area_1 = '<div class="sxt_location sxt_location_area_1_${size}" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
-var jstpl_sxt_location_area_2 = '<div class="sxt_location sxt_location_area_2" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
-var jstpl_sxt_location_area_3 = '<div class="sxt_location sxt_location_area_3 sxt_location_area_3_${side}" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
-var jstpl_sxt_location_area_4 = '<div class="sxt_location sxt_location_area_4" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
-var jstpl_sxt_location_area_5 = '<div class="sxt_location sxt_location_area_5" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
-var jstpl_sxt_location_area_6 = '<div class="sxt_location sxt_location_area_6" id="sxt_location_${player_id}_${area_id}_${location_id}"></div>';
+var jstpl_sxt_area = '<div id="sxt_area_${player_id}_${area_id}" class="sxt_area sxt_area_${area_id}"></div>';
 
-var jstpl_sxt_score = '<div class="sxt_score" id="sxt_score_${player_id}_${id}"></div>';
+var jstpl_sxt_location_area_1 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_1_${size}"></div>';
+var jstpl_sxt_location_area_2 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_2"></div>';
+var jstpl_sxt_location_area_3 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_3 sxt_location_area_3_${side}"></div>';
+var jstpl_sxt_location_area_4 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_4"></div>';
+var jstpl_sxt_location_area_5 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_5"></div>';
+var jstpl_sxt_location_area_6 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_6"></div>';
+
+var jstpl_sxt_score = '<div id="sxt_score_${player_id}_${id}" class="sxt_score"></div>';
 
 </script>  
 

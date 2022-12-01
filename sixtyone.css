@@ -53,7 +53,7 @@
     flex-direction: column;
 }
 
-.sxt_player_dices_area {
+.sxt_dice_area {
     width: 900px;
     display: flex;
     flex-direction: row;
@@ -118,6 +118,60 @@
     width: 900px;
     height: 634px;
     background-image: url("img/playerboard.jpg");
+}
+
+.sxt_area {
+    position: absolute;
+    opacity: 0;
+}
+
+.sxt_area_clickable {
+    cursor: pointer;
+}
+
+.sxt_area_clickable:hover {
+    opacity: .3;
+}
+
+.sxt_area_unclickable {
+    opacity: .3;
+    filter: invert(1);
+}
+
+.sxt_area_1 {
+    width: 324px;
+    height: 166px;
+    background-image: url("img/area_1.png");
+}
+
+.sxt_area_2 {
+    width: 280px;
+    height: 200px;
+    background-image: url("img/area_2.png");
+}
+
+.sxt_area_3 {
+    width: 283px;
+    height: 192px;
+    background-image: url("img/area_3.png");
+}
+
+.sxt_area_4 {
+    width: 312px;
+    height: 218px;
+    background-image: url("img/area_4.png");
+}
+
+.sxt_area_5 {
+    width: 342px;
+    height: 197px;
+    background-image: url("img/area_5.png");
+}
+
+.sxt_area_6 {
+    width: 278px;
+    height: 177px;
+    background-image: url("img/area_6.png");
 }
 
 .sxt_leave {

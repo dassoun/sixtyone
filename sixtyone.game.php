@@ -19,6 +19,12 @@
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 
+require_once( 'modules/php/includes/SXTAutoLoader.inc.php' );
+
+use PhobyJuan\SixtyOne\Managers\SXTPlayerManager;
+
+use PhobyJuan\SixtyOne\Objects\SXTPlayer;
+
 
 class SixtyOne extends Table
 {
@@ -161,7 +167,7 @@ class SixtyOne extends Table
         $result = array();
     
         for ($i=1; $i<4; $i++) {
-            $result[] = $this->getGameStateValue( "die_".$i."_value" );
+            $result[$i] = $this->getGameStateValue( "die_".$i."_value" );
         }
 
         return $result;
@@ -203,6 +209,26 @@ class SixtyOne extends Table
     
     */
 
+    function chooseArea($area_id) 
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'chooseArea' ); 
+        
+        $player_id = self::getCurrentPlayerId();
+        
+        
+        
+        // Notify all players about the card played
+        // self::notifyAllPlayers( "cardPlayed", clienttranslate( '${player_name} plays ${card_name}' ), array(
+        //     'player_id' => $player_id,
+        //     'player_name' => self::getActivePlayerName(),
+        //     'card_name' => $card_name,
+        //     'card_id' => $card_id
+        // ) );
+
+        $this->gamestate->nextState("areaChosen");
+    }
+
     
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state arguments
@@ -230,6 +256,25 @@ class SixtyOne extends Table
         );
     }    
     */
+    function argMultiplayerPhase()
+    {
+        return $this->getDiceDatas();
+    }
+
+    function argChooseArea() 
+    {
+        $dice = $this->getDiceDatas();
+        
+        $res = [];
+        for ($i=1; $i<4; $i++) {
+            if (!array_search($dice[$i], $res)) {
+
+                $res[count($res) + 1] = $dice[$i];
+            }
+        }
+
+        return $res;
+    }
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state actions
@@ -260,6 +305,16 @@ class SixtyOne extends Table
         }
 
         $this->gamestate->nextState("");
+    }
+
+    function stMultiplayerPhase()
+    {
+        $this->gamestate->setAllPlayersMultiactive();
+        
+        //this is needed when starting private parallel states; players will be transitioned to initialprivate state defined in master state
+        $this->gamestate->initializePrivateStateForAllActivePlayers();
+
+        return;
     }
 
 //////////////////////////////////////////////////////////////////////////////
