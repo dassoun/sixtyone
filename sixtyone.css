@@ -60,54 +60,54 @@
     justify-content: center;
 }
 
-.sxt_dice {
+.sxt_die {
     width: 55px;
     height: 55px;
     background-repeat: none;
     border: 1px solid transparent;
     border-radius: 5px;
-    margin: 10px 60px 10px 10px;
+    margin: 10px 60px;
 }
 
-.sxt_dice_clickable {
+.sxt_die_clickable {
     cursor: pointer;
     border: 1px dashed black;
 }
 
-.sxt_dice_selected {
+.sxt_die_selected {
     border: 1px dashed red;
 }
 
-.sxt_dice_used {
-    opacity: .4;
+.sxt_die_used {
+    opacity: .6;
 }
 
-.sxt_dice_1 {
+.sxt_die_1 {
     background-image: url("img/55_55_dice.png");
     background-position: 0px 0px;
 }
 
-.sxt_dice_2 {
+.sxt_die_2 {
     background-image: url("img/55_55_dice.png");
     background-position: -55px 0px;
 }
 
-.sxt_dice_3 {
+.sxt_die_3 {
     background-image: url("img/55_55_dice.png");
     background-position: -110px 0px;
 }
 
-.sxt_dice_4 {
+.sxt_die_4 {
     background-image: url("img/55_55_dice.png");
     background-position: -165px 0px;
 }
 
-.sxt_dice_5 {
+.sxt_die_5 {
     background-image: url("img/55_55_dice.png");
     background-position: -220px 0px;
 }
 
-.sxt_dice_6 {
+.sxt_die_6 {
     background-image: url("img/55_55_dice.png");
     background-position: -275px 0px;
 }
@@ -117,6 +117,7 @@
     position: relative;
     width: 900px;
     height: 634px;
+    margin: 10px;
     background-image: url("img/playerboard.jpg");
 }
 
@@ -176,6 +177,7 @@
 
 .sxt_leave {
     position: absolute;
+    text-align: center;
     background-color: beige;
     opacity: .5;
     width: 27px;
@@ -183,47 +185,48 @@
 }
 
 .sxt_location {
+    text-align: center;
     border: 1px dashed transparent;
 }
 
 .sxt_location_area_1_big {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 42px;
     height: 42px;
     border-radius: 21px;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_1_small {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 36px;
     height: 36px;
     border-radius: 18px;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_2 {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 52px;
     height: 52px;
     border-radius: 26px;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_3 {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 41px;
     height: 51px;
     border-radius: 50% / 30%;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_3_left {
@@ -236,32 +239,43 @@
 
 .sxt_location_area_4 {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 44px;
     height: 55px;
     border-radius: 50% / 10%;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_5 {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white;
+    opacity: .5; */
     width: 44px;
     height: 44px;
     border-radius: 22px;
-    border: 1px dashed black;
+    /* border: 1px dashed black; */
 }
 
 .sxt_location_area_6 {
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    /* background-color: white; */
+    /* opacity: .5; */
     width: 41px;
     height: 31px;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    /* border: 1px dashed black; */
+}
+
+.sxt_location_clickable {
+    background-color: white;
+    opacity: .5;
     border: 1px dashed black;
+}
+
+.sxt_location_clickable:hover {
+    opacity: .7;
+    cursor: pointer;
 }
 
 .sxt_score {

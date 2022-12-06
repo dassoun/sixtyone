@@ -18,16 +18,20 @@ use PhobyJuan\SixtyOne\Objects\SXTPlayer;
 
 class SXTPlayerManager extends \APP_DbObject
 {
-    public function getPlayerById(
+    public function getById(
         int $id
     ): ?SXTPlayer
     {
         $sql = "SELECT 
+                    player_id, 
+                    die_1, die_2, die_3, location_chosen,
                     score_area_1, score_area_2, score_area_3, score_area_4, score_area_5, score_area_6, 
-                    area_1_1, area_1_2, area_1_3, area_1_4, area_2_1, area_2_2, area_2_3, area_2_4, 
-                    area_2_5, area_3_1_1, area_3_1_2, area_3_2_1, area_3_2_2, area_3_2_3, area_4_1, 
-                    area_4_2, area_4_3, area_4_4, area_4_5, area_4_6, area_5_1, area_5_2, area_5_3, 
-                    area_5_4, area_5_5, area_5_6, area_6_1, area_6_2, area_6_3, area_6_4, area_6_5
+                    area_1_1, area_1_2, area_1_3, area_1_4, 
+                    area_2_1, area_2_2, area_2_3, area_2_4, area_2_5, 
+                    area_3_1_1, area_3_1_2, area_3_2_1, area_3_2_2, area_3_2_3, 
+                    area_4_1, area_4_2, area_4_3, area_4_4, area_4_5, area_4_6, 
+                    area_5_1, area_5_2, area_5_3, area_5_4, area_5_5, area_5_6, 
+                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5
                 FROM player
                 WHERE player_id = '$id'";
 
@@ -36,7 +40,12 @@ class SXTPlayerManager extends \APP_DbObject
         $player = null;
 
         if ($res) {
-            $player = (new SXTPlayer())->setScore_area_1($res['score_area_1'])
+            $player = (new SXTPlayer())->setPlayer_id($res['player_id'])
+                ->setDie_1($res['die_1'])
+                ->setDie_2($res['die_2'])
+                ->setDie_3($res['die_3'])
+                ->setLocation_chosen($res['location_chosen'])
+                ->setScore_area_1($res['score_area_1'])
                 ->setScore_area_2($res['score_area_2'])
                 ->setScore_area_3($res['score_area_3'])
                 ->setScore_area_4($res['score_area_4'])
@@ -80,6 +89,11 @@ class SXTPlayerManager extends \APP_DbObject
 
     public function persist(SXTPlayer $player): void
     {
+        $player_id = $player->getPlayer_id();
+        $die_1 = $player->getDie_1();
+        $die_2 = $player->getDie_2();
+        $die_3 = $player->getDie_3();
+        $location_chosen = $player->getLocation_chosen();
         $score_area_1 = $player->getScore_area_1();
         $score_area_2 = $player->getScore_area_2(); 
         $score_area_3 = $player->getScore_area_3(); 
@@ -121,45 +135,49 @@ class SXTPlayerManager extends \APP_DbObject
         $sql = "UPDATE 
                     player 
                 SET 
-                    score_area_1 = '$score_area_1', 
-                    score_area_2 = '$score_area_2', 
-                    score_area_3 = '$score_area_3', 
-                    score_area_4 = '$score_area_4', 
-                    score_area_5 = '$score_area_5', 
-                    score_area_6 = '$score_area_6', 
-                    area_1_1 = '$area_1_1', 
-                    area_1_2 = '$area_1_2', 
-                    area_1_3 = '$area_1_3', 
-                    area_1_4 = '$area_1_4', 
-                    area_2_1 = '$area_2_1', 
-                    area_2_2 = '$area_2_2', 
-                    area_2_3 = '$area_2_3', 
-                    area_2_4 = '$area_2_4', 
-                    area_2_5 = '$area_2_5', 
-                    area_3_1_1 = '$area_3_1_1', 
-                    area_3_1_2 = '$area_3_1_2', 
-                    area_3_2_1 = '$area_3_2_1', 
-                    area_3_2_2 = '$area_3_2_2', 
-                    area_3_2_3 = '$area_3_2_3', 
-                    area_4_1 = '$area_4_1', 
-                    area_4_2 = '$area_4_2', 
-                    area_4_3 = '$area_4_3', 
-                    area_4_4 = '$area_4_4', 
-                    area_4_5 = '$area_4_5', 
-                    area_4_6 = '$area_4_6', 
-                    area_5_1 = '$area_5_1', 
-                    area_5_2 = '$area_5_2', 
-                    area_5_3 = '$area_5_3', 
-                    area_5_4 = '$area_5_4', 
-                    area_5_5 = '$area_5_5', 
-                    area_5_6 = '$area_5_6', 
-                    area_6_1 = '$area_6_1', 
-                    area_6_2 = '$area_6_2', 
-                    area_6_3 = '$area_6_3', 
-                    area_6_4 = '$area_6_4', 
-                    area_6_5 = '$area_6_5'
+                    die_1 = ".(!empty($die_1) ? "'$die_1'" : "NULL").", 
+                    die_2 = ".(!empty($die_2) ? "'$die_2'" : "NULL").", 
+                    die_3 = ".(!empty($die_3) ? "'$die_3'" : "NULL").",
+                    location_chosen = ".(!empty($location_chosen) ? "'$location_chosen'" : "NULL").",
+                    score_area_1 = ".(!empty($score_area_1) ? "'$score_area_1'" : "NULL").",
+                    score_area_2 = ".(!empty($score_area_2) ? "'$score_area_2'" : "NULL").",
+                    score_area_3 = ".(!empty($score_area_3) ? "'$score_area_3'" : "NULL").",
+                    score_area_4 = ".(!empty($score_area_4) ? "'$score_area_4'" : "NULL").",
+                    score_area_5 = ".(!empty($score_area_5) ? "'$score_area_5'" : "NULL").",
+                    score_area_6 = ".(!empty($score_area_6) ? "'$score_area_6'" : "NULL").",
+                    area_1_1 = ".(!empty($area_1_1) ? "'$area_1_1'" : "NULL").",
+                    area_1_2 = ".(!empty($area_1_2) ? "'$area_1_2'" : "NULL").",
+                    area_1_3 = ".(!empty($area_1_3) ? "'$area_1_3'" : "NULL").",
+                    area_1_4 = ".(!empty($area_1_4) ? "'$area_1_4'" : "NULL").",
+                    area_2_1 = ".(!empty($area_2_1) ? "'$area_2_1'" : "NULL").",
+                    area_2_2 = ".(!empty($area_2_2) ? "'$area_2_2'" : "NULL").",
+                    area_2_3 = ".(!empty($area_2_3) ? "'$area_2_3'" : "NULL").",
+                    area_2_4 = ".(!empty($area_2_4) ? "'$area_2_4'" : "NULL").",
+                    area_2_5 = ".(!empty($area_2_5) ? "'$area_2_5'" : "NULL").",
+                    area_3_1_1 = ".(!empty($area_3_1_1) ? "'$area_3_1_1'" : "NULL").",
+                    area_3_1_2 = ".(!empty($area_3_1_2) ? "'$area_3_1_2'" : "NULL").",
+                    area_3_2_1 = ".(!empty($area_3_2_1) ? "'$area_3_2_1'" : "NULL").",
+                    area_3_2_2 = ".(!empty($area_3_2_2) ? "'$area_3_2_2'" : "NULL").",
+                    area_3_2_3 = ".(!empty($area_3_2_3) ? "'$area_3_2_3'" : "NULL").",
+                    area_4_1 = ".(!empty($area_4_1) ? "'$area_4_1'" : "NULL").",
+                    area_4_2 = ".(!empty($area_4_2) ? "'$area_4_2'" : "NULL").",
+                    area_4_3 = ".(!empty($area_4_3) ? "'$area_4_3'" : "NULL").",
+                    area_4_4 = ".(!empty($area_4_4) ? "'$area_4_4'" : "NULL").",
+                    area_4_5 = ".(!empty($area_4_5) ? "'$area_4_5'" : "NULL").",
+                    area_4_6 = ".(!empty($area_4_6) ? "'$area_4_6'" : "NULL").",
+                    area_5_1 = ".(!empty($area_5_1) ? "'$area_5_1'" : "NULL").",
+                    area_5_2 = ".(!empty($area_5_2) ? "'$area_5_2'" : "NULL").",
+                    area_5_3 = ".(!empty($area_5_3) ? "'$area_5_3'" : "NULL").",
+                    area_5_4 = ".(!empty($area_5_4) ? "'$area_5_4'" : "NULL").",
+                    area_5_5 = ".(!empty($area_5_5) ? "'$area_5_5'" : "NULL").",
+                    area_5_6 = ".(!empty($area_5_6) ? "'$area_5_6'" : "NULL").",
+                    area_6_1 = ".(!empty($area_6_1) ? "'$area_6_1'" : "NULL").",
+                    area_6_2 = ".(!empty($area_6_2) ? "'$area_6_2'" : "NULL").",
+                    area_6_3 = ".(!empty($area_6_3) ? "'$area_6_3'" : "NULL").",
+                    area_6_4 = ".(!empty($area_6_4) ? "'$area_6_4'" : "NULL").",
+                    area_6_5 = ".(!empty($area_6_5) ? "'$area_6_5'" : "NULL")."
                 WHERE 
-                    player_id = '$player_id'";
+                    player_id = $player_id";
 
         self::DbQuery( $sql );
     }

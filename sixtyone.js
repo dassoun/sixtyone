@@ -167,17 +167,7 @@ function (dojo, declare) {
                     } ), $ ( 'sxt_player_board_'+player_id ) );
 
                     this.slideToObjectPos( 'sxt_score_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, score_coords[i][0], score_coords[i][1] ).play();
-                }
-
-                // // Areas
-                // for (let i = 0; i < area_coords.length; i++){
-                //     dojo.place( this.format_block('jstpl_sxt_area', {
-                //         player_id: player_id,
-                //         area_id: (i+1),
-                //     } ), $ ( 'sxt_player_board_'+player_id ) );
-
-                //     this.slideToObjectPos( 'sxt_area_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, area_coords[i][0], area_coords[i][1] ).play();
-                // }                
+                }    
             }
 
             ///////////////////////////////////////////
@@ -202,6 +192,9 @@ function (dojo, declare) {
         {
             console.log( 'Entering state: '+stateName );
             
+            // Areas
+            let areas = ['1', '2', '3', '4', '5', '6'];
+
             switch( stateName )
             {
             
@@ -214,14 +207,17 @@ function (dojo, declare) {
                 
                 break;
            */
+
+            ////////////////////////////////////////////////////
             case 'multiplayerPhase':
                 dice = args.args;
                 console.log(dice);
                 for (i=1; i<4; i++) {
-                    dojo.addClass('sxt_dice_'+i, 'sxt_dice_'+dice[i]);
+                    dojo.addClass('sxt_die_'+i, 'sxt_die_'+dice[i]);
                 }
                 break;
-                
+
+            ////////////////////////////////////////////////////
             case 'chooseArea':
                 dice = args.args;
                 console.log(dice);
@@ -229,39 +225,92 @@ function (dojo, declare) {
                 console.log('spectator : '+this.isSpectator);
                 console.log(dice);
 
-                // Areas
-                if (!this.isSpectator) {
-                    const areas = ['1', '2', '3', '4', '5', '6'];
+                for (let i=1; i<=6; i++) {
+                    dojo.place( this.format_block('jstpl_sxt_area', {
+                        player_id: this.player_id,
+                        area_id: i,
+                    } ), $ ( 'sxt_player_board_'+this.player_id ) );
 
-                    for (i=1; i<=6; i++) {
-                        dojo.place( this.format_block('jstpl_sxt_area', {
-                            player_id: this.player_id,
-                            area_id: i,
-                        } ), $ ( 'sxt_player_board_'+this.player_id ) );
-    
-                        elmt = 'sxt_area_'+this.player_id+'_'+i;
+                    this.slideToObjectPos( 'sxt_area_'+this.player_id+'_'+i, 'sxt_player_board_'+this.player_id, area_coords[i-1][0], area_coords[i-1][1] ).play();
+                }
+                
+                for (const [key, value] of Object.entries(dice)) {
 
-                        this.slideToObjectPos( elmt, 'sxt_player_board_'+this.player_id, area_coords[i-1][0], area_coords[i-1][1] ).play();
-
-                        this.connections.push( dojo.connect( elmt , 'click', () => this.onClickArea(elmt) ) );
-                    }
-                    
-                    for (const [key, value] of Object.entries(dice)) {
-
-                        var index = areas.indexOf(value);
-                        console.log(areas + ', ' + value + ', ' + index);
-                        if (index > -1) { // only splice array when item is found
-                            
-                            areas.splice(index, 1); // 2nd parameter means remove one item only
-                        }
-
-                        dojo.addClass('sxt_area_'+this.player_id+'_'+value, 'sxt_area_clickable');
+                    let index = areas.indexOf(value);
+                    console.log(areas + ', ' + value + ', ' + index);
+                    if (index > -1) { // only splice array when item is found
+                        
+                        areas.splice(index, 1); // 2nd parameter means remove one item only
                     }
 
-                    for (i=0; i<areas.length; i++) {
-                        dojo.addClass('sxt_area_'+this.player_id+'_'+areas[i], 'sxt_area_unclickable');
+                    let elmt = 'sxt_area_'+this.player_id+'_'+value;
+
+                    dojo.addClass(elmt, 'sxt_area_clickable');
+
+                    this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickArea(elmt) ) );
+                }
+
+                for (let i=0; i<areas.length; i++) {
+                    dojo.addClass('sxt_area_'+this.player_id+'_'+areas[i], 'sxt_area_unclickable');
+                }
+                break;
+
+            ////////////////////////////////////////////////////
+            case 'chooseDie':
+                die_info = args.args;
+                console.log(die_info);
+
+                for (let i=1; i<=3; i++) {
+                    if (i != die_info['die_id']) {
+                        let elmt = 'sxt_die_'+i;
+
+                        dojo.addClass(elmt, 'sxt_die_clickable');
+
+                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickDie(elmt) ) );
+                    } else {
+                        dojo.addClass('sxt_die_'+i, 'sxt_die_used');
                     }
                 }
+
+                let index = areas.indexOf(die_info['die_value']);
+                if (index > -1) { // only splice array when item is found
+                    areas.splice(index, 1); // 2nd parameter means remove one item only
+                }
+
+                for (let i=0; i<areas.length; i++) {
+                    dojo.place( this.format_block('jstpl_sxt_area', {
+                        player_id: this.player_id,
+                        area_id: (areas[i]),
+                    } ), $ ( 'sxt_player_board_'+this.player_id ) );
+
+                    this.slideToObjectPos( 'sxt_area_'+this.player_id+'_'+areas[i], 'sxt_player_board_'+this.player_id, area_coords[areas[i]-1][0], area_coords[areas[i]-1][1] ).play();
+
+                    dojo.addClass('sxt_area_'+this.player_id+'_'+areas[i], 'sxt_area_unclickable');
+                }
+
+                console.log("unavailable_dice_id : " + die_info['die_id']);
+                break;
+
+            case 'chooseDieLocation':
+                location_info = args.args;
+                console.log(location_info);
+
+                let area_id = args.args['area_id'];
+                let locations = args.args['locations'];
+
+                let player_id = this.player_id;
+
+                console.log('locations : '+locations);
+
+                for (let i=0; i<locations.length; i++) {
+                    // console.log('sxt_location_'+player_id+'_'+area_id+'_'+locations[i]);
+                    let elmt = 'sxt_location_'+player_id+'_'+area_id+'_'+locations[i];
+                    
+                    dojo.addClass(elmt, 'sxt_location_clickable');
+
+                    this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickLocation(elmt) ) );
+                }
+
                 break;
 
             case 'dummmy':
@@ -298,6 +347,11 @@ function (dojo, declare) {
                     dojo.forEach(this.connections, dojo.disconnect);
                     this.connections = []; 
 
+                    break;
+
+                case 'chooseDie':
+                    dojo.forEach(this.connections, dojo.disconnect);
+                    this.connections = []; 
                     break;
            
                 case 'dummmy':
@@ -375,7 +429,7 @@ function (dojo, declare) {
                                                                     myArgument1: arg1, 
                                                                     myArgument2: arg2,
                                                                     ...
-                                                                 }, 
+                                                                 },
                          this, function( result ) {
                             
                             // What to do after the server call if it succeeded
@@ -386,19 +440,21 @@ function (dojo, declare) {
                             // What to do after the server call in anyway (success or failure)
                             // (most of the time: nothing)
 
-                         } );        
+                         } );
         },        
         
         */
 
         onClickArea: function( elmt )
         {
-            // console.log( '$$$$ Event : onClickDice' );
+            console.log( '$$$$ Event : onClickArea' );
 
             if( ! this.checkAction( 'chooseArea' ) )
             { return; }
 
-            var area_id = elmt.split('_')[2];
+            console.log(elmt);
+            let area_id = elmt.split('_')[3];
+            console.log(area_id);
             
             // console.log( '$$$$ Selected dice : (' + dice_id + ')' );
             
@@ -408,7 +464,55 @@ function (dojo, declare) {
                 //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
                 //     }
                 // }
-                this.ajaxcall( "/sixtyone/sixtyone/chooseArea.html", {lock: true, area_id: area_id }, this, function( result ) {}, function( is_error ) {} );
+                this.ajaxcall( "/sixtyone/sixtyone/chooseArea.html", { lock: true, area_id: area_id }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
+
+        onClickDie: function( elmt )
+        {
+            console.log( '$$$$ Event : onClickDie' );
+
+            if( ! this.checkAction( 'chooseDie' ) )
+            { return; }
+
+            console.log(elmt);
+
+            let die_id = elmt.split('_')[2];
+            console.log(die_id);
+            
+            // console.log( '$$$$ Selected dice : (' + dice_id + ')' );
+            
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/chooseDie.html", { lock: true, die_id: die_id }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
+
+        onClickLocation: function( elmt ) 
+        {
+            console.log( '$$$$ Event : onClickLocation' );
+
+            if( ! this.checkAction( 'chooseDieLocation' ) )
+            { return; }
+
+            console.log(elmt);
+
+            let area_id = elmt.split('_')[3];
+            let location_id = elmt.split('_')[4];
+
+            console.log(area_id);
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/chooseDieLocation.html", { lock: true, area_id: area_id, location_id: location_id }, this, function( result ) {}, function( is_error ) {} );
             }
         },
 
@@ -440,6 +544,8 @@ function (dojo, declare) {
             // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             // 
+
+            dojo.subscribe( 'locationChosen', this, "notif_locationChosen" );
         },  
         
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -458,5 +564,18 @@ function (dojo, declare) {
         },    
         
         */
+
+        notif_locationChosen: function( notif )
+        {
+            console.log( notif );
+
+            let player_id = this.player_id;
+
+            let area_id = notif.args.area_id;
+            let location_id = notif.args.location_id;
+            let die_value = notif.args.die_value;
+
+            dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_value;
+        },
    });             
 });

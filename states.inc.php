@@ -53,11 +53,11 @@ if (!defined('STATE_INIT_GAME')) { // ensure this block is only invoked once, si
     define("STATE_INIT_GAME", 1);
     define("STATE_INIT_TURN", 10);
     define("STATE_INIT_MULTI", 20);
-    define("STATE_CHOSE_AREA", 30);
-    define("STATE_CHOSE_DIE", 40);
-    define("STATE_CHOSE_DIE_LOCATION", 50);
+    define("STATE_CHOOSE_AREA", 30);
+    define("STATE_CHOOSE_DIE", 40);
+    define("STATE_CHOOSE_DIE_LOCATION", 50);
     define("STATE_LAST_DIE_SCORE", 60);
-    define("STATE_CHOSE_CROSS_LOCATION", 70);
+    define("STATE_CHOOSE_CROSS_LOCATION", 70);
     define("STATE_AREA_SCORING", 80);
     define("STATE_NEXT_TURN", 90);
     define("STATE_END_GAME", 99);
@@ -81,49 +81,51 @@ $machinestates = array(
         "action" => "stInitTurn",
         "transitions" => array( "" => STATE_INIT_MULTI )
     ),
-    
-    // Note: ID=2 => your first state
 
     STATE_INIT_MULTI => array(
         "name" => "multiplayerPhase",
         "description" => clienttranslate('Waiting for other players to end their turn.'),
         "descriptionmyturn" => clienttranslate('${you} must do your turn'), // Won't be displayed anyway since each private state has its own description
         "type" => "multipleactiveplayer",
-        "initialprivate" => STATE_CHOSE_AREA, // This makes this state a master multiactive state and enables private states, this is also a first private state
+        "initialprivate" => STATE_CHOOSE_AREA, // This makes this state a master multiactive state and enables private states, this is also a first private state
         "action" => "stMultiplayerPhase",
         "args" => "argMultiplayerPhase",
         //"possibleactions" => ["changeMind"], //this action is possible if player is not in any private state which usually happens when they are inactive
         "transitions" => array( "" => STATE_AREA_SCORING ) // this is normal next transition which will happen after all players finish their turns 
     ),
 
-    STATE_CHOSE_AREA => array(
+    STATE_CHOOSE_AREA => array(
         "name" => "chooseArea",
-        "description" => clienttranslate('${actplayer} must choose an area, or pass.'),
+        "description" => "",
         "descriptionmyturn" => clienttranslate('${you} must choose an area, or pass.'),
         "type" => "private",
         "args" => "argChooseArea",
         "possibleactions" => array( "pass", "chooseArea" ),
-        "transitions" => array( "passed" => 70, "areaChosen" => STATE_CHOSE_DIE )
+        "transitions" => array( "passed" => 70, "areaChosen" => STATE_CHOOSE_DIE )
     ),
 
-    STATE_CHOSE_DIE => array(
+    STATE_CHOOSE_DIE => array(
         "name" => "chooseDie",
-        "description" => clienttranslate('${actplayer} must choose a die.'),
+        "description" => "",
         "descriptionmyturn" => clienttranslate('${you} must choose a die.'),
         "type" => "private",
         "args" => "argChooseDie",
         "possibleactions" => array( "chooseDie", "cancelAreaChoice" ),
-        "transitions" => array( "dieChosen" => STATE_CHOSE_DIE_LOCATION, "areaChoiceCancelled" => STATE_CHOSE_AREA )
+        "transitions" => array( 
+            "toDieLocationChoice" => STATE_CHOOSE_DIE_LOCATION, 
+            "toLastDieScoring" => STATE_LAST_DIE_SCORE, 
+            "areaChoiceCancelled" => STATE_CHOOSE_AREA 
+        )
     ),
 
-    STATE_CHOSE_DIE_LOCATION => array(
+    STATE_CHOOSE_DIE_LOCATION => array(
         "name" => "chooseDieLocation",
-        "description" => clienttranslate('${actplayer} must choose a location.'),
+        "description" => "",
         "descriptionmyturn" => clienttranslate('${you} must choose a location.'),
         "type" => "private",
         "args" => "argChooseDieLocation",
         "possibleactions" => array( "chooseDieLocation", "cancelDieChoice" ),
-        "transitions" => array( "dieLocationChosen" => STATE_LAST_DIE_SCORE, "dieChoiceCancelled" => STATE_CHOSE_AREA )
+        "transitions" => array( "dieLocationChosen" => STATE_LAST_DIE_SCORE, "dieChoiceCancelled" => STATE_CHOOSE_AREA )
     ),
 
     STATE_LAST_DIE_SCORE => array(
@@ -131,17 +133,17 @@ $machinestates = array(
         "description" => "",
         "type" => "game",
         "action" => "stLastDieScore",
-        "transitions" => array( "toCrossLocationChoice" => STATE_CHOSE_CROSS_LOCATION, "toAreaScoring" => STATE_AREA_SCORING )
+        "transitions" => array( "toCrossLocationChoice" => STATE_CHOOSE_CROSS_LOCATION, "toAreaScoring" => STATE_AREA_SCORING )
     ),
 
-    STATE_CHOSE_CROSS_LOCATION => array(
+    STATE_CHOOSE_CROSS_LOCATION => array(
         "name" => "chooseCrossLocation",
-        "description" => clienttranslate('${actplayer} must choose a location for the joker.'),
+        "description" => "",
         "descriptionmyturn" => clienttranslate('${you} must choose a location for the joker.'),
         "type" => "private",
         "args" => "argChooseCrossLocation",
         "possibleactions" => array( "chooseCrossLocation", "cancelDieLocation" ),
-        "transitions" => array( "crossLocationChosen" => STATE_AREA_SCORING, "dieLocationCancelled" => STATE_CHOSE_AREA )
+        "transitions" => array( "crossLocationChosen" => STATE_AREA_SCORING, "dieLocationCancelled" => STATE_CHOOSE_AREA )
     ),
 
     STATE_AREA_SCORING => array(

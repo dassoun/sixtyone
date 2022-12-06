@@ -28,9 +28,9 @@
 
 <div id="sxt_game_area">
     <div  id="sxt_dice_area" class="sxt_dice_area">
-        <div id="sxt_dice_1" class="sxt_dice"></div>
-        <div id="sxt_dice_2" class="sxt_dice"></div>
-        <div id="sxt_dice_3" class="sxt_dice"></div>
+        <div id="sxt_die_1" class="sxt_die"></div>
+        <div id="sxt_die_2" class="sxt_die"></div>
+        <div id="sxt_die_3" class="sxt_die"></div>
     </div>
 </div>
 

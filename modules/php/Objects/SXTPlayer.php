@@ -14,8 +14,13 @@
 
 namespace PhobyJuan\SixtyOne\Objects;
 
-class PXPPlayer implements \JsonSerializable
+class SXTPlayer implements \JsonSerializable
 {
+    private int $player_id;
+    private ?int $die_1;
+    private ?int $die_2;
+    private ?int $die_3;
+    private ?int $location_chosen;
     private ?int $score_area_1;
     private ?int $score_area_2;
     private ?int $score_area_3;
@@ -54,7 +59,113 @@ class PXPPlayer implements \JsonSerializable
     private ?int $area_6_4;
     private ?int $area_6_5;
 
+    private $area_1 = [null, null, null, null];
+    private $area_2 = [null, null, null, null, null];
+    private $area_3 = [[null, null], [null, null, null]];
+    private $area_4 = [null, null, null, null, null, null];
+    private $area_5 = [null, null, null, null, null];
+    private $area_6 = [null, null, null, null, null, null];
 
+
+    /**
+     * Get the value of player_id
+     */ 
+    public function getPlayer_id()
+    {
+        return $this->player_id;
+    }
+
+    /**
+     * Set the value of player_id
+     *
+     * @return  self
+     */ 
+    public function setPlayer_id($player_id)
+    {
+        $this->player_id = $player_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of die_1
+     */ 
+    public function getDie_1()
+    {
+        return $this->die_1;
+    }
+
+    /**
+     * Set the value of die_1
+     *
+     * @return  self
+     */ 
+    public function setDie_1($die_1)
+    {
+        $this->die_1 = $die_1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of die_2
+     */ 
+    public function getDie_2()
+    {
+        return $this->die_2;
+    }
+
+    /**
+     * Set the value of die_2
+     *
+     * @return  self
+     */ 
+    public function setDie_2($die_2)
+    {
+        $this->die_2 = $die_2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of die_3
+     */ 
+    public function getDie_3()
+    {
+        return $this->die_3;
+    }
+
+    /**
+     * Set the value of die_3
+     *
+     * @return  self
+     */ 
+    public function setDie_3($die_3)
+    {
+        $this->die_3 = $die_3;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of location_chosen
+     */ 
+    public function getLocation_chosen()
+    {
+        return $this->location_chosen;
+    }
+
+    /**
+     * Set the value of location_chosen
+     *
+     * @return  self
+     */ 
+    public function setLocation_chosen($location_chosen)
+    {
+        $this->location_chosen = $location_chosen;
+
+        return $this;
+    }
 
     /**
      * Get the value of score_area_1
@@ -72,7 +183,7 @@ class PXPPlayer implements \JsonSerializable
     public function setScore_area_1($score_area_1)
     {
         $this->score_area_1 = $score_area_1;
-
+        
         return $this;
     }
 
@@ -192,6 +303,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_1_1($area_1_1)
     {
         $this->area_1_1 = $area_1_1;
+        $this->area_1[0] = $area_1_1;
 
         return $this;
     }
@@ -212,6 +324,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_1_2($area_1_2)
     {
         $this->area_1_2 = $area_1_2;
+        $this->area_1[1] = $area_1_2;
 
         return $this;
     }
@@ -232,6 +345,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_1_3($area_1_3)
     {
         $this->area_1_3 = $area_1_3;
+        $this->area_1[2] = $area_1_3;
 
         return $this;
     }
@@ -252,6 +366,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_1_4($area_1_4)
     {
         $this->area_1_4 = $area_1_4;
+        $this->area_1[3] = $area_1_4;
 
         return $this;
     }
@@ -272,6 +387,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_2_1($area_2_1)
     {
         $this->area_2_1 = $area_2_1;
+        $this->area_2[0] = $area_2_1;
 
         return $this;
     }
@@ -292,6 +408,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_2_2($area_2_2)
     {
         $this->area_2_2 = $area_2_2;
+        $this->area_2[1] = $area_2_2;
 
         return $this;
     }
@@ -312,6 +429,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_2_3($area_2_3)
     {
         $this->area_2_3 = $area_2_3;
+        $this->area_2[2] = $area_2_3;
 
         return $this;
     }
@@ -332,6 +450,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_2_4($area_2_4)
     {
         $this->area_2_4 = $area_2_4;
+        $this->area_2[3] = $area_2_4;
 
         return $this;
     }
@@ -352,6 +471,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_2_5($area_2_5)
     {
         $this->area_2_5 = $area_2_5;
+        $this->area_2[4] = $area_2_5;
 
         return $this;
     }
@@ -372,6 +492,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_3_1_1($area_3_1_1)
     {
         $this->area_3_1_1 = $area_3_1_1;
+        $this->area_3[0][0] = $area_3_1_1;
 
         return $this;
     }
@@ -392,6 +513,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_3_1_2($area_3_1_2)
     {
         $this->area_3_1_2 = $area_3_1_2;
+        $this->area_3[0][1] = $area_3_1_2;
 
         return $this;
     }
@@ -412,6 +534,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_3_2_1($area_3_2_1)
     {
         $this->area_3_2_1 = $area_3_2_1;
+        $this->area_3[1][0] = $area_3_2_1;
 
         return $this;
     }
@@ -432,6 +555,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_3_2_2($area_3_2_2)
     {
         $this->area_3_2_2 = $area_3_2_2;
+        $this->area_3[1][1] = $area_3_2_2;
 
         return $this;
     }
@@ -452,6 +576,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_3_2_3($area_3_2_3)
     {
         $this->area_3_2_3 = $area_3_2_3;
+        $this->area_3[1][2] = $area_3_2_3;
 
         return $this;
     }
@@ -472,6 +597,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_1($area_4_1)
     {
         $this->area_4_1 = $area_4_1;
+        $this->area_4[0] = $area_4_1;
 
         return $this;
     }
@@ -492,6 +618,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_2($area_4_2)
     {
         $this->area_4_2 = $area_4_2;
+        $this->area_4[1] = $area_4_2;
 
         return $this;
     }
@@ -512,6 +639,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_3($area_4_3)
     {
         $this->area_4_3 = $area_4_3;
+        $this->area_4[2] = $area_4_3;
 
         return $this;
     }
@@ -532,6 +660,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_4($area_4_4)
     {
         $this->area_4_4 = $area_4_4;
+        $this->area_4[3] = $area_4_4;
 
         return $this;
     }
@@ -552,6 +681,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_5($area_4_5)
     {
         $this->area_4_5 = $area_4_5;
+        $this->area_4[4] = $area_4_5;
 
         return $this;
     }
@@ -572,6 +702,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_4_6($area_4_6)
     {
         $this->area_4_6 = $area_4_6;
+        $this->area_4[5] = $area_4_6;
 
         return $this;
     }
@@ -592,6 +723,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_1($area_5_1)
     {
         $this->area_5_1 = $area_5_1;
+        $this->area_5[0] = $area_5_1;
 
         return $this;
     }
@@ -612,6 +744,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_2($area_5_2)
     {
         $this->area_5_2 = $area_5_2;
+        $this->area_5[1] = $area_5_2;
 
         return $this;
     }
@@ -632,6 +765,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_3($area_5_3)
     {
         $this->area_5_3 = $area_5_3;
+        $this->area_5[2] = $area_5_3;
 
         return $this;
     }
@@ -652,6 +786,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_4($area_5_4)
     {
         $this->area_5_4 = $area_5_4;
+        $this->area_5[3] = $area_5_4;
 
         return $this;
     }
@@ -672,6 +807,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_5($area_5_5)
     {
         $this->area_5_5 = $area_5_5;
+        $this->area_5[4] = $area_5_5;
 
         return $this;
     }
@@ -692,6 +828,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_5_6($area_5_6)
     {
         $this->area_5_6 = $area_5_6;
+        $this->area_5[5] = $area_5_6;
 
         return $this;
     }
@@ -712,6 +849,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_6_1($area_6_1)
     {
         $this->area_6_1 = $area_6_1;
+        $this->area_6[0] = $area_6_1;
 
         return $this;
     }
@@ -732,6 +870,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_6_2($area_6_2)
     {
         $this->area_6_2 = $area_6_2;
+        $this->area_6[1] = $area_6_2;
 
         return $this;
     }
@@ -752,6 +891,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_6_3($area_6_3)
     {
         $this->area_6_3 = $area_6_3;
+        $this->area_6[2] = $area_6_3;
 
         return $this;
     }
@@ -772,6 +912,7 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_6_4($area_6_4)
     {
         $this->area_6_4 = $area_6_4;
+        $this->area_6[3] = $area_6_4;
 
         return $this;
     }
@@ -792,13 +933,67 @@ class PXPPlayer implements \JsonSerializable
     public function setArea_6_5($area_6_5)
     {
         $this->area_6_5 = $area_6_5;
+        $this->area_6[4] = $area_6_5;
 
         return $this;
+    }
+
+    /**
+     * Get the value of area_1
+     */ 
+    public function getArea_1()
+    {
+        return $this->area_1;
+    }
+
+    /**
+     * Get the value of area_2
+     */ 
+    public function getArea_2()
+    {
+        return $this->area_2;
+    }
+
+    /**
+     * Get the value of area_3
+     */ 
+    public function getArea_3()
+    {
+        return $this->area_3;
+    }
+
+    /**
+     * Get the value of area_4
+     */ 
+    public function getArea_4()
+    {
+        return $this->area_4;
+    }
+
+    /**
+     * Get the value of area_5
+     */ 
+    public function getArea_5()
+    {
+        return $this->area_5;
+    }
+
+    /**
+     * Get the value of area_6
+     */ 
+    public function getArea_6()
+    {
+        return $this->area_6;
     }
 
     public function jsonSerialize(): array
     {
         return [
+            "player_id" => $this->getPlayer_id(),
+            "die_1" => $this->getDie_1(),
+            "die_2" => $this->getDie_2(),
+            "die_3" => $this->getDie_3(),
+            "location_chosen" => $this->getLocation_chosen(),
             "score_area_1" => $this->getScore_area_1(),
             "score_area_2" => $this->getScore_area_2(),
             "score_area_3" => $this->getScore_area_3(),

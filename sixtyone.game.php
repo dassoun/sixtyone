@@ -49,7 +49,9 @@ class SixtyOne extends Table
             "die_1_value" => 10,
             "die_2_value" => 11,
             "die_3_value" => 12,
-        ) );        
+        ) );
+
+        $this->playerManager = new SXTPlayerManager();
 	}
 	
     protected function getGameName( )
@@ -125,7 +127,16 @@ class SixtyOne extends Table
     
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
+        $sql = "SELECT player_id id, player_score score, 
+                    die_1, die_2, die_3,
+                    score_area_1, score_area_2, score_area_3, score_area_4, score_area_5, score_area_6, 
+                    area_1_1, area_1_2, area_1_3, area_1_4, 
+                    area_2_1, area_2_2, area_2_3, area_2_4, area_2_5, 
+                    area_3_1_1, area_3_1_2, area_3_2_1, area_3_2_2, area_3_2_3, 
+                    area_4_1, area_4_2, area_4_3, area_4_4, area_4_5, area_4_6, 
+                    area_5_1, area_5_2, area_5_3, area_5_4, area_5_5, area_5_6, 
+                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5 
+                FROM player ";
         $result['players'] = self::getCollectionFromDb( $sql );
   
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
@@ -173,6 +184,224 @@ class SixtyOne extends Table
         return $result;
     }
 
+    function getFirstAvailableLocation(SXTPlayer $player, int $area_id)
+    {
+        $res = -1;
+        switch ($area_id) {
+            case 2:
+                
+            case 6:
+                $area = $player->getArea_2();
+                for ($i=0; $i<=4; $i++) {
+                    if ($area[$i] == null) {
+                        $res = $i;
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return $res;
+    }
+
+    function getAvailableLocations(SXTPlayer $player, int $area_id, int $dice_value)
+    {
+        $res = [];
+
+        switch ($area_id) {
+            case 1:
+                $area = $player->getArea_1();
+                if ($area[0] == null && $area[1] == null) {
+                    $res[] = 1;
+                    $res[] = 2;
+                } else if ($area[0] != null) {
+                    if ($dice_value == $area[0]) {
+                        $res[] = 2;
+                    }
+                } else {
+                    if ($dice_value == $area[1]) {
+                        $res[] = 1;
+                    }
+                }
+
+                if ($area[2] == null && $area[3] == null) {
+                    $res[] = 3;
+                    $res[] = 4;
+                } else if ($area[2] != null) {
+                    if ($dice_value == $area[2]) {
+                        $res[] = 4;
+                    }
+                } else {
+                    if ($dice_value == $area[3]) {
+                        $res[] = 3;
+                    }
+                }
+
+                break;
+                
+            case 2:
+                $area = $player->getArea_2();
+                $i = 0;
+                $found = false;
+                while ($i <= 4  && !$found) {
+                    if ($area[$i] == null) {
+                        $found = true;
+                    }
+                }
+                if ($found) {
+                    if ($i > 0) {
+                        if ($area[$i-1] != $dice_value) {
+                            $res[] = $i+1;
+                        }
+                    } else {
+                        $res[] = 1;
+                    }
+                }
+
+                break;
+
+            case 3:
+                $area = $player->getArea_3();
+                if ($area[0][0] == null && $area[0][1] == null) {
+                    // $res[] = '1_1';
+                    // $res[] = '1_2';
+                    $res[] = '1';
+                    $res[] = '2';
+                } else if ($area[0][0] == null) {
+                    if ($area[0][1] == $dice_value) {
+                        // $res[] = '1_1';
+                        $res[] = '1';
+                    }
+                } else {
+                    if ($area[0][0] == $dice_value) {
+                        // $res[] = '1_2';
+                        $res[] = '2';
+                    }
+                }
+
+                if ($area[1][0] == null && $area[1][1] == null && $area[1][2] == null) {
+                    // $res[] = '2_1';
+                    // $res[] = '2_2';
+                    // $res[] = '2_3';
+                    $res[] = '3';
+                    $res[] = '4';
+                    $res[] = '5';
+                } else if ($area[1][0] == null && $area[1][1] == null) {
+                    if ($area[1][2] == $dice_value) {
+                        // $res[] = '2_1';
+                        // $res[] = '2_2';
+                        $res[] = '3';
+                        $res[] = '4';
+                    }
+                } else if ($area[1][1] == null && $area[1][2] == null) {
+                    if ($area[1][0] == $dice_value) {
+                        // $res[] = '2_2';
+                        // $res[] = '2_3';
+                        $res[] = '4';
+                        $res[] = '5';
+                    }
+                } else if ($area[1][2] == null && $area[1][0] == null) {
+                    if ($area[1][1] == $dice_value) {
+                        // $res[] = '2_3';
+                        // $res[] = '2_1';
+                        $res[] = '5';
+                        $res[] = '3';
+                    }
+                } else if ($area[1][0] == null) {
+                    if ($area[1][1] == $dice_value) {
+                        // $res[] = '2_1';
+                        $res[] = '3';
+                    }
+                } else if ($area[1][1] == null) {
+                    if ($area[1][2] == $dice_value) {
+                        // $res[] = '2_2';
+                        $res[] = '4';
+                    }
+                } else if ($area[1][2] == null) {
+                    if ($area[1][0] == $dice_value) {
+                        // $res[] = '2_3';
+                        $res[] = '5';
+                    }
+                }
+
+                break;
+
+            case 4:
+                $area = $player->getArea_4();
+                if ($area[$dice_value-1] == null) {
+                    $res[] = $dice_value;
+                }
+
+                break;
+            
+            // Area 5 locations:
+            //    6           5 
+            //   4 5         3 4
+            //  1 2 3       0 1 2
+            case 5:
+                $area = $player->getArea_5();
+                if ($area[0] == null) {
+                    if ($area[1] != $dice_value) {
+                        $res[] = 1;
+                    }
+                }
+                if ($area[1] == null) {
+                    if ($area[0] != $dice_value && $area[2] != $dice_value) {
+                        $res[] = 2;
+                    }
+                }
+                if ($area[2] == null) {
+                    if ($area[2] != $dice_value) {
+                        $res[] = 3;
+                    }
+                }
+                if ($area[3] == null && ($area[0] != null && $area[1] != null)) {
+                    if ($area[0] != $dice_value && $area[1] != $dice_value) {
+                        $res[] = 4;
+                    }
+                }
+                if ($area[4] == null && ($area[1] != null && $area[2] != null)) {
+                    if ($area[1] != $dice_value && $area[2] != $dice_value) {
+                        $res[] = 5;
+                    }
+                }
+                if ($area[5] == null && ($area[3] != null && $area[4] != null)) {
+                    if ($area[3] != $dice_value && $area[4] != $dice_value) {
+                        $res[] = 6;
+                    }
+                }
+
+                break;
+
+            case 6:
+                $area = $player->getArea_6();
+                $i = 0;
+                $found = false;
+                while ($i <= 4  && !$found) {
+                    if ($area[$i] == null) {
+                        $found = true;
+                    }
+                }
+                if ($found) {
+                    if ($i > 0) {
+                        if (abs($area[$i-1] - $dice_value) == 1) {
+                            $res[] = $i+1;
+                        }
+                    } else {
+                        $res[] = 1;
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return $res;
+    }
+
 
 //////////////////////////////////////////////////////////////////////////////
 //////////// Player actions
@@ -216,9 +445,31 @@ class SixtyOne extends Table
         
         $player_id = self::getCurrentPlayerId();
         
+        self::debug("******************************");
+        self::debug($player_id);
+        self::debug($area_id);
+        self::debug($this->getGameStateValue( "die_1_value" ));
+        self::debug($this->getGameStateValue( "die_2_value" ));
+        self::debug($this->getGameStateValue( "die_3_value" ));
+
+        $die_id = 0;
+        if ($this->getGameStateValue( "die_1_value" ) == $area_id) {
+            self::debug("1 --- " . $area_id . ", " . $this->getGameStateValue( "die_1_value" ));
+            $die_id = 1;
+        } else if ($this->getGameStateValue( "die_2_value" ) == $area_id) {
+            self::debug("2 --- " . $area_id . ", " . $this->getGameStateValue( "die_2_value" ));
+            $die_id = 2;
+        } else {
+            self::debug("3 --- " . $area_id . ", " . $this->getGameStateValue( "die_3_value" ));
+            $die_id = 3;
+        }
+
+        $player = $this->playerManager->getById($player_id);
+        $player->setDie_1($die_id);
+        $this->playerManager->persist($player);
+
         
-        
-        // Notify all players about the card played
+        // // Notify all players about the card played
         // self::notifyAllPlayers( "cardPlayed", clienttranslate( '${player_name} plays ${card_name}' ), array(
         //     'player_id' => $player_id,
         //     'player_name' => self::getActivePlayerName(),
@@ -226,9 +477,82 @@ class SixtyOne extends Table
         //     'card_id' => $card_id
         // ) );
 
-        $this->gamestate->nextState("areaChosen");
+        $this->gamestate->nextPrivateState($player_id, "areaChosen"); 
     }
 
+    function chooseDie($die_id) 
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'chooseDie' ); 
+        
+        $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+        $player->setDie_2($die_id);
+        $this->playerManager->persist($player);
+
+        switch ($die_id) {
+            case 1:
+
+            case 3:
+
+            case 5:
+
+                $next_state = "toDieLocationChoice";
+                break;
+
+            case 2:
+
+            case 4:
+
+            case 6:
+
+                $next_state = "toLastDieScoring";
+                break;
+            
+            default:
+                break;
+        }
+
+        //$this->gamestate->nextPrivateState($player_id, $next_state); 
+
+        $this->gamestate->nextPrivateState($player_id, "toDieLocationChoice"); 
+    }
+
+    function chooseDieLocation($area_id, $location_id)
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'chooseDieLocation' ); 
+                
+        $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+
+        $die_id = $player->getDie_2();
+        $die_value = $this->getGameStateValue( "die_".$die_id."_value" );
+        if ($area_id != 3) {
+            $player->{"setArea_".$area_id."_".$location_id}($die_value);
+        } else {
+            $location_id_1 = 0;
+            $location_id_2 = 0;
+            if ($location_id < 3) {
+                $location_id_1 = 1;
+                $location_id_2 = $location_id;
+            } else {
+                $location_id_1 = 2;
+                $location_id_2 = $location_id - 2;
+            }
+            $player->{"setArea_".$area_id."_".$location_id_1."_".$location_id_2}($die_value);
+        }
+        
+        $this->playerManager->persist($player);
+
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a ${die_value} in aera ${area_id}"), array(
+            'die_value' => $die_value,
+            'area_id' => $area_id,
+            'location_id' => $location_id,
+        ) );
+    }
     
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state arguments
@@ -276,6 +600,59 @@ class SixtyOne extends Table
         return $res;
     }
 
+    function argChooseDie() 
+    {
+        $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+
+        $die_id = $player->getDie_1();
+        $res = ['die_id' => $die_id];
+
+        if ($die_id) {
+            $die_value = $this->getGameStateValue( "die_".$die_id."_value" );
+            $res['die_value'] = $die_value;
+        }
+        
+        return $res;
+    }
+
+    function argChooseDieLocation()
+    {
+        $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+
+        $area_die_id = $player->getDie_1();
+        $location_die_id = $player->getDie_2();
+
+        $getAvailableLocations = true;
+
+        $area_id = -1;
+        $dice_value = -1;
+
+        if ($area_die_id) {
+            $area_id = $this->getGameStateValue( "die_".$area_die_id."_value" );
+        } else {
+            $getAvailableLocations = false;
+        }
+        
+        if ($location_die_id) {
+            $dice_value = $this->getGameStateValue( "die_".$location_die_id."_value" );
+        } else {
+            $getAvailableLocations = false;
+        }
+        
+        $res = [];
+
+        if ($getAvailableLocations) {
+            $res['area_id'] = $area_id;
+            $res['locations'] = $this->getAvailableLocations($player, $area_id, $dice_value);
+        }
+        
+        return $res;
+    }
+
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state actions
 ////////////
@@ -300,6 +677,7 @@ class SixtyOne extends Table
 
     function stInitTurn() 
     {
+        // Dice roll
         for ($i=1; $i<4; $i++) {
             $this->setGameStateValue( "die_".$i."_value", bga_rand(1, 6) );
         }

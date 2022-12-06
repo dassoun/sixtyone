@@ -33,6 +33,10 @@
 -- Example 2: add a custom field to the standard "player" table
 -- ALTER TABLE `player` ADD `player_my_custom_field` INT UNSIGNED NOT NULL DEFAULT '0';
 
+ALTER TABLE `player` ADD `die_1` INT UNSIGNED DEFAULT NULL;
+ALTER TABLE `player` ADD `die_2` INT UNSIGNED DEFAULT NULL;
+ALTER TABLE `player` ADD `die_3` INT UNSIGNED DEFAULT NULL;
+ALTER TABLE `player` ADD `location_chosen` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `score_area_1` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `score_area_2` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `score_area_3` INT UNSIGNED DEFAULT NULL;

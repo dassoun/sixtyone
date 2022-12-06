@@ -63,6 +63,49 @@
     
     */
 
+    public function chooseArea()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        $area_id = self::getArg( "area_id", AT_posint, true );
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->chooseArea( $area_id );
+
+        self::ajaxResponse( );
+    }
+
+    public function chooseDie()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        $die_id = self::getArg( "die_id", AT_posint, true );
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->chooseDie( $die_id );
+
+        self::ajaxResponse( );
+    }
+
+    public function chooseDieLocation()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        $area_id = self::getArg( "area_id", AT_posint, true );
+        $location_id = self::getArg( "location_id", AT_posint, true );
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->chooseDieLocation( $area_id, $location_id );
+
+        self::ajaxResponse( );
+    }
+
   }
   
 
