@@ -24,6 +24,10 @@ class SXTPlayerManager extends \APP_DbObject
     {
         $sql = "SELECT 
                     player_id, 
+                    score_leave_1, score_leave_2, score_leave_3, score_leave_4, score_leave_5, 
+                    score_leave_6, score_leave_7, score_leave_8, score_leave_9, score_leave_10,
+                    score_leave_11, score_leave_12, score_leave_13, score_leave_14, score_leave_15,
+                    score_leave_16, score_leave_17, score_leave_18, score_leave_19, score_leave_20,
                     die_1, die_2, die_3, location_chosen,
                     score_area_1, score_area_2, score_area_3, score_area_4, score_area_5, score_area_6, 
                     area_1_1, area_1_2, area_1_3, area_1_4, 
@@ -41,6 +45,12 @@ class SXTPlayerManager extends \APP_DbObject
 
         if ($res) {
             $player = (new SXTPlayer())->setPlayer_id($res['player_id'])
+                ->setScore_leave(array(
+                        $res['score_leave_1'], $res['score_leave_2'], $res['score_leave_3'], $res['score_leave_4'], $res['score_leave_5'], 
+                        $res['score_leave_6'], $res['score_leave_7'], $res['score_leave_8'], $res['score_leave_9'], $res['score_leave_10'],
+                        $res['score_leave_11'], $res['score_leave_12'], $res['score_leave_13'], $res['score_leave_14'], $res['score_leave_15'], 
+                        $res['score_leave_16'], $res['score_leave_17'], $res['score_leave_18'], $res['score_leave_19'], $res['score_leave_20'],
+                    ))
                 ->setDie_1($res['die_1'])
                 ->setDie_2($res['die_2'])
                 ->setDie_3($res['die_3'])
@@ -90,6 +100,7 @@ class SXTPlayerManager extends \APP_DbObject
     public function persist(SXTPlayer $player): void
     {
         $player_id = $player->getPlayer_id();
+        $score_leave = $player->getScore_leave();
         $die_1 = $player->getDie_1();
         $die_2 = $player->getDie_2();
         $die_3 = $player->getDie_3();
@@ -132,9 +143,15 @@ class SXTPlayerManager extends \APP_DbObject
         $area_6_4 = $player->getArea_6_4(); 
         $area_6_5 = $player->getArea_6_5();
 
+        $sql_score_leave = "";
+        foreach($score_leave as $key => $score) {
+            $sql_score_leave .= "score_leave_".($key+1)." = ".(!empty($score) ? "'$score'" : "NULL").", ";
+        }
+
         $sql = "UPDATE 
                     player 
-                SET 
+                SET ".
+                    $sql_score_leave."  
                     die_1 = ".(!empty($die_1) ? "'$die_1'" : "NULL").", 
                     die_2 = ".(!empty($die_2) ? "'$die_2'" : "NULL").", 
                     die_3 = ".(!empty($die_3) ? "'$die_3'" : "NULL").",

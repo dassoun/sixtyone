@@ -38,7 +38,7 @@ const locations_area_1_coords = [
 ];
 
 const locations_area_2_coords = [
-    [541, 130],
+    [541, 131],
     [594, 101],
     [653, 111],
     [664, 177],

@@ -21,6 +21,12 @@ class SXTPlayer implements \JsonSerializable
     private ?int $die_2;
     private ?int $die_3;
     private ?int $location_chosen;
+    private $score_leave = [
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+        null, null, null, null, null,
+    ];
     private ?int $score_area_1;
     private ?int $score_area_2;
     private ?int $score_area_3;
@@ -66,7 +72,6 @@ class SXTPlayer implements \JsonSerializable
     private $area_5 = [null, null, null, null, null];
     private $area_6 = [null, null, null, null, null, null];
 
-
     /**
      * Get the value of player_id
      */ 
@@ -77,8 +82,6 @@ class SXTPlayer implements \JsonSerializable
 
     /**
      * Set the value of player_id
-     *
-     * @return  self
      */ 
     public function setPlayer_id($player_id)
     {
@@ -163,6 +166,26 @@ class SXTPlayer implements \JsonSerializable
     public function setLocation_chosen($location_chosen)
     {
         $this->location_chosen = $location_chosen;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of score_leave
+     */ 
+    public function getScore_leave()
+    {
+        return $this->score_leave;
+    }
+
+    /**
+     * Set the value of score_leave
+     *
+     * @return  self
+     */ 
+    public function setScore_leave($score_leave)
+    {
+        $this->score_leave = $score_leave;
 
         return $this;
     }
@@ -994,6 +1017,7 @@ class SXTPlayer implements \JsonSerializable
             "die_2" => $this->getDie_2(),
             "die_3" => $this->getDie_3(),
             "location_chosen" => $this->getLocation_chosen(),
+            "score_leave" => $this->getScore_leave(),
             "score_area_1" => $this->getScore_area_1(),
             "score_area_2" => $this->getScore_area_2(),
             "score_area_3" => $this->getScore_area_3(),
@@ -1033,4 +1057,6 @@ class SXTPlayer implements \JsonSerializable
             "area_6_5" => $this->getArea_6_5(),
         ];
     }
+
+    
 }
