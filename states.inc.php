@@ -151,7 +151,7 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stAreaScoring",
-        "transitions" => array( "nextRound" => 120 )
+        "transitions" => array( "nextRound" => STATE_INIT_TURN )
     ),
     
 /*

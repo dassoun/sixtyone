@@ -552,6 +552,8 @@ class SixtyOne extends Table
             'area_id' => $area_id,
             'location_id' => $location_id,
         ) );
+
+        $this->gamestate->nextPrivateState($player_id, "dieLocationChosen"); 
     }
     
 //////////////////////////////////////////////////////////////////////////////
@@ -693,6 +695,16 @@ class SixtyOne extends Table
         $this->gamestate->initializePrivateStateForAllActivePlayers();
 
         return;
+    }
+
+    function stLastDieScore()
+    {
+        $this->gamestate->nextPrivateState($player_id, "toAreaScoring"); 
+    }
+
+    function stAreaScoring()
+    {
+        $this->gamestate->nextPrivateState($player_id, "nextRound"); 
     }
 
 //////////////////////////////////////////////////////////////////////////////

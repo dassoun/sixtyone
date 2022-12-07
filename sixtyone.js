@@ -80,6 +80,10 @@ function (dojo, declare) {
 
             
             for ( var player_id in gamedatas.players ) {
+                // players name
+                $('sxt_player_name_'+player_id).innerHTML = gamedatas.players[player_id].name
+                dojo.style( 'sxt_player_name_'+player_id, 'color', '#'+gamedatas.players[player_id].color );
+
                 // leaves
                 for (let i = 0; i < leave_coords.length; i++){
                     dojo.place( this.format_block('jstpl_sxt_leave', {

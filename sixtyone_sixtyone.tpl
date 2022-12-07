@@ -47,6 +47,7 @@ var jstpl_some_game_item='<div class="my_game_item" id="my_game_item_${MY_ITEM_I
 
 var jstpl_sxt_player_area = 
     '<div id="sxt_player_area_${player_id}" class="sxt_player_area"> \
+        <div id="sxt_player_name_${player_id}" class="sxt_player_name"></div> \
         <div id="sxt_player_board_${player_id}" class="sxt_player_board"> \
         </div> \
     </div>';

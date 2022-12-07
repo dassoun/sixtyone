@@ -47,6 +47,22 @@
 
 
 /********* You can start writing your CSS below this line: **********/
+/* latin-ext */
+@font-face {
+    font-family: 'Caveat Brush';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/caveatbrush/v11/EYq0maZfwr9S9-ETZc3fKXt8UrOS43o.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+  /* latin */
+@font-face {
+    font-family: 'Caveat Brush';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/caveatbrush/v11/EYq0maZfwr9S9-ETZc3fKXt8XLOS.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 
 .sxt_player_area {
     display: flex;
@@ -58,6 +74,10 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    margin: 0 10px 0 10px;
+    background-color: #85c583;
+    border-radius: 5px;
+    border: 3px solid #5fa35e;
 }
 
 .sxt_die {
@@ -67,6 +87,7 @@
     border: 1px solid transparent;
     border-radius: 5px;
     margin: 10px 60px;
+    /* box-shadow: 10px 5px 5px rgb(1, 109, 10); */
 }
 
 .sxt_die_clickable {
@@ -112,12 +133,23 @@
     background-position: -275px 0px;
 }
 
+.sxt_player_name {
+    font-family: 'Caveat Brush', cursive;
+    text-align: center;
+    font-size: 22px;
+    width: 500px;
+    height: 30px;
+    background-color: white;
+    margin: 10px 10px 0px calc(10px + (900px / 2) - (500px / 2));
+    border-radius: 30px 30px 0 0;
+}
+
 .sxt_player_board {
     float:left;
     position: relative;
     width: 900px;
     height: 634px;
-    margin: 10px;
+    margin: 0px 10px 10px 10px;
     background-image: url("img/playerboard.jpg");
 }
 
@@ -176,6 +208,7 @@
 }
 
 .sxt_leave {
+    font-family: 'Caveat Brush', cursive;
     position: absolute;
     text-align: center;
     background-color: beige;
@@ -185,8 +218,11 @@
 }
 
 .sxt_location {
+    font-family: 'Caveat Brush', cursive;
     text-align: center;
     border: 1px dashed transparent;
+    font-size: 40px;
+    line-height: 54px;
 }
 
 .sxt_location_area_1_big {
@@ -279,6 +315,7 @@
 }
 
 .sxt_score {
+    font-family: 'Caveat Brush', cursive;
     position: absolute;
     background-color: white;
     opacity: .5;
