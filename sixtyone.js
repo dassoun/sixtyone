@@ -550,6 +550,9 @@ function (dojo, declare) {
             // 
 
             dojo.subscribe( 'locationChosen', this, "notif_locationChosen" );
+
+            dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
+            
         },  
         
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -580,6 +583,18 @@ function (dojo, declare) {
             let die_value = notif.args.die_value;
 
             dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_value;
+        },
+
+        notif_addLeaveScore: function( notif )
+        {
+            console.log( notif );
+
+            let player_id = this.player_id;
+
+            let player_total_leave_score = notif.args.player_total_leave_score;
+            let score_leave_last_position = notif.args.score_leave_last_position;
+
+            dojo.byId('sxt_leave_'+player_id+'_'+score_leave_last_position).innerHTML = player_total_leave_score;
         },
    });             
 });

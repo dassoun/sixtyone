@@ -553,7 +553,41 @@ class SixtyOne extends Table
             'location_id' => $location_id,
         ) );
 
-        $this->gamestate->nextPrivateState($player_id, "dieLocationChosen"); 
+        // 3rd die
+        $used_dice = [false, false, false];
+        $used_dice[$player->getDie_1()] = true;
+        $used_dice[$player->getDie_2()] = true;
+        $remaining_die_id = 0;
+        for ($i=0; $i<3; $i++) {
+            if (!$used_dice[$i]) {
+                $remaining_die_id = ($i+1);
+            }
+        }
+
+        $player->setDie_3($remaining_die_id);
+        
+
+        if ($remaining_die_id) {
+            $player->add_leave_score($this->getGameStateValue( "die_".$remaining_die_id."_value" )); 
+        }
+
+        $this->playerManager->persist($player);
+
+        $player_total_leave_score = $player->get_total_score_leave();
+
+        self::dump("player: ", $player);
+
+        if ($remaining_die_id) {
+            $third_die_value = $this->getGameStateValue( "die_".$remaining_die_id."_value" );
+            $score_leave_last_position = $player->get_score_leave_last_position();
+
+            self::notifyPlayer( $player_id, "addLeaveScore", "", array(
+                'total_score_leave' => $player_total_leave_score,
+                'leave_number' => $score_leave_last_position,
+            ) );
+        }
+
+        //$this->gamestate->nextPrivateState($player_id, "dieLocationChosen"); 
     }
     
 //////////////////////////////////////////////////////////////////////////////

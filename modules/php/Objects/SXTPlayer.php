@@ -1058,5 +1058,56 @@ class SXTPlayer implements \JsonSerializable
         ];
     }
 
-    
+    /**
+     * Add a leave score (3rd die)
+     */ 
+    public function add_leave_score(int $value): SXTPlayer
+    {
+        $i = 0;
+        $found = false;
+        while ($i < count($this->score_leave)) {
+            if ($this->score_leave[$i] == null) {
+                $this->score_leave[$i] = $value;
+
+                $found = true;
+            } else {
+                $i++;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get total leave score (3rd die)
+     */ 
+    public function get_total_score_leave(): int
+    {
+        $sum = 0;
+
+        for ($i=0; $i<count($this->score_leave); $i++) {
+            if ($this->score_leave[$i] != null) {
+                $sum += $this->score_leave[$i];
+            }
+        }
+
+        return $sum;
+    }
+
+    /**
+     * Get leave last position
+     */ 
+    public function get_score_leave_last_position(): int
+    {
+        $num = 0;
+
+        for ($i=0; $i<count($this->score_leave); $i++) {
+            if ($this->score_leave[$i] != null) {
+                $num++;
+            }
+        }
+
+        return $num;
+    }
+
 }

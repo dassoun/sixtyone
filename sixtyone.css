@@ -70,6 +70,7 @@
 }
 
 .sxt_dice_area {
+    box-sizing: border-box;
     width: 900px;
     display: flex;
     flex-direction: row;
