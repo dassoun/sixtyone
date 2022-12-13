@@ -200,27 +200,27 @@ class SixtyOne extends Table
         return $result;
     }
 
-    function getFirstAvailableLocation(SXTPlayer $player, int $area_id)
-    {
-        $res = -1;
-        switch ($area_id) {
-            case 2:
+    // function getFirstAvailableLocation(SXTPlayer $player, int $area_id)
+    // {
+    //     $res = -1;
+    //     switch ($area_id) {
+    //         case 2:
                 
-            case 6:
-                $area = $player->getArea_2();
-                for ($i=0; $i<=4; $i++) {
-                    if ($area[$i] == null) {
-                        $res = $i;
-                    }
-                }
-                break;
+    //         case 6:
+    //             $area = $player->getArea_2();
+    //             for ($i=0; $i<=4; $i++) {
+    //                 if ($area[$i] == null) {
+    //                     $res = $i;
+    //                 }
+    //             }
+    //             break;
 
-            default:
-                break;
-        }
+    //         default:
+    //             break;
+    //     }
 
-        return $res;
-    }
+    //     return $res;
+    // }
 
     function getAvailableLocations(SXTPlayer $player, int $area_id, int $die_value)
     {
@@ -240,6 +240,18 @@ class SixtyOne extends Table
                     if ($die_value == $area[1] || $die_value == 0 || $area[1] == 0) {
                         $res[] = 1;
                     }
+                }
+
+                self::debug("**********************************");
+                self::debug($area[2]);
+                if ($area[2] == null) {
+                    self::debug("area[2] == null");
+                } else if ($area[2] === null) {
+                    self::debug("area[2] === null");
+                } if ($area[2] == 0) {
+                    self::debug("area[2] == 0");
+                } if ($area[2] === 0) {
+                    self::debug("area[2] === 0");
                 }
 
                 if ($area[2] == null && $area[3] == null) {
@@ -712,6 +724,33 @@ class SixtyOne extends Table
         } else {
             $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
         }
+    }
+
+    function chooseCrossLocation($area_id, $location_id) 
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'chooseCrossLocation' ); 
+                        
+        $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+
+        $die_id = $player->getDie_2();
+        $die_value = $this->getGameStateValue( "die_".$die_id."_value" );
+        
+        $player->{"setArea_".$area_id."_".$location_id}($die_value);
+
+        // $player->setChosen_location($location_id);
+
+        $this->playerManager->persist($player);
+
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a ${die_value} in aera ${area_id}"), array(
+            'die_value' => 0,
+            'area_id' => $area_id,
+            'location_id' => $location_id,
+        ) );
+
+        $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
     }
     
 //////////////////////////////////////////////////////////////////////////////

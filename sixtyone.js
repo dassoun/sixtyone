@@ -402,7 +402,7 @@ function (dojo, declare) {
                                
                         dojo.addClass(elmt, 'sxt_location_clickable');
 
-                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickLocation(elmt) ) );
+                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickCrossLocation(elmt) ) );
                     }
                 }
 
@@ -753,6 +753,43 @@ function (dojo, declare) {
             { return; }
         },
 
+        onClickCrossLocation: function( elmt )
+        {
+            console.log( '$$$$ Event : onClickCrossLocation' );
+
+            if( ! this.checkAction( 'chooseCrossLocation' ) )
+            { return; }
+
+            console.log(elmt);
+
+            let area_id = elmt.split('_')[3];
+            let location_id = elmt.split('_')[4];
+
+            console.log(area_id);
+
+            let elmts = dojo.query(".sxt_location_clickable");
+            for (let i=0; i<elmts.length; i++) {
+                dojo.removeClass(elmts[i], "sxt_location_clickable");
+            }
+
+            elmts = dojo.query(".sxt_area_unclickable");
+            for (let i=0; i<elmts.length; i++) {
+                dojo.removeClass(elmts[i], "sxt_area_unclickable");
+            }
+
+            dojo.forEach(this.connections, dojo.disconnect);
+            this.connections = []; 
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/chooseCrossLocation.html", { lock: true, area_id: area_id, location_id: location_id }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
+
         
         ///////////////////////////////////////////////////
         //// Reaction to cometD notifications
@@ -832,7 +869,11 @@ function (dojo, declare) {
             let location_id = notif.args.location_id;
             let die_value = notif.args.die_value;
 
-            dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_value;
+            if (die_value == 0) {
+                dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = 'X';
+            } else {
+                dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_value;
+            }
         },
 
         notif_addLeaveScore: function( notif )

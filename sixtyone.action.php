@@ -132,6 +132,21 @@
         self::ajaxResponse( );
     }
 
+    public function chooseCrossLocation()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        $area_id = self::getArg( "area_id", AT_posint, true );
+        $location_id = self::getArg( "location_id", AT_posint, true );
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->chooseCrossLocation( $area_id, $location_id );
+
+        self::ajaxResponse( );
+    }
+
   }
   
 
