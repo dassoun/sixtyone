@@ -95,6 +95,16 @@ function (dojo, declare) {
                 }
 
                 // locations
+                // Area status
+                for (let i = 0; i < area_status_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_area_status', {
+                        player_id: player_id,
+                        area_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    this.slideToObjectPos( 'sxt_area_status_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, area_status_coords[i][0], area_status_coords[i][1] ).play();
+                }
+
                 // Area #1
                 for (let i = 0; i < locations_area_1_coords.length; i++){
                     dojo.place( this.format_block('jstpl_sxt_location_area_1', {
@@ -177,10 +187,65 @@ function (dojo, declare) {
             ///////////////////////////////////////////
             // TODO: Set up your game interface here, according to "gamedatas"
             ///////////////////////////////////////////
-            
+            for ( var player_id in gamedatas.players ) {
+                var player = gamedatas.players[player_id];
+                
+                // leaves
+                let leave_score = 0;
+                for (let i=0; i<20; i++) {
+                    if (player['score_leave_'+(i+1)]) {
+                        leave_score += parseInt(player['score_leave_'+(i+1)]);
+                        $('sxt_leave_'+player_id+'_'+(i+1)).innerHTML = leave_score;
+                    }
+                }
+
+                // Area #1
+                for (let i=0; i<4; i++) {
+                    if (player['area_1_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_1_'+(i+1)).innerHTML = player['area_1_'+(i+1)];
+                    }
+                }
+
+                // Area #2
+                for (let i=0; i<5; i++) {
+                    if (player['area_2_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_2_'+(i+1)).innerHTML = player['area_2_'+(i+1)];
+                    }
+                }
+
+                // Area #3
+                for (let i=0; i<5; i++) {
+                    if (player['area_3_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_3_'+(i+1)).innerHTML = player['area_3_'+(i+1)];
+                    }
+                }
+
+                // Area #4
+                for (let i=0; i<6; i++) {
+                    if (player['area_4_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_4_'+(i+1)).innerHTML = player['area_4_'+(i+1)];
+                    }
+                }
+
+                // Area #5
+                for (let i=0; i<6; i++) {
+                    if (player['area_5_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_5_'+(i+1)).innerHTML = player['area_5_'+(i+1)];
+                    }
+                }
+
+                // Area #6
+                for (let i=0; i<5; i++) {
+                    if (player['area_6_'+(i+1)]) {
+                        $('sxt_location_'+player_id+'_6_'+(i+1)).innerHTML = player['area_6_'+(i+1)];
+                    }
+                }
+            }
  
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
+
+            this.notifqueue.setIgnoreNotificationCheck( 'showTurn', (notif) => (notif.args.player_id == this.player_id) );
 
             console.log( "Ending game setup" );
         },
@@ -223,10 +288,11 @@ function (dojo, declare) {
 
             ////////////////////////////////////////////////////
             case 'chooseArea':
-                dice = args.args;
+                dice = args.args.dice;
                 console.log(dice);
 
                 console.log('spectator : '+this.isSpectator);
+                console.log("dice: ");
                 console.log(dice);
 
                 for (let i=1; i<=6; i++) {
@@ -238,20 +304,21 @@ function (dojo, declare) {
                     this.slideToObjectPos( 'sxt_area_'+this.player_id+'_'+i, 'sxt_player_board_'+this.player_id, area_coords[i-1][0], area_coords[i-1][1] ).play();
                 }
                 
-                for (const [key, value] of Object.entries(dice)) {
+                for (let [key, value] of Object.entries(dice)) {
 
-                    let index = areas.indexOf(value);
-                    console.log(areas + ', ' + value + ', ' + index);
+                    let val = value;
+                    let index = areas.indexOf(val.toString());
+                    console.log('areas: ' + areas + ', value: ' + value + ', index: ' + index + ', ' + (typeof areas[0]) + ', ' + (typeof 'value'));
                     if (index > -1) { // only splice array when item is found
                         
                         areas.splice(index, 1); // 2nd parameter means remove one item only
+
+                        let elmt = 'sxt_area_'+this.player_id+'_'+value;
+
+                        dojo.addClass(elmt, 'sxt_area_clickable');
+    
+                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickArea(elmt) ) );
                     }
-
-                    let elmt = 'sxt_area_'+this.player_id+'_'+value;
-
-                    dojo.addClass(elmt, 'sxt_area_clickable');
-
-                    this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickArea(elmt) ) );
                 }
 
                 for (let i=0; i<areas.length; i++) {
@@ -295,6 +362,7 @@ function (dojo, declare) {
                 console.log("unavailable_dice_id : " + die_info['die_id']);
                 break;
 
+            ////////////////////////////////////////////////////
             case 'chooseDieLocation':
                 location_info = args.args;
                 console.log(location_info);
@@ -341,23 +409,71 @@ function (dojo, declare) {
                 
                 break;
            */
+                ////////////////////////////////////////////////////
                 case 'chooseArea':
                     if (!this.isSpectator) {
                         for (i=1; i<7; i++) {
                             dojo.destroy('sxt_area_'+this.player_id+'_'+i);
                         }
                     }
-
+                    
                     dojo.forEach(this.connections, dojo.disconnect);
                     this.connections = []; 
 
                     break;
 
+                ////////////////////////////////////////////////////
                 case 'chooseDie':
+                    if (!this.isSpectator) {
+                        // for (let i=1; i<7; i++) {
+                        //     dojo.destroy('sxt_area_'+this.player_id+'_'+i);
+                        // }
+                        for (let i=1; i<4; i++) {
+                            dojo.removeClass('sxt_die_'+i, 'sxt_die_clickable');
+                        }
+                    }
+
                     dojo.forEach(this.connections, dojo.disconnect);
                     this.connections = []; 
+                    break;
+
+                ////////////////////////////////////////////////////
+                case 'chooseDieLocation':
+                    // potentially waiting for other players to leave this state (mulpile player active)
+                    // so no removing styles for clickable elements or connections here, but in onClick event (onClickLocation())
+                    
+                    if (!this.isSpectator) {
+                        for (i=1; i<7; i++) {
+                            dojo.destroy('sxt_area_'+this.player_id+'_'+i);
+                        }
+
+                        for (i=1; i<4; i++) {
+                            dojo.removeClass("sxt_die_"+i, "sxt_die_clickable");
+                            dojo.removeClass('sxt_die_'+i, 'sxt_die_used');
+                            dojo.removeClass('sxt_die_'+i, 'sxt_die_selected');
+                        }
+                    }
+
+                    // let elmts = dojo.query(".sxt_area_unclickable");
+                    // for (let i=0; i<elmts.length; i++) {
+                    //     dojo.removeClass(elmts[i], "sxt_area_unclickable");
+                    // }
+                    // dojo.forEach(this.connections, dojo.disconnect);
+                    // this.connections = []; 
+                    break;
+
+                ////////////////////////////////////////////////////
+                case 'prepareNextTurn':
+                    for (let i=1; i<4; i++) {
+                        console.log("sxt_die_"+i);
+                        for (let j=1; j<7; j++) {
+                            dojo.removeClass("sxt_die_"+i, "sxt_die_"+j);
+                        }
+                    }
+
                     break;
            
+                ////////////////////////////////////////////////////
                 case 'dummmy':
                     break;
             }               
@@ -386,6 +502,33 @@ function (dojo, declare) {
                     this.addActionButton( 'button_3_id', _('Button 3 label'), 'onMyMethodToCall3' ); 
                     break;
 */
+                    case 'chooseArea':
+                        let possibleMovesNumber = args.possibleMovesNumber;
+                        console.log('possibleMovesNumber : ');
+                        console.log(possibleMovesNumber[this.player_id]);
+
+                        let possibleMoves = args.possibleMoves;
+                        console.log('possibleMoves : ');
+                        console.log(possibleMoves[this.player_id]);
+
+                        if (possibleMovesNumber[this.player_id] == 0) {
+                            this.addActionButton( 'button_pass_choose_area', _('Pass'), 'onPass' ); 
+                        }
+                        
+                        break;
+
+                    case 'chooseDie':
+                        this.addActionButton( 'button_cancel_area_choice', _('Cancel'), 'onCancelAreaChoice' ); 
+
+                        break;
+
+                    case 'chooseDieLocation':
+                        this.addActionButton( 'button_cancel_die_choice', _('Cancel'), 'onCancelDieChoice' ); 
+
+                        break;
+
+                    default:
+                        break;
                 }
             }
         },        
@@ -472,6 +615,27 @@ function (dojo, declare) {
             }
         },
 
+        onCancelAreaChoice: function( elmt )
+        {
+            console.log( '$$$$ Event : onCancelAreaChoice' );
+
+            if( ! this.checkAction( 'cancelAreaChoice' ) )
+            { return; }
+
+            for (let i=1; i<4; i++) {
+                dojo.removeClass('sxt_die_'+i, 'sxt_die_used');
+            }
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/cancelAreaChoice.html", { lock: true, }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
+
         onClickDie: function( elmt )
         {
             console.log( '$$$$ Event : onClickDie' );
@@ -483,6 +647,8 @@ function (dojo, declare) {
 
             let die_id = elmt.split('_')[2];
             console.log(die_id);
+
+            dojo.addClass(elmt, 'sxt_die_selected');
             
             // console.log( '$$$$ Selected dice : (' + dice_id + ')' );
             
@@ -493,6 +659,28 @@ function (dojo, declare) {
                 //     }
                 // }
                 this.ajaxcall( "/sixtyone/sixtyone/chooseDie.html", { lock: true, die_id: die_id }, this, function( result ) {}, function( is_error ) {} );
+            }
+        },
+
+        onCancelDieChoice: function( elmt ) 
+        {
+            console.log( '$$$$ Event : onCancelDieChoice' );
+
+            if( ! this.checkAction( 'cancelDieChoice' ) )
+            { return; }
+
+            for (let i=1; i<4; i++) {
+                dojo.removeClass('sxt_die_'+i, 'sxt_die_used');
+                dojo.removeClass('sxt_die_'+i, 'sxt_die_selected');
+            }
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/cancelDieChoice.html", { lock: true, }, this, function( result ) {}, function( is_error ) {} );
             }
         },
 
@@ -510,6 +698,19 @@ function (dojo, declare) {
 
             console.log(area_id);
 
+            let elmts = dojo.query(".sxt_location_clickable");
+            for (let i=0; i<elmts.length; i++) {
+                dojo.removeClass(elmts[i], "sxt_location_clickable");
+            }
+
+            elmts = dojo.query(".sxt_area_unclickable");
+            for (let i=0; i<elmts.length; i++) {
+                dojo.removeClass(elmts[i], "sxt_area_unclickable");
+            }
+
+            dojo.forEach(this.connections, dojo.disconnect);
+            this.connections = []; 
+
             if ( this.isCurrentPlayerActive() ) {
                 // for (let dice of dices) {
                 //     if (dice.player_id == null) {
@@ -518,6 +719,14 @@ function (dojo, declare) {
                 // }
                 this.ajaxcall( "/sixtyone/sixtyone/chooseDieLocation.html", { lock: true, area_id: area_id, location_id: location_id }, this, function( result ) {}, function( is_error ) {} );
             }
+        },
+
+        onPass: function() 
+        {
+            console.log( '$$$$ Event : onPass' );
+
+            if( ! this.checkAction( 'onPass' ) )
+            { return; }
         },
 
         
@@ -549,9 +758,13 @@ function (dojo, declare) {
             // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
             // 
 
+            dojo.subscribe( 'rollDice', this, "notif_rollDice" );
+
             dojo.subscribe( 'locationChosen', this, "notif_locationChosen" );
 
             dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
+
+            dojo.subscribe( 'showTurn', this, "notif_showTurn" );
             
         },  
         
@@ -572,6 +785,19 @@ function (dojo, declare) {
         
         */
 
+        notif_rollDice: function( notif )
+        {
+            console.log( notif );
+
+            // for (let i=1; i<4; i++) {
+            //     for (let j=1; j<6; j++) {
+            //         dojo.removeClass("sxt_die_".$i, "sxt_die_".$j);
+            //     }
+            //     dojo.removeClass("sxt_die_".$i, "sxt_die_clickable");
+            //     dojo.removeClass("sxt_die_".$i, "sxt_die_used");
+            // }
+        },
+
         notif_locationChosen: function( notif )
         {
             console.log( notif );
@@ -591,10 +817,29 @@ function (dojo, declare) {
 
             let player_id = this.player_id;
 
-            let player_total_leave_score = notif.args.player_total_leave_score;
-            let score_leave_last_position = notif.args.score_leave_last_position;
+            let total_score_leave = notif.args.total_score_leave;
+            let leave_number = notif.args.leave_number;
 
-            dojo.byId('sxt_leave_'+player_id+'_'+score_leave_last_position).innerHTML = player_total_leave_score;
+            console.log( 'sxt_leave_'+player_id+'_'+leave_number );
+
+            dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
+        },
+
+        notif_showTurn: function( notif )
+        {
+            console.log( notif );
+
+            // let player_id = this.player_id;
+
+            let player_id = notif.args.player_id;
+            let area_id = notif.args.area_id;
+            let location_id = notif.args.location_id;
+            let die_location_value = notif.args.die_location_value;
+            let leave_number = notif.args.leave_number;
+            let total_score_leave = notif.args.total_score_leave;
+
+            dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_location_value;
+            dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
         },
    });             
 });

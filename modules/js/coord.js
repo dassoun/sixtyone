@@ -30,6 +30,15 @@ const area_coords = [
     [456, 457],
 ];
 
+const area_status_coords = [
+    [142, 215],
+    [471, 243],
+    [138, 393],
+    [439, 432],
+    [152, 588],
+    [490, 598],
+];
+
 const locations_area_1_coords = [
     [226, 150, 'big'],
     [276, 152, 'small'],

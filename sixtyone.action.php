@@ -77,6 +77,19 @@
         self::ajaxResponse( );
     }
 
+    public function cancelAreaChoice()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->cancelAreaChoice( );
+
+        self::ajaxResponse( );
+    }
+
     public function chooseDie()
     {
         self::setAjaxMode();     
@@ -87,6 +100,19 @@
         
         // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
         $this->game->chooseDie( $die_id );
+
+        self::ajaxResponse( );
+    }
+
+    public function cancelDieChoice()
+    {
+        self::setAjaxMode();     
+
+        // Retrieve arguments
+        // Note: these arguments correspond to what has been sent through the javascript "ajaxcall" method
+        
+        // Then, call the appropriate method in your game logic, like "playCard" or "myAction"
+        $this->game->cancelDieChoice( );
 
         self::ajaxResponse( );
     }

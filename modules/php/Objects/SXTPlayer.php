@@ -20,12 +20,15 @@ class SXTPlayer implements \JsonSerializable
     private ?int $die_1;
     private ?int $die_2;
     private ?int $die_3;
-    private ?int $location_chosen;
+    private ?int $chosen_location;
     private $score_leave = [
         null, null, null, null, null,
         null, null, null, null, null,
         null, null, null, null, null,
         null, null, null, null, null,
+    ];
+    private $score_area = [
+        null, null, null, null, null, null,
     ];
     private ?int $score_area_1;
     private ?int $score_area_2;
@@ -42,11 +45,16 @@ class SXTPlayer implements \JsonSerializable
     private ?int $area_2_3;
     private ?int $area_2_4;
     private ?int $area_2_5;
-    private ?int $area_3_1_1;
-    private ?int $area_3_1_2;
-    private ?int $area_3_2_1;
-    private ?int $area_3_2_2;
-    private ?int $area_3_2_3;
+    // private ?int $area_3_1_1;
+    // private ?int $area_3_1_2;
+    // private ?int $area_3_2_1;
+    // private ?int $area_3_2_2;
+    // private ?int $area_3_2_3;
+    private ?int $area_3_1;
+    private ?int $area_3_2;
+    private ?int $area_3_3;
+    private ?int $area_3_4;
+    private ?int $area_3_5;
     private ?int $area_4_1;
     private ?int $area_4_2;
     private ?int $area_4_3;
@@ -67,10 +75,12 @@ class SXTPlayer implements \JsonSerializable
 
     private $area_1 = [null, null, null, null];
     private $area_2 = [null, null, null, null, null];
-    private $area_3 = [[null, null], [null, null, null]];
+    private $area_3 = [null, null, null, null, null];
     private $area_4 = [null, null, null, null, null, null];
     private $area_5 = [null, null, null, null, null];
     private $area_6 = [null, null, null, null, null, null];
+
+    private $bonus = [null, null, null, null, null, null];
 
     /**
      * Get the value of player_id
@@ -151,21 +161,21 @@ class SXTPlayer implements \JsonSerializable
     }
 
     /**
-     * Get the value of location_chosen
+     * Get the value of chosen_location
      */ 
-    public function getLocation_chosen()
+    public function getChosen_location()
     {
-        return $this->location_chosen;
+        return $this->chosen_location;
     }
 
     /**
-     * Set the value of location_chosen
+     * Set the value of chosen_location
      *
      * @return  self
      */ 
-    public function setLocation_chosen($location_chosen)
+    public function setChosen_location($chosen_location)
     {
-        $this->location_chosen = $location_chosen;
+        $this->chosen_location = $chosen_location;
 
         return $this;
     }
@@ -186,6 +196,26 @@ class SXTPlayer implements \JsonSerializable
     public function setScore_leave($score_leave)
     {
         $this->score_leave = $score_leave;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of score_area
+     */ 
+    public function getScore_area()
+    {
+        return $this->score_area;
+    }
+
+    /**
+     * Set the value of score_area
+     *
+     * @return  self
+     */ 
+    public function setScore_area($score_area)
+    {
+        $this->score_area = $score_area;
 
         return $this;
     }
@@ -499,110 +529,110 @@ class SXTPlayer implements \JsonSerializable
         return $this;
     }
 
-    /**
-     * Get the value of area_3_1_1
-     */ 
-    public function getArea_3_1_1()
-    {
-        return $this->area_3_1_1;
-    }
+    // /**
+    //  * Get the value of area_3_1_1
+    //  */ 
+    // public function getArea_3_1_1()
+    // {
+    //     return $this->area_3_1_1;
+    // }
 
-    /**
-     * Set the value of area_3_1_1
-     *
-     * @return  self
-     */ 
-    public function setArea_3_1_1($area_3_1_1)
-    {
-        $this->area_3_1_1 = $area_3_1_1;
-        $this->area_3[0][0] = $area_3_1_1;
+    // /**
+    //  * Set the value of area_3_1_1
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setArea_3_1_1($area_3_1_1)
+    // {
+    //     $this->area_3_1_1 = $area_3_1_1;
+    //     $this->area_3[0][0] = $area_3_1_1;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of area_3_1_2
-     */ 
-    public function getArea_3_1_2()
-    {
-        return $this->area_3_1_2;
-    }
+    // /**
+    //  * Get the value of area_3_1_2
+    //  */ 
+    // public function getArea_3_1_2()
+    // {
+    //     return $this->area_3_1_2;
+    // }
 
-    /**
-     * Set the value of area_3_1_2
-     *
-     * @return  self
-     */ 
-    public function setArea_3_1_2($area_3_1_2)
-    {
-        $this->area_3_1_2 = $area_3_1_2;
-        $this->area_3[0][1] = $area_3_1_2;
+    // /**
+    //  * Set the value of area_3_1_2
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setArea_3_1_2($area_3_1_2)
+    // {
+    //     $this->area_3_1_2 = $area_3_1_2;
+    //     $this->area_3[0][1] = $area_3_1_2;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of area_3_2_1
-     */ 
-    public function getArea_3_2_1()
-    {
-        return $this->area_3_2_1;
-    }
+    // /**
+    //  * Get the value of area_3_2_1
+    //  */ 
+    // public function getArea_3_2_1()
+    // {
+    //     return $this->area_3_2_1;
+    // }
 
-    /**
-     * Set the value of area_3_2_1
-     *
-     * @return  self
-     */ 
-    public function setArea_3_2_1($area_3_2_1)
-    {
-        $this->area_3_2_1 = $area_3_2_1;
-        $this->area_3[1][0] = $area_3_2_1;
+    // /**
+    //  * Set the value of area_3_2_1
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setArea_3_2_1($area_3_2_1)
+    // {
+    //     $this->area_3_2_1 = $area_3_2_1;
+    //     $this->area_3[1][0] = $area_3_2_1;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of area_3_2_2
-     */ 
-    public function getArea_3_2_2()
-    {
-        return $this->area_3_2_2;
-    }
+    // /**
+    //  * Get the value of area_3_2_2
+    //  */ 
+    // public function getArea_3_2_2()
+    // {
+    //     return $this->area_3_2_2;
+    // }
 
-    /**
-     * Set the value of area_3_2_2
-     *
-     * @return  self
-     */ 
-    public function setArea_3_2_2($area_3_2_2)
-    {
-        $this->area_3_2_2 = $area_3_2_2;
-        $this->area_3[1][1] = $area_3_2_2;
+    // /**
+    //  * Set the value of area_3_2_2
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setArea_3_2_2($area_3_2_2)
+    // {
+    //     $this->area_3_2_2 = $area_3_2_2;
+    //     $this->area_3[1][1] = $area_3_2_2;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of area_3_2_3
-     */ 
-    public function getArea_3_2_3()
-    {
-        return $this->area_3_2_3;
-    }
+    // /**
+    //  * Get the value of area_3_2_3
+    //  */ 
+    // public function getArea_3_2_3()
+    // {
+    //     return $this->area_3_2_3;
+    // }
 
-    /**
-     * Set the value of area_3_2_3
-     *
-     * @return  self
-     */ 
-    public function setArea_3_2_3($area_3_2_3)
-    {
-        $this->area_3_2_3 = $area_3_2_3;
-        $this->area_3[1][2] = $area_3_2_3;
+    // /**
+    //  * Set the value of area_3_2_3
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setArea_3_2_3($area_3_2_3)
+    // {
+    //     $this->area_3_2_3 = $area_3_2_3;
+    //     $this->area_3[1][2] = $area_3_2_3;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * Get the value of area_4_1
@@ -1016,8 +1046,9 @@ class SXTPlayer implements \JsonSerializable
             "die_1" => $this->getDie_1(),
             "die_2" => $this->getDie_2(),
             "die_3" => $this->getDie_3(),
-            "location_chosen" => $this->getLocation_chosen(),
+            "chosen_location" => $this->getChosen_location(),
             "score_leave" => $this->getScore_leave(),
+            "score_are" => $this->getScore_area(),
             "score_area_1" => $this->getScore_area_1(),
             "score_area_2" => $this->getScore_area_2(),
             "score_area_3" => $this->getScore_area_3(),
@@ -1033,11 +1064,16 @@ class SXTPlayer implements \JsonSerializable
             "area_2_3" => $this->getArea_2_3(),
             "area_2_4" => $this->getArea_2_4(),
             "area_2_5" => $this->getArea_2_5(),
-            "area_3_1_1" => $this->getArea_3_1_1(),
-            "area_3_1_2" => $this->getArea_3_1_2(),
-            "area_3_2_1" => $this->getArea_3_2_1(),
-            "area_3_2_2" => $this->getArea_3_2_2(),
-            "area_3_2_3" => $this->getArea_3_2_3(),
+            // "area_3_1_1" => $this->getArea_3_1_1(),
+            // "area_3_1_2" => $this->getArea_3_1_2(),
+            // "area_3_2_1" => $this->getArea_3_2_1(),
+            // "area_3_2_2" => $this->getArea_3_2_2(),
+            // "area_3_2_3" => $this->getArea_3_2_3(),
+            "area_3_1" => $this->getArea_3_1(),
+            "area_3_2" => $this->getArea_3_2(),
+            "area_3_3" => $this->getArea_3_3(),
+            "area_3_4" => $this->getArea_3_4(),
+            "area_3_5" => $this->getArea_3_5(),
             "area_4_1" => $this->getArea_4_1(),
             "area_4_2" => $this->getArea_4_2(),
             "area_4_3" => $this->getArea_4_3(),
@@ -1055,6 +1091,7 @@ class SXTPlayer implements \JsonSerializable
             "area_6_3" => $this->getArea_6_3(),
             "area_6_4" => $this->getArea_6_4(),
             "area_6_5" => $this->getArea_6_5(),
+            "bonus" => $this->getBonus(),
         ];
     }
 
@@ -1065,7 +1102,7 @@ class SXTPlayer implements \JsonSerializable
     {
         $i = 0;
         $found = false;
-        while ($i < count($this->score_leave)) {
+        while ($i < count($this->score_leave) && !$found) {
             if ($this->score_leave[$i] == null) {
                 $this->score_leave[$i] = $value;
 
@@ -1099,15 +1136,141 @@ class SXTPlayer implements \JsonSerializable
      */ 
     public function get_score_leave_last_position(): int
     {
-        $num = 0;
-
-        for ($i=0; $i<count($this->score_leave); $i++) {
+        $i = 0;
+        $found = false;
+        while ($i < count($this->score_leave) && !$found) {
             if ($this->score_leave[$i] != null) {
-                $num++;
+                $i++;
+            } else {
+                $found = true;
             }
         }
 
-        return $num;
+        return $i;
     }
 
+    /**
+     * Get the value of area_3_1
+     */ 
+    public function getArea_3_1()
+    {
+        return $this->area_3_1;
+    }
+
+    /**
+     * Set the value of area_3_1
+     *
+     * @return  self
+     */ 
+    public function setArea_3_1($area_3_1)
+    {
+        $this->area_3_1 = $area_3_1;
+        $this->area_3[0] = $area_3_1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of area_3_2
+     */ 
+    public function getArea_3_2()
+    {
+        return $this->area_3_2;
+    }
+
+    /**
+     * Set the value of area_3_2
+     *
+     * @return  self
+     */ 
+    public function setArea_3_2($area_3_2)
+    {
+        $this->area_3_2 = $area_3_2;
+        $this->area_3[1] = $area_3_2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of area_3_3
+     */ 
+    public function getArea_3_3()
+    {
+        return $this->area_3_3;
+    }
+
+    /**
+     * Set the value of area_3_3
+     *
+     * @return  self
+     */ 
+    public function setArea_3_3($area_3_3)
+    {
+        $this->area_3_3 = $area_3_3;
+        $this->area_3[2] = $area_3_3;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of area_3_4
+     */ 
+    public function getArea_3_4()
+    {
+        return $this->area_3_4;
+    }
+
+    /**
+     * Set the value of area_3_4
+     *
+     * @return  self
+     */ 
+    public function setArea_3_4($area_3_4)
+    {
+        $this->area_3_4 = $area_3_4;
+        $this->area_3[3] = $area_3_4;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of area_3_5
+     */ 
+    public function getArea_3_5()
+    {
+        return $this->area_3_5;
+    }
+
+    /**
+     * Set the value of area_3_5
+     *
+     * @return  self
+     */ 
+    public function setArea_3_5($area_3_5)
+    {
+        $this->area_3_5 = $area_3_5;
+        $this->area_3[4] = $area_3_5;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of bonus
+     */ 
+    public function getBonus()
+    {
+        return $this->bonus;
+    }
+
+    /**
+     * Set the value of bonus
+     *
+     * @return  self
+     */ 
+    public function setBonus($bonus)
+    {
+        $this->bonus = $bonus;
+
+        return $this;
+    }
 }

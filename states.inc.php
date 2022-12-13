@@ -56,7 +56,7 @@ if (!defined('STATE_INIT_GAME')) { // ensure this block is only invoked once, si
     define("STATE_CHOOSE_AREA", 30);
     define("STATE_CHOOSE_DIE", 40);
     define("STATE_CHOOSE_DIE_LOCATION", 50);
-    define("STATE_LAST_DIE_SCORE", 60);
+    // define("STATE_LAST_DIE_SCORE", 60);
     define("STATE_CHOOSE_CROSS_LOCATION", 70);
     define("STATE_AREA_SCORING", 80);
     define("STATE_NEXT_TURN", 90);
@@ -113,7 +113,7 @@ $machinestates = array(
         "possibleactions" => array( "chooseDie", "cancelAreaChoice" ),
         "transitions" => array( 
             "toDieLocationChoice" => STATE_CHOOSE_DIE_LOCATION, 
-            "toLastDieScoring" => STATE_LAST_DIE_SCORE, 
+            // "toLastDieScoring" => STATE_LAST_DIE_SCORE, 
             "areaChoiceCancelled" => STATE_CHOOSE_AREA 
         )
     ),
@@ -125,16 +125,16 @@ $machinestates = array(
         "type" => "private",
         "args" => "argChooseDieLocation",
         "possibleactions" => array( "chooseDieLocation", "cancelDieChoice" ),
-        "transitions" => array( "dieLocationChosen" => STATE_LAST_DIE_SCORE, "dieChoiceCancelled" => STATE_CHOOSE_AREA )
+        "transitions" => array( "toCrossLocationChoice" => STATE_CHOOSE_CROSS_LOCATION, "dieChoiceCancelled" => STATE_CHOOSE_AREA )
     ),
 
-    STATE_LAST_DIE_SCORE => array(
-        "name" => "lastDieScore",
-        "description" => "",
-        "type" => "game",
-        "action" => "stLastDieScore",
-        "transitions" => array( "toCrossLocationChoice" => STATE_CHOOSE_CROSS_LOCATION, "toAreaScoring" => STATE_AREA_SCORING )
-    ),
+    // STATE_LAST_DIE_SCORE => array(
+    //     "name" => "lastDieScore",
+    //     "description" => "",
+    //     "type" => "game",
+    //     "action" => "stLastDieScore",
+    //     "transitions" => array( "toCrossLocationChoice" => STATE_CHOOSE_CROSS_LOCATION, "toAreaScoring" => STATE_AREA_SCORING )
+    // ),
 
     STATE_CHOOSE_CROSS_LOCATION => array(
         "name" => "chooseCrossLocation",
@@ -151,7 +151,15 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stAreaScoring",
-        "transitions" => array( "nextRound" => STATE_INIT_TURN )
+        "transitions" => array( "prepareNextRound" => STATE_NEXT_TURN )
+    ),
+
+    STATE_NEXT_TURN => array(
+        "name" => "prepareNextTurn",
+        "description" => '',
+        "type" => "game",
+        "action" => "stprepareNextTurn",
+        "transitions" => array( "startNextRound" => STATE_INIT_TURN, "endGame" => STATE_END_GAME )
     ),
     
 /*

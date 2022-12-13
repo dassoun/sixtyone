@@ -152,6 +152,7 @@
     width: 900px;
     height: 634px;
     margin: 0px 10px 10px 10px;
+    background-repeat: none;
     background-image: url("img/playerboard.jpg");
 }
 
@@ -209,14 +210,37 @@
     background-image: url("img/area_6.png");
 }
 
+.sxt_area_status {
+    position: absolute;
+    width: 58px;
+    height: 24px;
+    background-color: aliceblue;
+    opacity: .5;
+    background-image: url("img/area_status.png");
+}
+
+.sxt_area_status_empty {
+    background-position: 0px 0px;
+}
+
+.sxt_area_status_completed {
+    background-position: -58px 0px;
+}
+
+.sxt_area_status_missed {
+    background-position: -116px 0px;
+}
+
 .sxt_leave {
     font-family: 'Caveat Brush', cursive;
     position: absolute;
     text-align: center;
-    background-color: beige;
-    opacity: .5;
+    /* background-color: beige; */
+    /* opacity: .5; */
     width: 27px;
     height: 27px;
+    font-size: 20px;
+    line-height: 28px;
 }
 
 .sxt_location {
@@ -234,6 +258,7 @@
     width: 42px;
     height: 42px;
     border-radius: 21px;
+    line-height: 42px;
     /* border: 1px dashed black; */
 }
 
@@ -244,6 +269,8 @@
     width: 36px;
     height: 36px;
     border-radius: 18px;
+    font-size: 32px;
+    line-height: 37px;
     /* border: 1px dashed black; */
 }
 
@@ -264,6 +291,7 @@
     width: 41px;
     height: 51px;
     border-radius: 50% / 30%;
+    line-height: 65px;
     /* border: 1px dashed black; */
 }
 
@@ -293,6 +321,7 @@
     height: 44px;
     border-radius: 22px;
     /* border: 1px dashed black; */
+    line-height: 46px;
 }
 
 .sxt_location_area_6 {
@@ -303,6 +332,8 @@
     height: 31px;
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     /* border: 1px dashed black; */
+    font-size: 34px;
+    line-height: 33px;
 }
 
 .sxt_location_clickable {

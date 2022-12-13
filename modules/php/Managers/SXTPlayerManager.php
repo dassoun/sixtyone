@@ -28,14 +28,15 @@ class SXTPlayerManager extends \APP_DbObject
                     score_leave_6, score_leave_7, score_leave_8, score_leave_9, score_leave_10,
                     score_leave_11, score_leave_12, score_leave_13, score_leave_14, score_leave_15,
                     score_leave_16, score_leave_17, score_leave_18, score_leave_19, score_leave_20,
-                    die_1, die_2, die_3, location_chosen,
+                    die_1, die_2, die_3, chosen_location,
                     score_area_1, score_area_2, score_area_3, score_area_4, score_area_5, score_area_6, 
                     area_1_1, area_1_2, area_1_3, area_1_4, 
                     area_2_1, area_2_2, area_2_3, area_2_4, area_2_5, 
-                    area_3_1_1, area_3_1_2, area_3_2_1, area_3_2_2, area_3_2_3, 
+                    area_3_1, area_3_2, area_3_3, area_3_4, area_3_5, 
                     area_4_1, area_4_2, area_4_3, area_4_4, area_4_5, area_4_6, 
                     area_5_1, area_5_2, area_5_3, area_5_4, area_5_5, area_5_6, 
-                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5
+                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5,
+                    bonus_1, bonus_2, bonus_3, bonus_4, bonus_5, bonus_6
                 FROM player
                 WHERE player_id = '$id'";
 
@@ -54,13 +55,11 @@ class SXTPlayerManager extends \APP_DbObject
                 ->setDie_1($res['die_1'])
                 ->setDie_2($res['die_2'])
                 ->setDie_3($res['die_3'])
-                ->setLocation_chosen($res['location_chosen'])
-                ->setScore_area_1($res['score_area_1'])
-                ->setScore_area_2($res['score_area_2'])
-                ->setScore_area_3($res['score_area_3'])
-                ->setScore_area_4($res['score_area_4'])
-                ->setScore_area_5($res['score_area_5'])
-                ->setScore_area_6($res['score_area_6'])
+                ->setChosen_location($res['chosen_location'])
+                ->setScore_area(array(
+                        $res['score_area_1'], $res['score_area_2'], $res['score_area_3'], 
+                        $res['score_area_4'], $res['score_area_5'], $res['score_area_6']
+                    ))
                 ->setArea_1_1($res['area_1_1'])
                 ->setArea_1_2($res['area_1_2'])
                 ->setArea_1_3($res['area_1_3'])
@@ -70,11 +69,11 @@ class SXTPlayerManager extends \APP_DbObject
                 ->setArea_2_3($res['area_2_3'])
                 ->setArea_2_4($res['area_2_4'])
                 ->setArea_2_5($res['area_2_5'])
-                ->setArea_3_1_1($res['area_3_1_1'])
-                ->setArea_3_1_2($res['area_3_1_2'])
-                ->setArea_3_2_1($res['area_3_2_1'])
-                ->setArea_3_2_2($res['area_3_2_2'])
-                ->setArea_3_2_3($res['area_3_2_3'])
+                ->setArea_3_1($res['area_3_1'])
+                ->setArea_3_2($res['area_3_2'])
+                ->setArea_3_3($res['area_3_3'])
+                ->setArea_3_4($res['area_3_4'])
+                ->setArea_3_5($res['area_3_5'])
                 ->setArea_4_1($res['area_4_1'])
                 ->setArea_4_2($res['area_4_2'])
                 ->setArea_4_3($res['area_4_3'])
@@ -91,7 +90,10 @@ class SXTPlayerManager extends \APP_DbObject
                 ->setArea_6_2($res['area_6_2'])
                 ->setArea_6_3($res['area_6_3'])
                 ->setArea_6_4($res['area_6_4'])
-                ->setArea_6_5($res['area_6_5']);
+                ->setArea_6_5($res['area_6_5'])
+                ->setBonus(array(
+                        $res['bonus_1'], $res['bonus_2'], $res['bonus_3'], $res['bonus_4'], $res['bonus_5'], $res['bonus_6']
+                    ));
         }
 
         return $player;
@@ -104,13 +106,14 @@ class SXTPlayerManager extends \APP_DbObject
         $die_1 = $player->getDie_1();
         $die_2 = $player->getDie_2();
         $die_3 = $player->getDie_3();
-        $location_chosen = $player->getLocation_chosen();
-        $score_area_1 = $player->getScore_area_1();
-        $score_area_2 = $player->getScore_area_2(); 
-        $score_area_3 = $player->getScore_area_3(); 
-        $score_area_4 = $player->getScore_area_4(); 
-        $score_area_5 = $player->getScore_area_5(); 
-        $score_area_6 = $player->getScore_area_6(); 
+        $chosen_location = $player->getChosen_location();
+        $score_area = $player->getScore_area();
+        // $score_area_1 = $player->getScore_area_1();
+        // $score_area_2 = $player->getScore_area_2(); 
+        // $score_area_3 = $player->getScore_area_3(); 
+        // $score_area_4 = $player->getScore_area_4(); 
+        // $score_area_5 = $player->getScore_area_5(); 
+        // $score_area_6 = $player->getScore_area_6(); 
         $area_1_1 = $player->getArea_1_1(); 
         $area_1_2 = $player->getArea_1_2(); 
         $area_1_3 = $player->getArea_1_3(); 
@@ -120,11 +123,11 @@ class SXTPlayerManager extends \APP_DbObject
         $area_2_3 = $player->getArea_2_3(); 
         $area_2_4 = $player->getArea_2_4(); 
         $area_2_5 = $player->getArea_2_5(); 
-        $area_3_1_1 = $player->getArea_3_1_1(); 
-        $area_3_1_2 = $player->getArea_3_1_2(); 
-        $area_3_2_1 = $player->getArea_3_2_1(); 
-        $area_3_2_2 = $player->getArea_3_2_2(); 
-        $area_3_2_3 = $player->getArea_3_2_3(); 
+        $area_3_1 = $player->getArea_3_1(); 
+        $area_3_2 = $player->getArea_3_2(); 
+        $area_3_3 = $player->getArea_3_3(); 
+        $area_3_4 = $player->getArea_3_4(); 
+        $area_3_5 = $player->getArea_3_5(); 
         $area_4_1 = $player->getArea_4_1(); 
         $area_4_2 = $player->getArea_4_2(); 
         $area_4_3 = $player->getArea_4_3(); 
@@ -142,10 +145,21 @@ class SXTPlayerManager extends \APP_DbObject
         $area_6_3 = $player->getArea_6_3(); 
         $area_6_4 = $player->getArea_6_4(); 
         $area_6_5 = $player->getArea_6_5();
+        $bonus = $player->getBonus();
 
         $sql_score_leave = "";
         foreach($score_leave as $key => $score) {
             $sql_score_leave .= "score_leave_".($key+1)." = ".(!empty($score) ? "'$score'" : "NULL").", ";
+        }
+
+        $sql_score_area = "";
+        foreach($score_area as $key => $score) {
+            $sql_score_area .= "score_area_".($key+1)." = ".(!empty($score) ? "'$score'" : "NULL").", ";
+        }
+
+        $sql_bonus = "";
+        foreach($bonus as $key => $value) {
+            $sql_bonus .= "bonus_".($key+1)." = ".(!empty($value) ? "'$value'" : "NULL").", ";
         }
 
         $sql = "UPDATE 
@@ -155,13 +169,9 @@ class SXTPlayerManager extends \APP_DbObject
                     die_1 = ".(!empty($die_1) ? "'$die_1'" : "NULL").", 
                     die_2 = ".(!empty($die_2) ? "'$die_2'" : "NULL").", 
                     die_3 = ".(!empty($die_3) ? "'$die_3'" : "NULL").",
-                    location_chosen = ".(!empty($location_chosen) ? "'$location_chosen'" : "NULL").",
-                    score_area_1 = ".(!empty($score_area_1) ? "'$score_area_1'" : "NULL").",
-                    score_area_2 = ".(!empty($score_area_2) ? "'$score_area_2'" : "NULL").",
-                    score_area_3 = ".(!empty($score_area_3) ? "'$score_area_3'" : "NULL").",
-                    score_area_4 = ".(!empty($score_area_4) ? "'$score_area_4'" : "NULL").",
-                    score_area_5 = ".(!empty($score_area_5) ? "'$score_area_5'" : "NULL").",
-                    score_area_6 = ".(!empty($score_area_6) ? "'$score_area_6'" : "NULL").",
+                    chosen_location = ".(!empty($chosen_location) ? "'$chosen_location'" : "NULL").",".
+                    $sql_score_area.
+                    $sql_bonus."
                     area_1_1 = ".(!empty($area_1_1) ? "'$area_1_1'" : "NULL").",
                     area_1_2 = ".(!empty($area_1_2) ? "'$area_1_2'" : "NULL").",
                     area_1_3 = ".(!empty($area_1_3) ? "'$area_1_3'" : "NULL").",
@@ -171,11 +181,11 @@ class SXTPlayerManager extends \APP_DbObject
                     area_2_3 = ".(!empty($area_2_3) ? "'$area_2_3'" : "NULL").",
                     area_2_4 = ".(!empty($area_2_4) ? "'$area_2_4'" : "NULL").",
                     area_2_5 = ".(!empty($area_2_5) ? "'$area_2_5'" : "NULL").",
-                    area_3_1_1 = ".(!empty($area_3_1_1) ? "'$area_3_1_1'" : "NULL").",
-                    area_3_1_2 = ".(!empty($area_3_1_2) ? "'$area_3_1_2'" : "NULL").",
-                    area_3_2_1 = ".(!empty($area_3_2_1) ? "'$area_3_2_1'" : "NULL").",
-                    area_3_2_2 = ".(!empty($area_3_2_2) ? "'$area_3_2_2'" : "NULL").",
-                    area_3_2_3 = ".(!empty($area_3_2_3) ? "'$area_3_2_3'" : "NULL").",
+                    area_3_1 = ".(!empty($area_3_1) ? "'$area_3_1'" : "NULL").",
+                    area_3_2 = ".(!empty($area_3_2) ? "'$area_3_2'" : "NULL").",
+                    area_3_3 = ".(!empty($area_3_3) ? "'$area_3_3'" : "NULL").",
+                    area_3_4 = ".(!empty($area_3_4) ? "'$area_3_4'" : "NULL").",
+                    area_3_5 = ".(!empty($area_3_5) ? "'$area_3_5'" : "NULL").",
                     area_4_1 = ".(!empty($area_4_1) ? "'$area_4_1'" : "NULL").",
                     area_4_2 = ".(!empty($area_4_2) ? "'$area_4_2'" : "NULL").",
                     area_4_3 = ".(!empty($area_4_3) ? "'$area_4_3'" : "NULL").",
