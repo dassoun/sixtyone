@@ -201,43 +201,43 @@ function (dojo, declare) {
 
                 // Area #1
                 for (let i=0; i<4; i++) {
-                    if (player['area_1_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_1_'+(i+1)).innerHTML = player['area_1_'+(i+1)];
+                    if (player['area_1_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_1_'+(i+1)).innerHTML = (player['area_1_'+(i+1)] == 0 ? "X" : player['area_1_'+(i+1)]);
                     }
                 }
 
                 // Area #2
                 for (let i=0; i<5; i++) {
-                    if (player['area_2_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_2_'+(i+1)).innerHTML = player['area_2_'+(i+1)];
+                    if (player['area_2_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_2_'+(i+1)).innerHTML = (player['area_2_'+(i+1)] == 0 ? "X" : player['area_2_'+(i+1)]);
                     }
                 }
 
                 // Area #3
                 for (let i=0; i<5; i++) {
-                    if (player['area_3_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_3_'+(i+1)).innerHTML = player['area_3_'+(i+1)];
+                    if (player['area_3_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_3_'+(i+1)).innerHTML = (player['area_3_'+(i+1)] == 0 ? "X" : player['area_3_'+(i+1)]);
                     }
                 }
 
                 // Area #4
                 for (let i=0; i<6; i++) {
-                    if (player['area_4_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_4_'+(i+1)).innerHTML = player['area_4_'+(i+1)];
+                    if (player['area_4_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_4_'+(i+1)).innerHTML = (player['area_4_'+(i+1)] == 0 ? "X" : player['area_4_'+(i+1)]);
                     }
                 }
 
                 // Area #5
                 for (let i=0; i<6; i++) {
-                    if (player['area_5_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_5_'+(i+1)).innerHTML = player['area_5_'+(i+1)];
+                    if (player['area_5_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_5_'+(i+1)).innerHTML = (player['area_5_'+(i+1)] == 0 ? "X" : player['area_5_'+(i+1)]);
                     }
                 }
 
                 // Area #6
                 for (let i=0; i<5; i++) {
-                    if (player['area_6_'+(i+1)]) {
-                        $('sxt_location_'+player_id+'_6_'+(i+1)).innerHTML = player['area_6_'+(i+1)];
+                    if (player['area_6_'+(i+1)] != -1) {
+                        $('sxt_location_'+player_id+'_6_'+(i+1)).innerHTML = (player['area_6_'+(i+1)] == 0 ? "X" : player['area_6_'+(i+1)]);
                     }
                 }
             }
