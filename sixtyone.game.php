@@ -233,11 +233,11 @@ class SixtyOne extends Table
                     $res[] = 1;
                     $res[] = 2;
                 } else if ($area[0] != null) {
-                    if ($die_value == $area[0]) {
+                    if ($die_value == $area[0] || $die_value == 0 || $area[0] == 0) {
                         $res[] = 2;
                     }
                 } else {
-                    if ($die_value == $area[1]) {
+                    if ($die_value == $area[1] || $die_value == 0 || $area[1] == 0) {
                         $res[] = 1;
                     }
                 }
@@ -246,11 +246,11 @@ class SixtyOne extends Table
                     $res[] = 3;
                     $res[] = 4;
                 } else if ($area[2] != null) {
-                    if ($die_value == $area[2]) {
+                    if ($die_value == $area[2] || $die_value == 0 || $area[2] == 0) {
                         $res[] = 4;
                     }
                 } else {
-                    if ($die_value == $area[3]) {
+                    if ($die_value == $area[3] || $die_value == 0 || $area[3] == 0) {
                         $res[] = 3;
                     }
                 }
@@ -270,7 +270,7 @@ class SixtyOne extends Table
                 }
                 if ($found) {
                     if ($i > 0) {
-                        if ($area[$i-1] != $die_value) {
+                        if ($area[$i-1] != $die_value || $die_value == 0 || $area[$i-1] == 0) {
                             $res[] = $i+1;
                         }
                     } else {
@@ -286,11 +286,11 @@ class SixtyOne extends Table
                     $res[] = '1';
                     $res[] = '2';
                 } else if ($area[0] == null) {
-                    if ($area[1] == $die_value) {
+                    if ($area[1] == $die_value || $die_value == 0 || $area[1] == 0) {
                         $res[] = '1';
                     }
                 } else {
-                    if ($area[0] == $die_value) {
+                    if ($area[0] == $die_value || $die_value == 0 || $area[0] == 0) {
                         $res[] = '2';
                     }
                 }
@@ -300,30 +300,42 @@ class SixtyOne extends Table
                     $res[] = '4';
                     $res[] = '5';
                 } else if ($area[2] == null && $area[3] == null) {
-                    if ($area[4] == $die_value) {
+                    if (($area[4] == $die_value) || ($area[4] == 0) || ($die_value == 0)) {
                         $res[] = '3';
                         $res[] = '4';
                     }
                 } else if ($area[3] == null && $area[4] == null) {
-                    if ($area[2] == $die_value) {
+                    if (($area[2] == $die_value) || ($area[2] == 0) || ($die_value == 0)) {
                         $res[] = '4';
                         $res[] = '5';
                     }
                 } else if ($area[4] == null && $area[2] == null) {
-                    if ($area[3] == $die_value) {
+                    if (($area[3] == $die_value) || ($area[3] == 0) || ($die_value == 0)) {
                         $res[] = '5';
                         $res[] = '3';
                     }
                 } else if ($area[2] == null) {
-                    if ($area[3] == $die_value) {
+                    if (($area[3] == $die_value && $area[4] == $die_value)
+                            || ($area[3] == 0 && $area[4] == $die_value)
+                            || ($area[3] == $die_value && $area[4] == 0)
+                            || ($area[3] == 0 && $area[4] == 0)
+                            || ($die_value == 0)) {
                         $res[] = '3';
                     }
                 } else if ($area[3] == null) {
-                    if ($area[4] == $die_value) {
+                    if (($area[2] == $die_value && $area[4] == $die_value)
+                            || ($area[2] == 0 && $area[4] == $die_value)
+                            || ($area[2] == $die_value && $area[4] == 0)
+                            || ($area[2] == 0 && $area[4] == 0)
+                            || ($die_value == 0)) {
                         $res[] = '4';
                     }
                 } else if ($area[4] == null) {
-                    if ($area[2] == $die_value) {
+                    if (($area[2] == $die_value && $area[3] == $die_value)
+                            || ($area[2] == 0 && $area[3] == $die_value)
+                            || ($area[2] == $die_value && $area[3] == 0)
+                            || ($area[2] == 0 && $area[3] == 0)
+                            || ($die_value == 0)) {
                         $res[] = '5';
                     }
                 }
@@ -332,8 +344,16 @@ class SixtyOne extends Table
 
             case 4:
                 $area = $player->getArea_4();
-                if ($area[$die_value-1] == null) {
-                    $res[] = $die_value;
+                if ($die_value > 0) {
+                    if ($area[$die_value-1] == null) {
+                        $res[] = $die_value;
+                    }
+                } else {
+                    for ($i=0; $i<6; $i++) {
+                        if ($area[$i] == null) {
+                            $res[] = ($i+1);
+                        }
+                    }
                 }
 
                 break;
@@ -345,32 +365,48 @@ class SixtyOne extends Table
             case 5:
                 $area = $player->getArea_5();
                 if ($area[0] == null) {
-                    if ($area[1] != $die_value) {
+                    if ($area[1] != $die_value || $die_value == 0 || $area[1] == 0) {
                         $res[] = 1;
                     }
                 }
                 if ($area[1] == null) {
-                    if ($area[0] != $die_value && $area[2] != $die_value) {
+                    if (($area[0] != $die_value && $area[2] != $die_value) 
+                            || ($area[0] == 0 && $area[2] == 0)
+                            || ($area[0] == 0 && $area[2] != $die_value)
+                            || ($area[0] != $die_value && $area[2] == 0)
+                            || ($die_value == 0)) {
                         $res[] = 2;
                     }
                 }
                 if ($area[2] == null) {
-                    if ($area[2] != $die_value) {
+                    if ($area[2] != $die_value || $die_value == 0 || $area[2] == 0) {
                         $res[] = 3;
                     }
                 }
                 if ($area[3] == null && ($area[0] != null && $area[1] != null)) {
-                    if ($area[0] != $die_value && $area[1] != $die_value) {
+                    if (($area[0] != $die_value && $area[1] != $die_value)
+                            || ($area[0] == 0 && $area[1] == 0)
+                            || ($area[0] == 0 && $area[1] != $die_value)
+                            || ($area[0] != $die_value && $area[1] == 0)
+                            || ($die_value == 0)) {
                         $res[] = 4;
                     }
                 }
                 if ($area[4] == null && ($area[1] != null && $area[2] != null)) {
-                    if ($area[1] != $die_value && $area[2] != $die_value) {
+                    if (($area[1] != $die_value && $area[2] != $die_value)
+                            || ($area[1] == 0 && $area[2] == 0)
+                            || ($area[1] == 0 && $area[2] != $die_value)
+                            || ($area[1] != $die_value && $area[2] == 0)
+                            || ($die_value == 0)) {
                         $res[] = 5;
                     }
                 }
                 if ($area[5] == null && ($area[3] != null && $area[4] != null)) {
-                    if ($area[3] != $die_value && $area[4] != $die_value) {
+                    if (($area[3] != $die_value && $area[4] != $die_value)
+                            || ($area[3] == 0 && $area[4] == 0)
+                            || ($area[3] == 0 && $area[4] != $die_value)
+                            || ($area[3] != $die_value && $area[2] == 0)
+                            || ($die_value == 0)) {
                         $res[] = 6;
                     }
                 }
@@ -390,7 +426,7 @@ class SixtyOne extends Table
                 }
                 if ($found) {
                     if ($i > 0) {
-                        if (abs($area[$i-1] - $die_value) == 1) {
+                        if (abs($area[$i-1] - $die_value) == 1 || $die_value == 0 || $area[$i-1] == 0) {
                             $res[] = $i+1;
                         }
                     } else {
@@ -797,7 +833,15 @@ class SixtyOne extends Table
 
     function argChooseCrossLocation()
     {
+        $player_id = self::getCurrentPlayerId();
 
+        $player = $this->playerManager->getById($player_id);
+
+        for ($i=1; $i<7; $i++) {
+            $res['locations'][$i] = $this->getAvailableLocations($player, $i, 0);
+        }
+        
+        return $res;
     }
 
 //////////////////////////////////////////////////////////////////////////////

@@ -385,6 +385,30 @@ function (dojo, declare) {
 
                 break;
 
+            ////////////////////////////////////////////////////
+            case 'chooseCrossLocation':
+                {
+                console.log(args.args);
+                let locations = args.args['locations'];
+                console.log('possibleMoves : ');
+                console.log(locations);
+
+                let player_id = this.player_id;
+
+                for (let [key, value] of Object.entries(locations)) {
+                    for (let i=0; i<value.length; i++) {
+                        // console.log('sxt_location_'+player_id+'_'+area_id+'_'+locations[i]);
+                        let elmt = 'sxt_location_'+player_id+'_'+key+'_'+value[i];
+                               
+                        dojo.addClass(elmt, 'sxt_location_clickable');
+
+                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickLocation(elmt) ) );
+                    }
+                }
+
+                break;
+            }
+
             case 'dummmy':
                 break;
             }
