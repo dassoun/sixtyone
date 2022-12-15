@@ -21,6 +21,8 @@ class SXTPlayer implements \JsonSerializable
     private ?int $die_2;
     private ?int $die_3;
     private ?int $chosen_location;
+    private ?int $chosen_area_cross;
+    private ?int $chosen_location_cross;
     private $score_leave = [
         null, null, null, null, null,
         null, null, null, null, null,
@@ -176,6 +178,46 @@ class SXTPlayer implements \JsonSerializable
     public function setChosen_location($chosen_location)
     {
         $this->chosen_location = $chosen_location;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of chosen_area_cross
+     */ 
+    public function getChosen_area_cross()
+    {
+        return $this->chosen_area_cross;
+    }
+
+    /**
+     * Set the value of chosen_area_cross
+     *
+     * @return  self
+     */ 
+    public function setChosen_area_cross($chosen_area_cross)
+    {
+        $this->chosen_area_cross = $chosen_area_cross;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of chosen_location_cross
+     */ 
+    public function getChosen_location_cross()
+    {
+        return $this->chosen_location_cross;
+    }
+
+    /**
+     * Set the value of chosen_location_cross
+     *
+     * @return  self
+     */ 
+    public function setChosen_location_cross($chosen_location_cross)
+    {
+        $this->chosen_location_cross = $chosen_location_cross;
 
         return $this;
     }
@@ -1047,6 +1089,8 @@ class SXTPlayer implements \JsonSerializable
             "die_2" => $this->getDie_2(),
             "die_3" => $this->getDie_3(),
             "chosen_location" => $this->getChosen_location(),
+            "chosen_area_cross" => $this->getChosen_area_cross(),
+            "chosen_location_cross" => $this->getChosen_location_cross(),
             "score_leave" => $this->getScore_leave(),
             "score_are" => $this->getScore_area(),
             "score_area_1" => $this->getScore_area_1(),

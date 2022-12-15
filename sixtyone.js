@@ -905,6 +905,13 @@ function (dojo, declare) {
 
             dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_location_value;
             dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
+
+            let cross_area_id = notif.args.cross_area_id;
+            let cross_location_id = notif.args.cross_location_id;
+            
+            if (!isNaN(cross_area_id) && cross_area_id > 0 && !isNaN(cross_location_id) && cross_location_id > 0) {
+                dojo.byId('sxt_location_'+player_id+'_'+cross_area_id+'_'+cross_location_id).innerHTML = 'X';
+            }
         },
    });             
 });

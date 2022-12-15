@@ -696,6 +696,26 @@ class SixtyOne extends Table
             ) );
         }
 
+        // area completed ?
+        if (!$this->getGameStateValue( 'area_'.$area_id.'_completed' )) {
+            $locations = $player->{'getArea_'.$area_id}();
+            $filled_location = 0;
+
+            foreach ($locations as $location) {
+                if ($location > 0) {
+                    $filled_location++;
+                }
+            }
+
+            if ($filled_location == $this->area_size[$area_id]) {
+                $score_area = $player->getScore_area();
+                $score_area[$area_id-1] = 3;
+                $player->setScore_area($score_area);
+
+                $this->playerManager->persist($player);
+            }
+        }
+        
         
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
@@ -725,11 +745,15 @@ class SixtyOne extends Table
         
         $player->{"setArea_".$area_id."_".$location_id}(0);
 
+        $player->setChosen_area_cross($area_id);
+        $player->setChosen_location_cross($location_id);
+
         // $player->setChosen_location($location_id);
 
         $this->playerManager->persist($player);
 
         self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a X in aera ${area_id}"), array(
+            'die_value' => 0,
             'area_id' => $area_id,
             'location_id' => $location_id,
         ) );
@@ -935,6 +959,8 @@ class SixtyOne extends Table
             $die_location_value = $this->getGameStateValue( "die_".$player->getDie_2()."_value" );;
             $leave_number = $player->get_score_leave_last_position();
             $total_score_leave = $player->get_total_score_leave();
+            $cross_area_id = $player->getChosen_area_cross();
+            $cross_location_id = $player->getChosen_location_cross();
 
             self::notifyAllPlayers( "showTurn", "", array(
                 'player_id' => $player_id,
@@ -943,6 +969,8 @@ class SixtyOne extends Table
                 'die_location_value' => $die_location_value,
                 'leave_number' => $leave_number,
                 'total_score_leave' => $total_score_leave,
+                'cross_area_id' => $cross_area_id,
+                'cross_location_id' => $cross_location_id,
             ) );
 
             // Check area completion
@@ -967,11 +995,11 @@ class SixtyOne extends Table
             $player->setDie_2(null);
             $player->setDie_3(null);
             $player->setChosen_location(null);
+            $player->setChosen_area_cross(null);
+            $player->setChosen_location_cross(null);
 
             $this->playerManager->persist($player);
         }
-
-
 
         $this->gamestate->nextState("startNextRound"); 
     }
