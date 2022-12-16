@@ -602,7 +602,7 @@ class SixtyOne extends Table
 
         $player_id = self::getCurrentPlayerId();
 
-        $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
+        $this->gamestate->nextPrivateState($player_id, "passed");
     }
 
     function chooseDie($die_id) 
@@ -785,6 +785,14 @@ class SixtyOne extends Table
         ) );
 
         $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
+    }
+
+    function chooseLeaveDie($die_id) 
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'chooseCrossLocation' ); 
+                                
+        $player_id = self::getCurrentPlayerId();
     }
     
 //////////////////////////////////////////////////////////////////////////////

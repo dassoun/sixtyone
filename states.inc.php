@@ -57,7 +57,8 @@ if (!defined('STATE_INIT_GAME')) { // ensure this block is only invoked once, si
     define("STATE_CHOOSE_DIE", 40);
     define("STATE_CHOOSE_DIE_LOCATION", 50);
     // define("STATE_LAST_DIE_SCORE", 60);
-    define("STATE_CHOOSE_CROSS_LOCATION", 70);
+    define("STATE_CHOOSE_CROSS_LOCATION", 60);
+    define("STATE_CHOOSE_LEAVE_DIE", 70);
     define("STATE_AREA_SCORING", 80);
     define("STATE_NEXT_TURN", 90);
     define("STATE_END_GAME", 99);
@@ -101,7 +102,7 @@ $machinestates = array(
         "type" => "private",
         "args" => "argChooseArea",
         "possibleactions" => array( "pass", "chooseArea" ),
-        "transitions" => array( "passed" => 70, "areaChosen" => STATE_CHOOSE_DIE )
+        "transitions" => array( "passed" => STATE_CHOOSE_LEAVE_DIE, "areaChosen" => STATE_CHOOSE_DIE )
     ),
 
     STATE_CHOOSE_DIE => array(
@@ -144,6 +145,16 @@ $machinestates = array(
         "args" => "argChooseCrossLocation",
         "possibleactions" => array( "chooseCrossLocation", "cancelDieLocation" ),
         "transitions" => array( "crossLocationChosen" => STATE_AREA_SCORING, "dieLocationCancelled" => STATE_CHOOSE_AREA )
+    ),
+
+    STATE_CHOOSE_LEAVE_DIE => array(
+        "name" => "chooseLeaveDie",
+        "description" => "",
+        "descriptionmyturn" => clienttranslate('${you} must choose a die for leaves score.'),
+        "type" => "private",
+        //"args" => "argChooseLeaveDie",
+        "possibleactions" => array( "chooseLeaveDie" ),
+        "transitions" => array( "leaveDieChosen" => STATE_AREA_SCORING )
     ),
 
     STATE_AREA_SCORING => array(

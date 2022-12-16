@@ -418,6 +418,13 @@ function (dojo, declare) {
                 break;
             }
 
+            ////////////////////////////////////////////////////
+            case 'chooseLeaveDie':
+                for (let i=1; i<=3; i++) {
+                    this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickLeaveDie(elmt) ) );
+                }
+                break;
+
             case 'dummmy':
                 break;
             }
@@ -808,6 +815,13 @@ function (dojo, declare) {
             }
         },
 
+        onClickLeaveDie: function( elmt )
+        {
+            console.log( '$$$$ Event : onClickLeaveDie' );
+
+            if( ! this.checkAction( 'chooseLeaveDie' ) )
+            { return; }
+        },
         
         ///////////////////////////////////////////////////
         //// Reaction to cometD notifications
