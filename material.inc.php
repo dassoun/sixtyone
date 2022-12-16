@@ -59,3 +59,9 @@ $this->area_size = array(
     5 => 5,
     6 => 5,
 );
+
+$this->score_area_state = array(
+    "MISSED" => -1,
+    "AVAILABLE" => 0,
+    "COMPLETED" => 3,
+);

@@ -240,6 +240,15 @@ function (dojo, declare) {
                         $('sxt_location_'+player_id+'_6_'+(i+1)).innerHTML = (player['area_6_'+(i+1)] == 0 ? "X" : player['area_6_'+(i+1)]);
                     }
                 }
+
+                // Score area
+                for (let i=0; i<5; i++) {
+                    if (player['score_area_'+(i+1)] == this.gamedatas.score_area_state['COMPLETED']) {
+                        dojo.addClass('sxt_area_status_'+player_id+'_'+(i+1), 'sxt_area_status_completed');
+                    } else if (player['score_area_'+(i+1)] == this.gamedatas.score_area_state['MISSED']) {
+                        dojo.addClass('sxt_area_status_'+player_id+'_'+(i+1), 'sxt_area_status_missed');
+                    }
+                }
             }
  
             // Setup game notifications to handle (see "setupNotifications" method below)
@@ -933,7 +942,6 @@ function (dojo, declare) {
             let area_id = notif.args.area_id;
             let state = notif.args.state; // completed / missed
 
-            dojo.removeClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_empty');
             dojo.addClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_'+state);
         },
    });             

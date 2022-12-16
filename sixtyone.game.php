@@ -160,6 +160,8 @@ class SixtyOne extends Table
         for ($i=1; $i<4; $i++) {
             $result['dice'] = $this->getDiceDatas() ;
         }
+
+        $result['score_area_state'] = $this->score_area_state;
   
         return $result;
     }
@@ -494,7 +496,7 @@ class SixtyOne extends Table
         self::dump('size : ', $this->area_size[$area_id]);
         if ($filled_location == $this->area_size[$area_id]) {
             $score_area = $player->getScore_area();
-            $score_area[$area_id-1] = 3;
+            $score_area[$area_id-1] = $this->score_area_state["COMPLETED"];
             $player->setScore_area($score_area);
 
             $this->playerManager->persist($player);
@@ -1008,7 +1010,7 @@ class SixtyOne extends Table
                 self::dump('Score_area : ', $this->getGameStateValue( "area_".$i."_completed"));
                 if ($this->getGameStateValue( "area_".$i."_completed" ) == "0") {
                     self::debug("truc1");
-                    if ($score_area[$i-1] == 3) {
+                    if ($score_area[$i-1] == $this->score_area_state["COMPLETED"]) {
                         self::debug("truc2");
                         $area_completed[$i][] = $player_id;
                     }
@@ -1024,6 +1026,13 @@ class SixtyOne extends Table
                 $index = array_search($player_id, $value);
                 if ($index === false) {
                     $area_missed[$key][] = $player_id;
+
+                    $player = $this->playerManager->getById($player_id);
+                    $score_area = $player->getScore_area();
+                    $score_area[$area_id-1] = $this->score_area_state["MISSED"];
+                    $player->setScore_area($score_area);
+
+                    $this->playerManager->persist($player);
                 }
             }
         }
@@ -1033,7 +1042,7 @@ class SixtyOne extends Table
             self::dump('value : ', $value);
             foreach ($value as $key1 => $value1) {
                 self::debug('notif_scoreArea completed');
-                self::notifyAllPlayers( "notif_scoreArea", "", array(
+                self::notifyAllPlayers( "scoreArea", "", array(
                     'player_id' => $value1,
                     'area_id' => $key,
                     'state' => 'completed',
@@ -1045,7 +1054,7 @@ class SixtyOne extends Table
         foreach ($area_missed as $key => $value) {
             foreach ($value as $key1 => $value1) {
                 self::debug('notif_scoreArea missed');
-                self::notifyAllPlayers( "notif_scoreArea", "", array(
+                self::notifyAllPlayers( "scoreArea", "", array(
                     'player_id' => $value1,
                     'area_id' => $key,
                     'state' => 'missed',
