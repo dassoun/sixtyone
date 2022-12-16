@@ -32,12 +32,12 @@ class SXTPlayer implements \JsonSerializable
     private $score_area = [
         null, null, null, null, null, null,
     ];
-    private ?int $score_area_1;
-    private ?int $score_area_2;
-    private ?int $score_area_3;
-    private ?int $score_area_4;
-    private ?int $score_area_5;
-    private ?int $score_area_6;
+    // private int $score_area_1 = 0;
+    // private int $score_area_2 = 0;
+    // private int $score_area_3 = 0;
+    // private int $score_area_4 = 0;
+    // private int $score_area_5 = 0;
+    // private int $score_area_6 = 0;
     private int $area_1_1;
     private int $area_1_2;
     private int $area_1_3;

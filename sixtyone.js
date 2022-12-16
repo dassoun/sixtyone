@@ -745,12 +745,21 @@ function (dojo, declare) {
             }
         },
 
-        onPass: function() 
+        onPass: function( elmt ) 
         {
             console.log( '$$$$ Event : onPass' );
 
-            if( ! this.checkAction( 'onPass' ) )
+            if( ! this.checkAction( 'pass' ) )
             { return; }
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/pass.html", { lock: true, }, this, function( result ) {}, function( is_error ) {} );
+            }
         },
 
         onClickCrossLocation: function( elmt )
@@ -826,7 +835,8 @@ function (dojo, declare) {
             dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
 
             dojo.subscribe( 'showTurn', this, "notif_showTurn" );
-            
+
+            dojo.subscribe( 'scoreArea', this, "notif_scoreArea" );
         },  
         
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -912,6 +922,19 @@ function (dojo, declare) {
             if (!isNaN(cross_area_id) && cross_area_id > 0 && !isNaN(cross_location_id) && cross_location_id > 0) {
                 dojo.byId('sxt_location_'+player_id+'_'+cross_area_id+'_'+cross_location_id).innerHTML = 'X';
             }
+        },
+
+        notif_scoreArea: function( notif )
+        {
+            console.log("*** notif_scoreArea");
+            console.log( notif );
+
+            let player_id = notif.args.player_id;
+            let area_id = notif.args.area_id;
+            let state = notif.args.state; // completed / missed
+
+            dojo.removeClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_empty');
+            dojo.addClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_'+state);
         },
    });             
 });

@@ -56,7 +56,7 @@ var jstpl_sxt_leave = '<div class="sxt_leave" id="sxt_leave_${player_id}_${leave
 
 var jstpl_sxt_area = '<div id="sxt_area_${player_id}_${area_id}" class="sxt_area sxt_area_${area_id}"></div>';
 
-var jstpl_sxt_area_status = '<div id="sxt_area_status_${player_id}_${area_id}" class="sxt_area_status sxt_area_status_completed"></div>';
+var jstpl_sxt_area_status = '<div id="sxt_area_status_${player_id}_${area_id}" class="sxt_area_status"></div>';
 
 var jstpl_sxt_location_area_1 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_1_${size}"></div>';
 var jstpl_sxt_location_area_2 = '<div id="sxt_location_${player_id}_${area_id}_${location_id}" class="sxt_location sxt_location_area_2"></div>';

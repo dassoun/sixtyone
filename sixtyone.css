@@ -214,8 +214,8 @@
     position: absolute;
     width: 58px;
     height: 24px;
-    background-color: aliceblue;
-    opacity: .5;
+    /* background-color: aliceblue;
+    opacity: .5; */
     background-image: url("img/area_status.png");
 }
 

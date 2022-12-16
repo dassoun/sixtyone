@@ -478,6 +478,29 @@ class SixtyOne extends Table
         return $possibleMoveNumber;
     }
 
+    function check_area_completion(SXTPlayer $player, int $area_id)
+    {
+        $locations = $player->{'getArea_'.$area_id}();
+        $filled_location = 0;
+
+        foreach ($locations as $location) {
+            if ($location > -1) {
+                $filled_location++;
+            }
+        }
+
+        self::debug("------------------------");
+        self::dump('filled_location : ', $filled_location);
+        self::dump('size : ', $this->area_size[$area_id]);
+        if ($filled_location == $this->area_size[$area_id]) {
+            $score_area = $player->getScore_area();
+            $score_area[$area_id-1] = 3;
+            $player->setScore_area($score_area);
+
+            $this->playerManager->persist($player);
+        }
+    }
+
 //////////////////////////////////////////////////////////////////////////////
 //////////// Player actions
 //////////// 
@@ -568,6 +591,16 @@ class SixtyOne extends Table
         $this->playerManager->persist($player);
 
         $this->gamestate->nextPrivateState($player_id, "areaChoiceCancelled");
+    }
+
+    function pass() 
+    {
+        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
+        self::checkAction( 'pass' ); 
+
+        $player_id = self::getCurrentPlayerId();
+
+        $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
     }
 
     function chooseDie($die_id) 
@@ -698,25 +731,11 @@ class SixtyOne extends Table
 
         // area completed ?
         if (!$this->getGameStateValue( 'area_'.$area_id.'_completed' )) {
-            $locations = $player->{'getArea_'.$area_id}();
-            $filled_location = 0;
-
-            foreach ($locations as $location) {
-                if ($location > 0) {
-                    $filled_location++;
-                }
-            }
-
-            if ($filled_location == $this->area_size[$area_id]) {
-                $score_area = $player->getScore_area();
-                $score_area[$area_id-1] = 3;
-                $player->setScore_area($score_area);
-
-                $this->playerManager->persist($player);
-            }
+            $this->check_area_completion($player, $area_id);
         }
         
-        
+        // Next state
+        // Cross to write, or not ?
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
             $bonus = $player->getBonus();
@@ -751,6 +770,11 @@ class SixtyOne extends Table
         // $player->setChosen_location($location_id);
 
         $this->playerManager->persist($player);
+
+        // area completed ?
+        if (!$this->getGameStateValue( 'area_'.$area_id.'_completed' )) {
+            $this->check_area_completion($player, $area_id);
+        }
 
         self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a X in aera ${area_id}"), array(
             'die_value' => 0,
@@ -946,8 +970,13 @@ class SixtyOne extends Table
 
     function stAreaScoring()
     {
+        self::debug('stAreaScoring');
+
         // Notify other players
         $players = $this->loadPlayersBasicInfos();
+
+        $area_completed = array();
+        $area_missed = array();
 
         foreach ($players as $player_id => $info) {
 
@@ -974,10 +1003,53 @@ class SixtyOne extends Table
             ) );
 
             // Check area completion
+            $score_area = $player->getScore_area();
             for ($i=1; $i<7; $i++) {
-                if (!$this->getGameStateValue( "area_".$i."_completed" )) {
-
+                self::dump('Score_area : ', $this->getGameStateValue( "area_".$i."_completed"));
+                if ($this->getGameStateValue( "area_".$i."_completed" ) == "0") {
+                    self::debug("truc1");
+                    if ($score_area[$i-1] == 3) {
+                        self::debug("truc2");
+                        $area_completed[$i][] = $player_id;
+                    }
                 }
+            }
+        }
+
+        $area_missed = array();
+        foreach ($area_completed as $key => $value) {
+            self::dump('value : ', $value);
+            foreach ($players as $player_id => $info) {
+                self::dump('player_id : ', $player_id);
+                $index = array_search($player_id, $value);
+                if ($index === false) {
+                    $area_missed[$key][] = $player_id;
+                }
+            }
+        }
+        
+        self::dump('area_completed', $area_completed);
+        foreach ($area_completed as $key => $value) {
+            self::dump('value : ', $value);
+            foreach ($value as $key1 => $value1) {
+                self::debug('notif_scoreArea completed');
+                self::notifyAllPlayers( "notif_scoreArea", "", array(
+                    'player_id' => $value1,
+                    'area_id' => $key,
+                    'state' => 'completed',
+                ) );
+            }
+        }
+
+        self::dump('area_missed', $area_missed);
+        foreach ($area_missed as $key => $value) {
+            foreach ($value as $key1 => $value1) {
+                self::debug('notif_scoreArea missed');
+                self::notifyAllPlayers( "notif_scoreArea", "", array(
+                    'player_id' => $value1,
+                    'area_id' => $key,
+                    'state' => 'missed',
+                ) );
             }
         }
 
