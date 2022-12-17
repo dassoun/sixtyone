@@ -19,7 +19,8 @@ define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
     "ebg/counter",
-    g_gamethemeurl + "./modules/js/coord.js"
+    g_gamethemeurl + "./modules/js/coord.js",
+    g_gamethemeurl + "./modules/js/helpers.js"
 ],
 function (dojo, declare) {
     return declare("bgagame.sixtyone", ebg.core.gamegui, {
@@ -934,12 +935,7 @@ function (dojo, declare) {
 
             let player_id = this.player_id;
 
-            for (let i=1; i<7; i++) {
-                let elmt = dojo.query('sxt_area_'+player_id+'_'+i);
-                if (elmt) {
-                    dojo.destroy('sxt_area_'+player_id+'_'+i);
-                }
-            }
+            cleanDisableAreas(player_id);
         },
 
         notif_addLeaveScore: function( notif )
@@ -992,17 +988,6 @@ function (dojo, declare) {
             let state = notif.args.state; // completed / missed
 
             dojo.addClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_'+state);
-        },
-
-        // Helpers
-        cleanDisableAreas: function(player_id) 
-        {
-            for (let i=1; i<7; i++) {
-                let elmt = dojo.query('sxt_area_'+player_id+'_'+i);
-                if (elmt) {
-                    dojo.destroy(elmt);
-                }
-            }
         },
    });             
 });
