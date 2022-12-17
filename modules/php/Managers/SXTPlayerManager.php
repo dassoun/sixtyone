@@ -62,6 +62,24 @@ class SXTPlayerManager extends \APP_DbObject
                         $res['score_area_1'], $res['score_area_2'], $res['score_area_3'], 
                         $res['score_area_4'], $res['score_area_5'], $res['score_area_6']
                     ))
+                ->setArea_1(array(
+                    $res['area_1_1'], $res['area_1_2'], $res['area_1_3'], $res['area_1_4']
+                    )) 
+                ->setArea_2(array(
+                    $res['area_2_1'], $res['area_2_2'], $res['area_2_3'], $res['area_2_4'], $res['area_2_5']
+                    )) 
+                ->setArea_3(array(
+                    $res['area_2_1'], $res['area_2_2'], $res['area_2_3'], $res['area_2_4'], $res['area_3_5']
+                    )) 
+                ->setArea_4(array(
+                    $res['area_4_1'], $res['area_4_2'], $res['area_4_3'], $res['area_4_4'], $res['area_4_5'], $res['area_4_6']
+                    )) 
+                ->setArea_5(array(
+                    $res['area_5_1'], $res['area_5_2'], $res['area_5_3'], $res['area_5_4'], $res['area_5_5'], $res['area_5_6']
+                    )) 
+                ->setArea_6(array(
+                    $res['area_6_1'], $res['area_6_2'], $res['area_6_3'], $res['area_6_4'], $res['area_6_5']
+                    )) 
                 ->setArea_1_1($res['area_1_1'])
                 ->setArea_1_2($res['area_1_2'])
                 ->setArea_1_3($res['area_1_3'])

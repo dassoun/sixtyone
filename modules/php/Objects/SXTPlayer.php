@@ -1042,11 +1042,35 @@ class SXTPlayer implements \JsonSerializable
     }
 
     /**
+     * Set the value of area_1
+     *
+     * @return  self
+     */ 
+    public function setArea_1($area_1)
+    {
+        $this->area_1 = $area_1;
+
+        return $this;
+    }
+
+    /**
      * Get the value of area_2
      */ 
     public function getArea_2()
     {
         return $this->area_2;
+    }
+
+    /**
+     * Set the value of area_2
+     *
+     * @return  self
+     */ 
+    public function setArea_2($area_2)
+    {
+        $this->area_2 = $area_2;
+
+        return $this;
     }
 
     /**
@@ -1058,11 +1082,35 @@ class SXTPlayer implements \JsonSerializable
     }
 
     /**
+     * Set the value of area_3
+     *
+     * @return  self
+     */ 
+    public function setArea_3($area_3)
+    {
+        $this->area_3 = $area_3;
+
+        return $this;
+    }
+
+    /**
      * Get the value of area_4
      */ 
     public function getArea_4()
     {
         return $this->area_4;
+    }
+
+    /**
+     * Set the value of area_4
+     *
+     * @return  self
+     */ 
+    public function setArea_4($area_4)
+    {
+        $this->area_4 = $area_4;
+
+        return $this;
     }
 
     /**
@@ -1074,11 +1122,35 @@ class SXTPlayer implements \JsonSerializable
     }
 
     /**
+     * Set the value of area_5
+     *
+     * @return  self
+     */ 
+    public function setArea_5($area_5)
+    {
+        $this->area_5 = $area_5;
+
+        return $this;
+    }
+
+    /**
      * Get the value of area_6
      */ 
     public function getArea_6()
     {
         return $this->area_6;
+    }
+
+    /**
+     * Set the value of area_6
+     *
+     * @return  self
+     */ 
+    public function setArea_6($area_6)
+    {
+        $this->area_6 = $area_6;
+
+        return $this;
     }
 
     public function jsonSerialize(): array
@@ -1108,11 +1180,6 @@ class SXTPlayer implements \JsonSerializable
             "area_2_3" => $this->getArea_2_3(),
             "area_2_4" => $this->getArea_2_4(),
             "area_2_5" => $this->getArea_2_5(),
-            // "area_3_1_1" => $this->getArea_3_1_1(),
-            // "area_3_1_2" => $this->getArea_3_1_2(),
-            // "area_3_2_1" => $this->getArea_3_2_1(),
-            // "area_3_2_2" => $this->getArea_3_2_2(),
-            // "area_3_2_3" => $this->getArea_3_2_3(),
             "area_3_1" => $this->getArea_3_1(),
             "area_3_2" => $this->getArea_3_2(),
             "area_3_3" => $this->getArea_3_3(),
@@ -1135,6 +1202,12 @@ class SXTPlayer implements \JsonSerializable
             "area_6_3" => $this->getArea_6_3(),
             "area_6_4" => $this->getArea_6_4(),
             "area_6_5" => $this->getArea_6_5(),
+            "area_1" => $this->getArea_1(),
+            "area_2" => $this->getArea_2(),
+            "area_3" => $this->getArea_3(),
+            "area_4" => $this->getArea_4(),
+            "area_5" => $this->getArea_5(),
+            "area_6" => $this->getArea_6(),
             "bonus" => $this->getBonus(),
         ];
     }

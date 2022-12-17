@@ -350,12 +350,30 @@
 .sxt_score {
     font-family: 'Caveat Brush', cursive;
     position: absolute;
-    background-color: white;
-    opacity: .5;
+    background-color: transparent;
+    /* opacity: .5; */
     width: 57px;
     height: 50px;
-    border: 1px dashed black;
+    border: 1px dashed transparent;
+    font-size: 38px;
+    line-height: 49px;
+    text-align: center;
 }
+
+.stx_img_final_scoring {
+    display:inline-block;
+    height: 43px;
+    width: 50px;
+    background-image: url( 'img/score_dice_50_43.png' );
+}
+
+.stx_img_final_scoring_1 { background-position: 0px 0px; }
+.stx_img_final_scoring_2 { background-position: -50px 0px; }
+.stx_img_final_scoring_3 { background-position: -100px 0px; }
+.stx_img_final_scoring_4 { background-position: -150px 0px; }
+.stx_img_final_scoring_5 { background-position: -200px 0px; }
+.stx_img_final_scoring_6 { background-position: -250px 0px; }
+.stx_img_final_scoring_7 { background-position: -300px 0px; }
 
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):

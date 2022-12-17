@@ -875,11 +875,15 @@ function (dojo, declare) {
 
             dojo.subscribe( 'cancelLocationChosen', this, "notif_cancelLocationChosen" );
 
+            dojo.subscribe( 'cancelDieChosen', this, "notif_cancelDieChosen" );
+
             dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
 
             dojo.subscribe( 'showTurn', this, "notif_showTurn" );
 
             dojo.subscribe( 'scoreArea', this, "notif_scoreArea" );
+
+            dojo.subscribe( 'finalScoring', this, "notif_finalScoring" );
         },  
         
         // TODO: from this point and below, you can write your game notifications handling methods
@@ -938,6 +942,15 @@ function (dojo, declare) {
             cleanDisableAreas(player_id);
         },
 
+        notif_cancelDieChosen: function( notif )
+        {
+            console.log( notif );
+
+            let player_id = this.player_id;
+
+            cleanSelectionnableArea(player_id, this.gamedatas.area_size);
+        },
+
         notif_addLeaveScore: function( notif )
         {
             console.log( notif );
@@ -988,6 +1001,20 @@ function (dojo, declare) {
             let state = notif.args.state; // completed / missed
 
             dojo.addClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_'+state);
+        },
+
+        notif_finalScoring: function( notif )
+        {
+            console.log("*** notif_scoreArea");
+            console.log( notif );
+
+            let player_id = notif.args.player_id;
+            let scores = notif.args.scores;
+
+            for (let [key, value] of Object.entries(scores)) {
+                console.log( 'sxt_score_'+player_id+'_'+(parseInt(key)+1) );
+                dojo.byId('sxt_score_'+player_id+'_'+(parseInt(key)+1)).innerHTML = value;
+            }
         },
    });             
 });

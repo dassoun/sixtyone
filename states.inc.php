@@ -61,6 +61,7 @@ if (!defined('STATE_INIT_GAME')) { // ensure this block is only invoked once, si
     define("STATE_CHOOSE_LEAVE_DIE", 70);
     define("STATE_AREA_SCORING", 80);
     define("STATE_NEXT_TURN", 90);
+    define("STATE_STATS_CALCULATION", 100);
     define("STATE_END_GAME", 99);
 }
 
@@ -170,7 +171,16 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stprepareNextTurn",
-        "transitions" => array( "startNextRound" => STATE_INIT_TURN, "endGame" => STATE_END_GAME )
+        "transitions" => array( "startNextRound" => STATE_INIT_TURN, "goToStatsCulculation" => STATE_STATS_CALCULATION )
+    ),
+
+    STATE_STATS_CALCULATION => array(
+        "name" => "statsCalculation",
+        "description" => '',
+        "type" => "game",
+        "action" => "stStatsCalculation",
+        //"transitions" => array( "" => STATE_END_GAME )
+        "transitions" => array( "loopback"=> STATE_CHOOSE_LEAVE_DIE ) // Debug end game
     ),
     
 /*

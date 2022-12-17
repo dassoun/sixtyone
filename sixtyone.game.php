@@ -162,6 +162,7 @@ class SixtyOne extends Table
         }
 
         $result['score_area_state'] = $this->score_area_state;
+        $result['area_size'] = $this->area_size;
   
         return $result;
     }
@@ -658,6 +659,8 @@ class SixtyOne extends Table
         $player->setDie_2(null);
         $this->playerManager->persist($player);
 
+        self::notifyPlayer( $player_id, "cancelDieChosen", "", array() );
+
         $this->gamestate->nextPrivateState($player_id, "dieChoiceCancelled");
     }
 
@@ -1130,6 +1133,8 @@ class SixtyOne extends Table
     {
         $players = $this->loadPlayersBasicInfos();
 
+        $end_game = false;
+
         foreach ($players as $player_id => $info) {
             $player = $this->playerManager->getById($player_id);
 
@@ -1141,9 +1146,118 @@ class SixtyOne extends Table
             $player->setChosen_location_cross(null);
 
             $this->playerManager->persist($player);
+
+            if ($player->get_total_score_leave() >= 61 || $player->get_score_leave_last_position() == 20) {
+                $end_game = true;
+            }
         }
 
-        $this->gamestate->nextState("startNextRound"); 
+        if ($end_game) {
+            $this->gamestate->nextState("goToStatsCulculation");
+        } else {
+            $this->gamestate->nextState("startNextRound"); 
+        }
+    }
+
+    function stStatsCalculation()
+    {
+        $table_final_scoring = array();
+
+        $img_score_1 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_1\"></div>";
+        $img_score_2 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_2\"></div>";
+        $img_score_3 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_3\"></div>";
+        $img_score_4 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_4\"></div>";
+        $img_score_5 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_5\"></div>";
+        $img_score_6 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_6\"></div>";
+        $img_score_7 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_7\"></div>";
+
+        $table_final_scoring[] = array("", $img_score_1, $img_score_2, $img_score_3, $img_score_4, $img_score_5, $img_score_6,
+                                        $img_score_7, self::_(clienttranslate("Total")));
+
+        $players = $this->loadPlayersBasicInfos();
+
+        foreach ($players as $player_id => $info) {
+            $player = $this->playerManager->getById($player_id);
+
+            $locations = array();
+            $scores = array(0, 0, 0, 0, 0, 0, 0);
+            $total = 0;
+            for ($i=1; $i<7; $i++) {
+                $locations = $player->{"getArea_".$i}();
+
+                self::dump("locations area ".$i." for player ".$player_id." : ", $locations);
+
+                if ($i == 1) {
+                    if ($locations[0] >= 0 && $locations[1] >= 0) {
+                        $scores[$i-1] += $this->location_score[$i][1];
+                        $total += $this->location_score[$i][1];
+                    }
+                    if ($locations[2] >= 0 && $locations[3] >= 0) {
+                        $scores[$i-1] += $this->location_score[$i][2];
+                        $total += $this->location_score[$i][2];
+                    }
+                } else if ($i == 2) {
+                    for ($j=1; $j<=count($locations); $j++) {
+                        if ($locations[$j-1] >= 0) {
+                            $scores[$i-1] += $this->location_score[$i][$j];
+                            $total += $this->location_score[$i][$j];
+                        }
+                    }
+                } else if ($i == 3) {
+                    if ($locations[0] >= 0 && $locations[1] >= 0) {
+                        $scores[$i-1] += $this->location_score[$i][1];
+                        $total += $this->location_score[$i][1];
+                    }
+                    if ($locations[2] >= 0 && $locations[3] >= 0 && $locations[4] >= 0) {
+                        $scores[$i-1] += $this->location_score[$i][2];
+                        $total += $this->location_score[$i][2];
+                    }
+                } else if ($i == 4) {
+                    for ($j=1; $j<=count($locations); $j++) {
+                        if ($locations[$j-1] >= 0) {
+                            $scores[$i-1] += $this->location_score[$i][$j];
+                            $total += $this->location_score[$i][$j];
+                        }
+                    }
+                } else if ($i == 5) {
+                    for ($j=1; $j<=count($locations); $j++) {
+                        if ($locations[$j-1] >= 0) {
+                            $scores[$i-1] += $this->location_score[$i][$j];
+                            $total += $this->location_score[$i][$j];
+                        }
+                    }
+                } else if ($i == 6) {
+                    for ($j=1; $j<=count($locations); $j++) {
+                        if ($locations[$j-1] >= 0) {
+                            $scores[$i-1] += $this->location_score[$i][$j];
+                            $total += $this->location_score[$i][$j];
+                        }
+                    }
+                }
+            }
+
+            $scores[6] = 0;
+
+            $scores[7] = $total;
+
+            $this->notifyAllPlayers( "finalScoring", "", array(
+                "player_id" => $player_id,
+                "scores" => $scores,
+            ) );
+
+            $table_final_scoring[] = array($info['player_name'], $scores[0], $scores[1], $scores[2], $scores[3], $scores[4], $scores[5], $scores[6], $total);
+        }
+
+        
+
+        $this->notifyAllPlayers( "tableWindow", "", array(
+            "id" => 'finalScoring',
+            "title" => clienttranslate("Final scoring"),
+            "table" => $table_final_scoring,
+            "closing" => clienttranslate( "Close" )
+        ) );
+
+        $this->gamestate->nextState(""); 
     }
 
 //////////////////////////////////////////////////////////////////////////////
