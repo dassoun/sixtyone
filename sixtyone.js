@@ -421,6 +421,9 @@ function (dojo, declare) {
             ////////////////////////////////////////////////////
             case 'chooseLeaveDie':
                 for (let i=1; i<=3; i++) {
+                    let elmt = 'sxt_die_'+i;
+
+                    dojo.addClass(elmt, 'sxt_die_clickable');
                     this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickLeaveDie(elmt) ) );
                 }
                 break;
@@ -821,6 +824,20 @@ function (dojo, declare) {
 
             if( ! this.checkAction( 'chooseLeaveDie' ) )
             { return; }
+
+            let die_id = elmt.split('_')[2];
+
+            dojo.forEach(this.connections, dojo.disconnect);
+            this.connections = [];
+
+            if ( this.isCurrentPlayerActive() ) {
+                // for (let dice of dices) {
+                //     if (dice.player_id == null) {
+                //         dojo.removeClass( 'dice_'+dice.id+'_'+dice.dice_value, 'ctc_dice_clickable' );
+                //     }
+                // }
+                this.ajaxcall( "/sixtyone/sixtyone/chooseLeaveDie.html", { lock: true, die_id: die_id }, this, function( result ) {}, function( is_error ) {} );
+            }
         },
         
         ///////////////////////////////////////////////////
@@ -854,6 +871,8 @@ function (dojo, declare) {
             dojo.subscribe( 'rollDice', this, "notif_rollDice" );
 
             dojo.subscribe( 'locationChosen', this, "notif_locationChosen" );
+
+            dojo.subscribe( 'cancelLocationChosen', this, "notif_cancelLocationChosen" );
 
             dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
 
@@ -909,6 +928,20 @@ function (dojo, declare) {
             }
         },
 
+        notif_cancelLocationChosen: function( notif )
+        {
+            console.log( notif );
+
+            let player_id = this.player_id;
+
+            for (let i=1; i<7; i++) {
+                let elmt = dojo.query('sxt_area_'+player_id+'_'+i);
+                if (elmt) {
+                    dojo.destroy('sxt_area_'+player_id+'_'+i);
+                }
+            }
+        },
+
         notif_addLeaveScore: function( notif )
         {
             console.log( notif );
@@ -936,7 +969,9 @@ function (dojo, declare) {
             let leave_number = notif.args.leave_number;
             let total_score_leave = notif.args.total_score_leave;
 
-            dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_location_value;
+            if (!isNaN(area_id) && area_id > 0) {
+                dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_location_value;
+            }
             dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
 
             let cross_area_id = notif.args.cross_area_id;
@@ -957,6 +992,17 @@ function (dojo, declare) {
             let state = notif.args.state; // completed / missed
 
             dojo.addClass('sxt_area_status_'+player_id+'_'+area_id, 'sxt_area_status_'+state);
+        },
+
+        // Helpers
+        cleanDisableAreas: function(player_id) 
+        {
+            for (let i=1; i<7; i++) {
+                let elmt = dojo.query('sxt_area_'+player_id+'_'+i);
+                if (elmt) {
+                    dojo.destroy(elmt);
+                }
+            }
         },
    });             
 });

@@ -592,6 +592,8 @@ class SixtyOne extends Table
         $player->setDie_1(null);
         $this->playerManager->persist($player);
 
+        self::notifyPlayer( $player_id, "cancelLocationChosen", "", array() );
+
         $this->gamestate->nextPrivateState($player_id, "areaChoiceCancelled");
     }
 
@@ -790,9 +792,50 @@ class SixtyOne extends Table
     function chooseLeaveDie($die_id) 
     {
         // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
-        self::checkAction( 'chooseCrossLocation' ); 
+        self::checkAction( 'chooseLeaveDie' ); 
                                 
         $player_id = self::getCurrentPlayerId();
+
+        $player = $this->playerManager->getById($player_id);
+
+        $player->setDie_3($die_id);
+        
+        if ($die_id) {
+            $player->add_leave_score($this->getGameStateValue( "die_".$die_id."_value" )); 
+        }
+
+        $this->playerManager->persist($player);
+
+        $player_total_leave_score = $player->get_total_score_leave();
+
+        // self::dump("player: ", $player);
+
+        if ($die_id) {
+            $score_leave_last_position = $player->get_score_leave_last_position();
+
+            self::notifyPlayer( $player_id, "addLeaveScore", "", array(
+                'total_score_leave' => $player_total_leave_score,
+                'leave_number' => $score_leave_last_position,
+            ) );
+        }
+
+        // Next state
+        // Cross to write, or not ?
+        if (array_key_exists($player_total_leave_score, $this->bonus)) {
+            $index = array_search($player_total_leave_score, array_keys($this->bonus));
+            $bonus = $player->getBonus();
+            $bonus[$index] = 1;
+            $player->setBonus($bonus);
+            $this->playerManager->persist($player);
+
+            if ($this->bonus[$player_total_leave_score] == 0) {
+                $this->gamestate->nextPrivateState($player_id, "toCrossLocationChoice");
+            } else {
+                $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
+            }
+        } else {
+            $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
+        }
     }
     
 //////////////////////////////////////////////////////////////////////////////
@@ -993,9 +1036,19 @@ class SixtyOne extends Table
             $player = $this->playerManager->getById($player_id);
 
             $player_id = $player_id;
-            $area_id = $this->getGameStateValue( "die_".$player->getDie_1()."_value" );
+            // if player passed, he has no die #1
+            $player_die1 = $player->getDie_1();
+            $area_id = null;
+            if ($player_die1) {
+                $area_id = $this->getGameStateValue( "die_".$player_die1."_value" );
+            }
             $location_id = $player->getChosen_location();
-            $die_location_value = $this->getGameStateValue( "die_".$player->getDie_2()."_value" );;
+            // if player passed, he has no die #2
+            $player_die2 = $player->getDie_2();
+            $die_location_value = null;
+            if ($player_die2) {
+                $die_location_value = $this->getGameStateValue( "die_".$player_die2."_value" );
+            }
             $leave_number = $player->get_score_leave_last_position();
             $total_score_leave = $player->get_total_score_leave();
             $cross_area_id = $player->getChosen_area_cross();

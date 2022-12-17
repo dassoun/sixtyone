@@ -154,7 +154,7 @@ $machinestates = array(
         "type" => "private",
         //"args" => "argChooseLeaveDie",
         "possibleactions" => array( "chooseLeaveDie" ),
-        "transitions" => array( "leaveDieChosen" => STATE_AREA_SCORING )
+        "transitions" => array( "toCrossLocationChoice" => STATE_CHOOSE_CROSS_LOCATION, "leaveDieChosen" => STATE_AREA_SCORING )
     ),
 
     STATE_AREA_SCORING => array(
