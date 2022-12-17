@@ -95,6 +95,17 @@ function (dojo, declare) {
                     this.slideToObjectPos( 'sxt_leave_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, leave_coords[i][0], leave_coords[i][1] ).play();
                 }
 
+                // Bonus
+                for (let i = 0; i < bonus_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_sxt_bonus', {
+                        player_id: player_id,
+                        bonus_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    console.log('sxt_bonus_'+player_id+'_'+(i+1));
+                    this.slideToObjectPos( 'sxt_bonus_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, bonus_coords[i][0], bonus_coords[i][1] ).play();
+                }
+
                 // locations
                 // Area status
                 for (let i = 0; i < area_status_coords.length; i++){

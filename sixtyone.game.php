@@ -1163,13 +1163,13 @@ class SixtyOne extends Table
     {
         $table_final_scoring = array();
 
-        $img_score_1 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_1\"></div>";
-        $img_score_2 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_2\"></div>";
-        $img_score_3 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_3\"></div>";
-        $img_score_4 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_4\"></div>";
-        $img_score_5 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_5\"></div>";
-        $img_score_6 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_6\"></div>";
-        $img_score_7 = "<div class=\"stx_img_final_scoring stx_img_final_scoring_7\"></div>";
+        $img_score_1 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_1\"></div>";
+        $img_score_2 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_2\"></div>";
+        $img_score_3 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_3\"></div>";
+        $img_score_4 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_4\"></div>";
+        $img_score_5 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_5\"></div>";
+        $img_score_6 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_6\"></div>";
+        $img_score_7 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_7\"></div>";
 
         $table_final_scoring[] = array("", $img_score_1, $img_score_2, $img_score_3, $img_score_4, $img_score_5, $img_score_6,
                                         $img_score_7, self::_(clienttranslate("Total")));
@@ -1186,6 +1186,8 @@ class SixtyOne extends Table
                 $locations = $player->{"getArea_".$i}();
 
                 self::dump("locations area ".$i." for player ".$player_id." : ", $locations);
+
+                $score_area = $player->getScore_area();
 
                 if ($i == 1) {
                     if ($locations[0] >= 0 && $locations[1] >= 0) {
@@ -1233,6 +1235,11 @@ class SixtyOne extends Table
                             $total += $this->location_score[$i][$j];
                         }
                     }
+                }
+
+                if ($score_area[$i-1] > 0) {
+                    $scores[$i-1] += 3;
+                    $total += 3;
                 }
             }
 
