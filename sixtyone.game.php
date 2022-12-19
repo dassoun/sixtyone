@@ -944,9 +944,9 @@ class SixtyOne extends Table
         return $res;
     }
 
-    function argChooseDie() 
+    function argChooseDie($player_id) 
     {
-        $player_id = self::getCurrentPlayerId();
+        // $player_id = self::getCurrentPlayerId();
 
         $player = $this->playerManager->getById($player_id);
 
@@ -961,9 +961,9 @@ class SixtyOne extends Table
         return $res;
     }
 
-    function argChooseDieLocation()
+    function argChooseDieLocation(int $player_id)
     {
-        $player_id = self::getCurrentPlayerId();
+        //$player_id = self::getCurrentPlayerId();
 
         $player = $this->playerManager->getById($player_id);
 
@@ -997,9 +997,9 @@ class SixtyOne extends Table
         return $res;
     }
 
-    function argChooseCrossLocation()
+    function argChooseCrossLocation(int $player_id)
     {
-        $player_id = self::getCurrentPlayerId();
+        //$player_id = self::getCurrentPlayerId();
 
         $player = $this->playerManager->getById($player_id);
 
@@ -1334,7 +1334,8 @@ class SixtyOne extends Table
     function zombieTurn( $state, $active_player )
     {
     	$statename = $state['name'];
-    	self::debug("+++++++++++++++ ". $state['type']);
+    	// self::debug("+++++++++++++++ ". $state['type']);
+        $this->notifyAllPlayers("log", "zombie active on state $statename", []);
         if ($state['type'] === "activeplayer") {
             switch ($statename) {
                 default:
