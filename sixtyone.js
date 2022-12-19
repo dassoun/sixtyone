@@ -202,6 +202,18 @@ function (dojo, declare) {
             for ( var player_id in gamedatas.players ) {
                 var player = gamedatas.players[player_id];
                 
+                // dice
+                if (this.player_id == player_id) {
+                    if (!isNaN(player['die_1']) && player['die_1'] > 0) {
+                        dojo.removeClass('sxt_die_'+player['die_1'], 'sxt_die_clickable');
+                        dojo.addClass('sxt_die_'+player['die_1'], 'sxt_die_used')
+                    }
+                    if (!isNaN(player['die_2']) && player['die_2'] > 0) {
+                        dojo.removeClass('sxt_die_'+player['die_2'], 'sxt_die_clickable');
+                        dojo.addClass('sxt_die_'+player['die_2'], 'sxt_die_selected')
+                    } 
+                }
+
                 // leaves
                 let leave_score = 0;
                 for (let i=0; i<20; i++) {
