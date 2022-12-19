@@ -159,6 +159,7 @@ $machinestates = array(
     ),
 
     STATE_AREA_SCORING => array(
+        "updateGameProgression" => true,
         "name" => "areaScoring",
         "description" => '',
         "type" => "game",
@@ -179,8 +180,8 @@ $machinestates = array(
         "description" => '',
         "type" => "game",
         "action" => "stStatsCalculation",
-        //"transitions" => array( "" => STATE_END_GAME )
-        "transitions" => array( "loopback"=> STATE_CHOOSE_LEAVE_DIE ) // Debug end game
+        "transitions" => array( "" => STATE_END_GAME )
+        //"transitions" => array( "loopback"=> STATE_CHOOSE_LEAVE_DIE ) // Debug end game
     ),
     
 /*

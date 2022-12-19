@@ -992,8 +992,10 @@ function (dojo, declare) {
             if (!isNaN(area_id) && area_id > 0) {
                 dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_location_value;
             }
-            dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
-
+            if (dojo.byId('sxt_leave_'+player_id+'_'+leave_number)) {
+                dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
+            }
+            
             let cross_area_id = notif.args.cross_area_id;
             let cross_location_id = notif.args.cross_location_id;
             

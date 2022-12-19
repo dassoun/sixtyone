@@ -179,9 +179,37 @@ class SixtyOne extends Table
     */
     function getGameProgression()
     {
-        // TODO: compute and return the game progression
+        $players = $this->loadPlayersBasicInfos();
 
-        return 0;
+        $game_progression = 0;
+
+        foreach ($players as $player_id => $info) {
+            $player = $this->playerManager->getById($player_id);
+
+            // progression according to leaves score
+            $total_score_leave = $player->get_total_score_leave();
+            if ($total_score_leave > 0) {
+                $tmp1 = (($total_score_leave / 61) * 100);
+            } else {
+                $tmp1 = 0;
+            }
+            
+            // progression according to turn number
+            $leave_last_position = $player->get_score_leave_last_position();
+            if ($leave_last_position > 0) {
+                $tmp2 = (($leave_last_position / 20) * 100);
+            } else {
+                $tmp2 = 0;
+            }
+
+            $game_progression = max($game_progression, max($tmp1, $tmp2));
+            
+            if ($game_progression > 100) {
+                $game_progression = 100;
+            }
+        }
+
+        return $game_progression;
     }
 
 
@@ -844,6 +872,13 @@ class SixtyOne extends Table
             $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
         }
     }
+
+    // pass() for zombie
+    function zombiePass( $zombie_player_id )
+    {
+        $this->gamestate->unsetPrivateState($zombie_player_id);
+        $this->gamestate->setPlayerNonMultiactive( $zombie_player_id, "" );
+    }
     
 //////////////////////////////////////////////////////////////////////////////
 //////////// Game state arguments
@@ -1299,7 +1334,7 @@ class SixtyOne extends Table
     function zombieTurn( $state, $active_player )
     {
     	$statename = $state['name'];
-    	
+    	self::debug("+++++++++++++++ ". $state['type']);
         if ($state['type'] === "activeplayer") {
             switch ($statename) {
                 default:
@@ -1312,7 +1347,17 @@ class SixtyOne extends Table
 
         if ($state['type'] === "multipleactiveplayer") {
             // Make sure player is in a non blocking status for role turn
-            $this->gamestate->setPlayerNonMultiactive( $active_player, '' );
+            // $this->gamestate->setPlayerNonMultiactive( $active_player, '' );
+
+            switch ($statename) {
+                case "multiplayerPhase":
+                    $this->zombiePass( $active_player );
+                    break;
+
+                default:
+                    $this->gamestate->nextState( "zombiePass" );
+                	break;
+            }
             
             return;
         }
