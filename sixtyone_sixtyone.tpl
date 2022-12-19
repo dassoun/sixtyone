@@ -54,7 +54,7 @@ var jstpl_sxt_player_area =
 
 var jstpl_sxt_leave = '<div class="sxt_leave" id="sxt_leave_${player_id}_${leave_id}"></div>';
 
-var jstpl_sxt_bonus = '<div class="sxt_bonus sxt_bonus_${bonus_id} sxt_bonus_acquired_${bonus_id}" id="sxt_bonus_${player_id}_${bonus_id}"></div>';
+var jstpl_sxt_bonus = '<div class="sxt_bonus sxt_bonus_${bonus_id}" id="sxt_bonus_${player_id}_${bonus_id}"></div>';
 
 var jstpl_sxt_area = '<div id="sxt_area_${player_id}_${area_id}" class="sxt_area sxt_area_${area_id}"></div>';
 

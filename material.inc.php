@@ -43,7 +43,7 @@ $this->bonus = array(
     // 8 => 0,
     // 9 => 0,
     // 10 => 0,
-    11 => 0,
+    11 => 0, // 0 => cross to place, otherwise nb PV
     21 => 2,
     31 => 0, 
     41 => 3,

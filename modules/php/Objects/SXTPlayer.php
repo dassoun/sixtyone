@@ -82,7 +82,7 @@ class SXTPlayer implements \JsonSerializable
     private $area_5 = [-1, -1, -1, -1, -1];
     private $area_6 = [-1, -1, -1, -1, -1, -1];
 
-    private $bonus = [null, null, null, null, null, null];
+    private $bonus = [-1, -1, -1, -1, -1, -1];
 
     /**
      * Get the value of player_id

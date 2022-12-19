@@ -743,16 +743,20 @@ class SixtyOne extends Table
         
         // Next state
         // Cross to write, or not ?
+        // + other bonus ?
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
             $bonus = $player->getBonus();
-            $bonus[$index] = 1;
+            $bonus[$index] = $this->bonus[$player_total_leave_score];
             $player->setBonus($bonus);
             $this->playerManager->persist($player);
 
             if ($this->bonus[$player_total_leave_score] == 0) {
                 $this->gamestate->nextPrivateState($player_id, "toCrossLocationChoice");
             } else {
+                // Bonus
+                // TODO
+
                 $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
             }
         } else {
@@ -1073,9 +1077,7 @@ class SixtyOne extends Table
             for ($i=1; $i<7; $i++) {
                 self::dump('Score_area : ', $this->getGameStateValue( "area_".$i."_completed"));
                 if ($this->getGameStateValue( "area_".$i."_completed" ) == "0") {
-                    self::debug("truc1");
                     if ($score_area[$i-1] == $this->score_area_state["COMPLETED"]) {
-                        self::debug("truc2");
                         $area_completed[$i][] = $player_id;
                     }
                 }
@@ -1237,13 +1239,23 @@ class SixtyOne extends Table
                     }
                 }
 
+                // For completed areas
                 if ($score_area[$i-1] > 0) {
                     $scores[$i-1] += 3;
                     $total += 3;
                 }
             }
 
+            // Bonus
             $scores[6] = 0;
+            $bonus = $player->getBonus();
+            foreach ($bonus as $value) {
+                if ($value > 0) {
+                    $scores[6] += $value;
+                }
+            }
+
+            $total += $scores[6];
 
             $scores[7] = $total;
 
