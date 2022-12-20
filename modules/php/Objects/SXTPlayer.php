@@ -79,8 +79,8 @@ class SXTPlayer implements \JsonSerializable
     private $area_2 = [-1, -1, -1, -1, -1];
     private $area_3 = [-1, -1, -1, -1, -1];
     private $area_4 = [-1, -1, -1, -1, -1, -1];
-    private $area_5 = [-1, -1, -1, -1, -1];
-    private $area_6 = [-1, -1, -1, -1, -1, -1];
+    private $area_5 = [-1, -1, -1, -1, -1, -1];
+    private $area_6 = [-1, -1, -1, -1, -1];
 
     private $bonus = [-1, -1, -1, -1, -1, -1];
 

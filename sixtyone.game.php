@@ -264,11 +264,11 @@ class SixtyOne extends Table
                     $res[] = 1;
                     $res[] = 2;
                 } else if ($area[0] != -1) {
-                    if ($die_value == $area[0] || $die_value == 0 || $area[0] == 0) {
+                    if (($die_value == $area[0] || $die_value == 0 || $area[0] == 0) && $area[1] == -1) {
                         $res[] = 2;
                     }
                 } else {
-                    if ($die_value == $area[1] || $die_value == 0 || $area[1] == 0) {
+                    if (($die_value == $area[1] || $die_value == 0 || $area[1] == 0) && $area[0] == -1) {
                         $res[] = 1;
                     }
                 }
@@ -277,11 +277,11 @@ class SixtyOne extends Table
                     $res[] = 3;
                     $res[] = 4;
                 } else if ($area[2] != -1) {
-                    if ($die_value == $area[2] || $die_value == 0 || $area[2] == 0) {
+                    if (($die_value == $area[2] || $die_value == 0 || $area[2] == 0) && $area[3] == -1) {
                         $res[] = 4;
                     }
                 } else {
-                    if ($die_value == $area[3] || $die_value == 0 || $area[3] == 0) {
+                    if (($die_value == $area[3] || $die_value == 0 || $area[3] == 0) && $area[2] == -1) {
                         $res[] = 3;
                     }
                 }
@@ -301,7 +301,7 @@ class SixtyOne extends Table
                 }
                 if ($found) {
                     if ($i > 0) {
-                        if ($area[$i-1] != $die_value || $die_value == 0 || $area[$i-1] == 0) {
+                        if (($area[$i-1] != $die_value || $die_value == 0 || $area[$i-1] == 0) && $area[$i] == -1) {
                             $res[] = $i+1;
                         }
                     } else {
@@ -317,11 +317,11 @@ class SixtyOne extends Table
                     $res[] = '1';
                     $res[] = '2';
                 } else if ($area[0] == -1) {
-                    if ($area[1] == $die_value || $die_value == 0 || $area[1] == 0) {
+                    if (($area[1] == $die_value || $die_value == 0 || $area[1] == 0) && $area[0] == -1) {
                         $res[] = '1';
                     }
                 } else {
-                    if ($area[0] == $die_value || $die_value == 0 || $area[0] == 0) {
+                    if (($area[0] == $die_value || $die_value == 0 || $area[0] == 0) && $area[1] == -1) {
                         $res[] = '2';
                     }
                 }
@@ -388,7 +388,7 @@ class SixtyOne extends Table
                 }
 
                 break;
-            
+                
             // Area 5 locations:
             //    6           5 
             //   4 5         3 4
@@ -457,7 +457,7 @@ class SixtyOne extends Table
                 }
                 if ($found) {
                     if ($i > 0) {
-                        if (abs($area[$i-1] - $die_value) == 1 || $die_value == 0 || $area[$i-1] == 0) {
+                        if ((abs($area[$i-1] - $die_value) == 1 || $die_value == 0 || $area[$i-1] == 0) && $area[$i] == -1) {
                             $res[] = $i+1;
                         }
                     } else {
@@ -1109,6 +1109,9 @@ class SixtyOne extends Table
 
             // Check area completion
             $score_area = $player->getScore_area();
+
+            self::notifyAllPlayers( "tmp", "", $score_area);
+
             for ($i=1; $i<7; $i++) {
                 self::dump('Score_area : ', $this->getGameStateValue( "area_".$i."_completed"));
                 if ($this->getGameStateValue( "area_".$i."_completed" ) == "0") {
