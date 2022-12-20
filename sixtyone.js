@@ -321,9 +321,13 @@ function (dojo, declare) {
                 //dojo.style("sxt_dice_area", "transition-duration", 0); 
                 dojo.removeClass("sxt_dice_area", "sxt_dice_area_wanted_color");
 
+                // The browser may do all those commands on one batch so it may optimize it => do nothing
+                // add setTimeout instruction to be treated on the next browser js cycle
+                // other way to do it :
+                // Elt.innerHeight or another similar to force the browser to apply new style
                 setTimeout(() => { 
                     dojo.addClass("sxt_dice_area", "sxt_dice_area_wanted_color");
-                }, 500);
+                });
                 
                 break;
 

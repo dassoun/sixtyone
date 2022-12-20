@@ -83,9 +83,9 @@
 
 .sxt_dice_area_wanted_color {
     background-color: #85c583;
-    border: 3px solid #5fa35e;
-    transition: background-color .5s;
+    transition: background-color 1s;
     transition-timing-function: cubic-bezier(.65, .73, .25, 1);
+    /* animation-iteration-count: 3; */
 }
 
 .sxt_die {
