@@ -39,6 +39,7 @@ ALTER TABLE `player` ADD `die_3` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `chosen_location` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `chosen_area_cross` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `chosen_location_cross` INT UNSIGNED DEFAULT NULL;
+ALTER TABLE `player` ADD `gained_bonus` TINYINT DEFAULT '-1';
 ALTER TABLE `player` ADD `score_leave_1` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `score_leave_2` INT UNSIGNED DEFAULT NULL;
 ALTER TABLE `player` ADD `score_leave_3` INT UNSIGNED DEFAULT NULL;

@@ -28,7 +28,7 @@ class SXTPlayerManager extends \APP_DbObject
                     score_leave_6, score_leave_7, score_leave_8, score_leave_9, score_leave_10,
                     score_leave_11, score_leave_12, score_leave_13, score_leave_14, score_leave_15,
                     score_leave_16, score_leave_17, score_leave_18, score_leave_19, score_leave_20,
-                    die_1, die_2, die_3, chosen_location, chosen_area_cross, chosen_location_cross,
+                    die_1, die_2, die_3, chosen_location, chosen_area_cross, chosen_location_cross, gained_bonus,
                     score_area_1, score_area_2, score_area_3, score_area_4, score_area_5, score_area_6, 
                     area_1_1, area_1_2, area_1_3, area_1_4, 
                     area_2_1, area_2_2, area_2_3, area_2_4, area_2_5, 
@@ -58,6 +58,7 @@ class SXTPlayerManager extends \APP_DbObject
                 ->setChosen_location($res['chosen_location'])
                 ->setChosen_area_cross($res['chosen_area_cross'])
                 ->setChosen_location_cross($res['chosen_location_cross'])
+                ->setGained_bonus($res['gained_bonus'])
                 ->setScore_area(array(
                         $res['score_area_1'], $res['score_area_2'], $res['score_area_3'], 
                         $res['score_area_4'], $res['score_area_5'], $res['score_area_6']
@@ -129,6 +130,7 @@ class SXTPlayerManager extends \APP_DbObject
         $chosen_location = $player->getChosen_location();
         $chosen_area_cross = $player->getChosen_area_cross();
         $chosen_location_cross = $player->getChosen_location_cross();
+        $gained_bonus = $player->getGained_bonus();
         $score_area = $player->getScore_area();
         // $score_area_1 = $player->getScore_area_1();
         // $score_area_2 = $player->getScore_area_2(); 
@@ -193,7 +195,8 @@ class SXTPlayerManager extends \APP_DbObject
                     die_3 = ".(!empty($die_3) ? "'$die_3'" : "NULL").",
                     chosen_location = ".(!empty($chosen_location) ? "'$chosen_location'" : "NULL").",
                     chosen_area_cross = ".(!empty($chosen_area_cross) ? "'$chosen_area_cross'" : "NULL").",
-                    chosen_location_cross = ".(!empty($chosen_location_cross) ? "'$chosen_location_cross'" : "NULL").",".
+                    chosen_location_cross = ".(!empty($chosen_location_cross) ? "'$chosen_location_cross'" : "NULL").",
+                    gained_bonus = ".(!empty($gained_bonus) ? "'$gained_bonus'" : "NULL").", ".
                     $sql_score_area.
                     $sql_bonus."
                     area_1_1 = ".$area_1_1.",

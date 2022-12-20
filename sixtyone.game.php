@@ -774,6 +774,7 @@ class SixtyOne extends Table
         // + other bonus ?
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
+            $player->setGained_bonus($index);
             $bonus = $player->getBonus();
             $bonus[$index] = $this->bonus[$player_total_leave_score];
             $player->setBonus($bonus);
