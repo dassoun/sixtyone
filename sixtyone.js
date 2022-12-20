@@ -309,6 +309,7 @@ function (dojo, declare) {
                 
                 break;
            */
+                
 
             ////////////////////////////////////////////////////
             case 'multiplayerPhase':
@@ -317,6 +318,13 @@ function (dojo, declare) {
                 for (i=1; i<4; i++) {
                     dojo.addClass('sxt_die_'+i, 'sxt_die_'+dice[i]);
                 }
+                //dojo.style("sxt_dice_area", "transition-duration", 0); 
+                dojo.removeClass("sxt_dice_area", "sxt_dice_area_wanted_color");
+
+                setTimeout(() => { 
+                    dojo.addClass("sxt_dice_area", "sxt_dice_area_wanted_color");
+                }, 500);
+                
                 break;
 
             ////////////////////////////////////////////////////
@@ -954,6 +962,8 @@ function (dojo, declare) {
             } else {
                 dojo.byId('sxt_location_'+player_id+'_'+area_id+'_'+location_id).innerHTML = die_value;
             }
+
+            dojo.addClass('sxt_location_'+player_id+'_'+area_id+'_'+location_id, "sxt_location_wanted_scale");
         },
 
         notif_cancelLocationChosen: function( notif )

@@ -76,9 +76,16 @@
     flex-direction: row;
     justify-content: center;
     margin: 0 10px 0 10px;
-    background-color: #85c583;
+    background-color: white;
     border-radius: 5px;
     border: 3px solid #5fa35e;
+}
+
+.sxt_dice_area_wanted_color {
+    background-color: #85c583;
+    border: 3px solid #5fa35e;
+    transition: background-color .5s;
+    transition-timing-function: cubic-bezier(.65, .73, .25, 1);
 }
 
 .sxt_die {
@@ -307,6 +314,11 @@
     border: 1px dashed transparent;
     font-size: 40px;
     line-height: 54px;
+}
+
+.sxt_location_wanted_scale {
+    transition: line-height 400ms cubic-bezier(.47,1.64,.41,.8);
+    transform: line-height 54px;;
 }
 
 .sxt_location_area_1_big {
