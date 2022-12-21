@@ -861,10 +861,15 @@ class SixtyOne extends Table
         // Cross to write, or not ?
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
+            $player->setGained_bonus($index + 1);
             $bonus = $player->getBonus();
-            $bonus[$index] = 1;
+            $bonus[$index] = $this->bonus[$player_total_leave_score];
             $player->setBonus($bonus);
             $this->playerManager->persist($player);
+
+            self::notifyPlayer( $player_id, "gainBonus", "", array(
+                'gained_bonus_id' => ($index + 1),
+            ) );
 
             if ($this->bonus[$player_total_leave_score] == 0) {
                 $this->gamestate->nextPrivateState($player_id, "toCrossLocationChoice");
