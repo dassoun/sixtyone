@@ -140,7 +140,7 @@ class SixtyOne extends Table
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score, 
-                    die_1, die_2, die_3, chosen_location, 
+                    die_1, die_2, die_3, chosen_location, chosen_area_cross, chosen_location_cross, gained_bonus,
                     score_leave_1, score_leave_2, score_leave_3, score_leave_4, score_leave_5, 
                     score_leave_6, score_leave_7, score_leave_8, score_leave_9, score_leave_10,
                     score_leave_11, score_leave_12, score_leave_13, score_leave_14, score_leave_15,
@@ -151,7 +151,8 @@ class SixtyOne extends Table
                     area_3_1, area_3_2, area_3_3, area_3_4, area_3_5, 
                     area_4_1, area_4_2, area_4_3, area_4_4, area_4_5, area_4_6, 
                     area_5_1, area_5_2, area_5_3, area_5_4, area_5_5, area_5_6, 
-                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5 
+                    area_6_1, area_6_2, area_6_3, area_6_4, area_6_5,
+                    bonus_1, bonus_2, bonus_3, bonus_4, bonus_5, bonus_6
                 FROM player ";
         $result['players'] = self::getCollectionFromDb( $sql );
   
@@ -509,7 +510,7 @@ class SixtyOne extends Table
         return $possibleMoveNumber;
     }
 
-    function check_area_completion(SXTPlayer $player, int $area_id)
+    function check_area_completion_for_player(SXTPlayer $player, int $area_id)
     {
         $locations = $player->{'getArea_'.$area_id}();
         $filled_location = 0;
@@ -766,7 +767,7 @@ class SixtyOne extends Table
 
         // area completed ?
         if (!$this->getGameStateValue( 'area_'.$area_id.'_completed' )) {
-            $this->check_area_completion($player, $area_id);
+            $this->check_area_completion_for_player($player, $area_id);
         }
         
         // Next state
@@ -774,18 +775,19 @@ class SixtyOne extends Table
         // + other bonus ?
         if (array_key_exists($player_total_leave_score, $this->bonus)) {
             $index = array_search($player_total_leave_score, array_keys($this->bonus));
-            $player->setGained_bonus($index);
+            $player->setGained_bonus($index + 1);
             $bonus = $player->getBonus();
             $bonus[$index] = $this->bonus[$player_total_leave_score];
             $player->setBonus($bonus);
             $this->playerManager->persist($player);
 
+            self::notifyPlayer( $player_id, "gainBonus", "", array(
+                'gained_bonus_id' => ($index + 1),
+            ) );
+
             if ($this->bonus[$player_total_leave_score] == 0) {
                 $this->gamestate->nextPrivateState($player_id, "toCrossLocationChoice");
             } else {
-                // Bonus
-                // TODO
-
                 $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
             }
         } else {
@@ -813,7 +815,7 @@ class SixtyOne extends Table
 
         // area completed ?
         if (!$this->getGameStateValue( 'area_'.$area_id.'_completed' )) {
-            $this->check_area_completion($player, $area_id);
+            $this->check_area_completion_for_player($player, $area_id);
         }
 
         self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a X in aera ${area_id}"), array(
@@ -1096,6 +1098,7 @@ class SixtyOne extends Table
             $total_score_leave = $player->get_total_score_leave();
             $cross_area_id = $player->getChosen_area_cross();
             $cross_location_id = $player->getChosen_location_cross();
+            $gained_bonus_id = $player->getGained_bonus();
 
             self::notifyAllPlayers( "showTurn", "", array(
                 'player_id' => $player_id,
@@ -1106,6 +1109,7 @@ class SixtyOne extends Table
                 'total_score_leave' => $total_score_leave,
                 'cross_area_id' => $cross_area_id,
                 'cross_location_id' => $cross_location_id,
+                'gained_bonus_id' => $gained_bonus_id,
             ) );
 
             // Check area completion
@@ -1121,6 +1125,9 @@ class SixtyOne extends Table
                     }
                 }
             }
+
+            self::dump("//////////////////// ", $area_completed);
+            self::notifyAllPlayers( "tmp", "", $area_completed);
         }
 
         $area_missed = array();
@@ -1167,6 +1174,10 @@ class SixtyOne extends Table
             }
         }
 
+        foreach ($area_completed as $key => $value) {
+            $this->setGameStateValue( "area_".$key."_completed", true );
+        }
+
         $this->gamestate->nextState(""); 
     }
 
@@ -1185,6 +1196,7 @@ class SixtyOne extends Table
             $player->setChosen_location(null);
             $player->setChosen_area_cross(null);
             $player->setChosen_location_cross(null);
+            $player->setGained_bonus(-1);
 
             $this->playerManager->persist($player);
 

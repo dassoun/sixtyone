@@ -266,11 +266,20 @@ function (dojo, declare) {
                 }
 
                 // Score area
-                for (let i=0; i<5; i++) {
+                for (let i=0; i<6; i++) {
                     if (player['score_area_'+(i+1)] == this.gamedatas.score_area_state['COMPLETED']) {
                         dojo.addClass('sxt_area_status_'+player_id+'_'+(i+1), 'sxt_area_status_completed');
                     } else if (player['score_area_'+(i+1)] == this.gamedatas.score_area_state['MISSED']) {
                         dojo.addClass('sxt_area_status_'+player_id+'_'+(i+1), 'sxt_area_status_missed');
+                    }
+                }
+
+                // Bonus
+                console.log("+++++++++++++++++++++ Bonus player "+player_id);
+                for (let i=1; i<7; i++) {
+                    console.log(player['bonus_'+i]);
+                    if (player['bonus_'+i] > -1) {
+                        dojo.addClass('sxt_bonus_'+player_id+'_'+i, 'sxt_bonus_acquired_'+i);
                     }
                 }
             }
@@ -914,6 +923,8 @@ function (dojo, declare) {
 
             dojo.subscribe( 'addLeaveScore', this, "notif_addLeaveScore" );
 
+            dojo.subscribe( 'gainBonus', this, "notif_gainBonus" );
+
             dojo.subscribe( 'showTurn', this, "notif_showTurn" );
 
             dojo.subscribe( 'scoreArea', this, "notif_scoreArea" );
@@ -1002,6 +1013,16 @@ function (dojo, declare) {
             dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
         },
 
+        notif_gainBonus: function( notif )
+        {
+            console.log( notif );
+
+            let player_id = this.player_id;
+            let gained_bonus_id = notif.args.gained_bonus_id;
+
+            dojo.addClass('sxt_bonus_'+player_id+'_'+gained_bonus_id, 'sxt_bonus_acquired_'+gained_bonus_id);
+        },
+
         notif_showTurn: function( notif )
         {
             console.log( notif );
@@ -1014,6 +1035,7 @@ function (dojo, declare) {
             let die_location_value = notif.args.die_location_value;
             let leave_number = notif.args.leave_number;
             let total_score_leave = notif.args.total_score_leave;
+            let gained_bonus_id = notif.args.gained_bonus_id;
             let leave_elt;
 
             if (area_id !== null && location_id !== null) { //!isNaN(location_id) && location_id > 0) {
@@ -1032,6 +1054,10 @@ function (dojo, declare) {
             
             if (cross_area_id !== null && cross_location_id !== null) {
                 dojo.byId('sxt_location_'+player_id+'_'+cross_area_id+'_'+cross_location_id).innerHTML = 'X';
+            }
+
+            if (gained_bonus_id > -1) {
+                dojo.addClass('sxt_bonus_'+player_id+'_'+gained_bonus_id, 'sxt_bonus_acquired_'+gained_bonus_id);
             }
         },
 
