@@ -593,13 +593,13 @@ function (dojo, declare) {
                     case 'chooseArea':
                         let possibleMovesNumber = args.possibleMovesNumber;
                         console.log('possibleMovesNumber : ');
-                        console.log(possibleMovesNumber[this.player_id]);
+                        console.log(possibleMovesNumber);
 
                         let possibleMoves = args.possibleMoves;
                         console.log('possibleMoves : ');
-                        console.log(possibleMoves[this.player_id]);
+                        console.log(possibleMoves);
 
-                        if (possibleMovesNumber[this.player_id] == 0) {
+                        if (possibleMovesNumber == 0) {
                             this.addActionButton( 'button_pass_choose_area', _('Pass'), 'onPass' ); 
                         }
                         

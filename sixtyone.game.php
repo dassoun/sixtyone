@@ -725,10 +725,11 @@ class SixtyOne extends Table
 
         $this->playerManager->persist($player);
 
-        self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a ${die_value} in aera ${area_id}"), array(
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a ${die_value} in aera ${area_id}.'), array(
             'die_value' => $die_value,
             'area_id' => $area_id,
             'location_id' => $location_id,
+            'player_name' => self::getCurrentPlayerName(),
         ) );
 
         // 3rd die
@@ -818,10 +819,11 @@ class SixtyOne extends Table
             $this->check_area_completion_for_player($player, $area_id);
         }
 
-        self::notifyPlayer( $player_id, "locationChosen", clienttranslate("You placed a X in aera ${area_id}"), array(
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a X in araa ${area_id}.'), array(
             'die_value' => 0,
             'area_id' => $area_id,
             'location_id' => $location_id,
+            'player_name' => self::getCurrentPlayerName(),
         ) );
 
         $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
@@ -919,36 +921,45 @@ class SixtyOne extends Table
         return $this->getDiceDatas();
     }
 
-    function argChooseArea() 
+    function argChooseArea($current_player_id) 
     {
         $res = array();
 
         // PossibleMovesNumber
-        $players = $this->loadPlayersBasicInfos();
+        // $players = $this->loadPlayersBasicInfos();
 
-        foreach ($players as $player_id => $info) {
-           $player = $this->playerManager->getById($player_id);
+        // foreach ($players as $player_id => $info) {
+        //    $player = $this->playerManager->getById($player_id);
 
-            $res['possibleMovesNumber'][$player_id] = $this->getPossibleMovesNumber($player);
+        //     $res['possibleMovesNumber'][$player_id] = $this->getPossibleMovesNumber($player);
 
-            $res['possibleMoves'][$player_id] = $this->getPossibleMoves($player);
+        //     $res['possibleMoves'][$player_id] = $this->getPossibleMoves($player);
 
-            self::dump('possibleMovesNumber : ', $res['possibleMovesNumber'][$player_id]);
-        }
+        //     self::dump('possibleMovesNumber : ', $res['possibleMovesNumber'][$player_id]);
+        // }
+
+        $player = $this->playerManager->getById($current_player_id);
+        $res['possibleMovesNumber'] = $this->getPossibleMovesNumber($player);
+        $res['possibleMoves'] = $this->getPossibleMoves($player);
+        
         
         $res['dice'] = array();
 
+        $res['chooseAreaPrompt'] = clienttranslate('must pass');
+
         if ($res['possibleMovesNumber'] > 0) {
             // dice values available for area selection
+            $res['chooseAreaPrompt'] = clienttranslate('must choose an area');
+
             $dice = $this->getDiceDatas();
-            
+            self::dump("+++++++++++++++++++++++ dice ", $dice);
             for ($i=1; $i<4; $i++) {
-                if (!array_search($dice[$i], $res)) {
+                if (!array_search($dice[$i], $res['dice'])) {
                     $res['dice'][count($res['dice']) + 1] = $dice[$i];
                 }
             }
         }
-
+        
         return $res;
     }
 
@@ -1230,7 +1241,7 @@ class SixtyOne extends Table
         $img_score_7 = "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_7\"></div>";
 
         $table_final_scoring[] = array("", $img_score_1, $img_score_2, $img_score_3, $img_score_4, $img_score_5, $img_score_6,
-                                        $img_score_7, self::_(clienttranslate("Total")));
+                                        $img_score_7, [ 'str' => clienttranslate('Total'), 'args' => [], 'type' => 'header' ]);
 
         $players = $this->loadPlayersBasicInfos();
 
@@ -1323,13 +1334,11 @@ class SixtyOne extends Table
             $table_final_scoring[] = array($info['player_name'], $scores[0], $scores[1], $scores[2], $scores[3], $scores[4], $scores[5], $scores[6], $total);
         }
 
-        
-
         $this->notifyAllPlayers( "tableWindow", "", array(
             "id" => 'finalScoring',
-            "title" => clienttranslate("Final scoring"),
+            "title" => clienttranslate('Final scoring'),
             "table" => $table_final_scoring,
-            "closing" => clienttranslate( "Close" )
+            "closing" => clienttranslate( 'Close' )
         ) );
 
         $this->gamestate->nextState(""); 
