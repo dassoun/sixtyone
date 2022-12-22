@@ -446,7 +446,7 @@
 .sxt_img_final_scoring_7 { background-position: -300px 0px; }
 
 /* Player side board */
-.ctc_psb_leave {
+.sxt_psb_leave {
     width: 16px;
 	height: 14px;
 	display: inline-block;
@@ -457,9 +457,33 @@
     background-image: url( 'img/psb_leave.png');
 }
 
-.ctc_psb_footprint_available {
-    background-image: url( 'img/psb_leave.png');
+.sxt_log_dice {
+    display:inline-block;
+    height: 25px;
+    width: 26px;
+    background-image: url( 'img/25_26_white_dice.png' );
 }
+
+.sxt_log_dice_1 { background-position: 0px 0px; }
+.sxt_log_dice_2 { background-position: -25px 0px; }
+.sxt_log_dice_3 { background-position: -50px 0px; }
+.sxt_log_dice_4 { background-position: -75px 0px; }
+.sxt_log_dice_5 { background-position: -100px 0px; }
+.sxt_log_dice_6 { background-position: -125px 0px; }
+
+.sxt_log_area {
+    display:inline-block;
+    height: 24px;
+    width: 28px;
+    background-image: url( 'img/area_dice_28_24.png' );
+}
+
+.sxt_log_area_1 { background-position: 0px 0px; }
+.sxt_log_area_2 { background-position: -28px 0px; }
+.sxt_log_area_3 { background-position: -56px 0px; }
+.sxt_log_area_4 { background-position: -84px 0px; }
+.sxt_log_area_5 { background-position: -112px 0px; }
+.sxt_log_area_6 { background-position: -140px 0px; }
 
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):

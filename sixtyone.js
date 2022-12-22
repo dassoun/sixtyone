@@ -645,6 +645,28 @@ function (dojo, declare) {
             // console.log( '$$$$ : End updateLeavesCounters' );
         },
 
+        /* @Override */
+        format_string_recursive: function(log, args) {
+            try {
+                if (log && args && !args.processed) {
+                    args.processed = true;
+                    if ('sxt_log_dice' in args) {
+                        args['sxt_log_dice'] = this.format_block('jstpl_game_log_dice', {
+                            die_value:args['sxt_log_dice']
+                        });
+                    }
+                    if ('sxt_log_area' in args) {
+                        args['sxt_log_area'] = this.format_block('jstpl_game_log_area', {
+                            area_id:args['sxt_log_area']
+                        });
+                    } 
+                }
+            } catch (e) {
+                console.error(log, args, "Exception", e.stack);
+            }
+            return this.inherited(arguments);
+        },
+
 
         ///////////////////////////////////////////////////
         //// Player's action

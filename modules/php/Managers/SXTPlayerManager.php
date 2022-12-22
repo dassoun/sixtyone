@@ -23,7 +23,7 @@ class SXTPlayerManager extends \APP_DbObject
     ): ?SXTPlayer
     {
         $sql = "SELECT 
-                    player_id, 
+                    player_id, player_score,
                     score_leave_1, score_leave_2, score_leave_3, score_leave_4, score_leave_5, 
                     score_leave_6, score_leave_7, score_leave_8, score_leave_9, score_leave_10,
                     score_leave_11, score_leave_12, score_leave_13, score_leave_14, score_leave_15,
@@ -46,6 +46,7 @@ class SXTPlayerManager extends \APP_DbObject
 
         if ($res) {
             $player = (new SXTPlayer())->setPlayer_id($res['player_id'])
+                ->setPlayer_score($res['player_score'])
                 ->setScore_leave(array(
                         $res['score_leave_1'], $res['score_leave_2'], $res['score_leave_3'], $res['score_leave_4'], $res['score_leave_5'], 
                         $res['score_leave_6'], $res['score_leave_7'], $res['score_leave_8'], $res['score_leave_9'], $res['score_leave_10'],
@@ -123,6 +124,7 @@ class SXTPlayerManager extends \APP_DbObject
     public function persist(SXTPlayer $player): void
     {
         $player_id = $player->getPlayer_id();
+        $player_score = $player->getPlayer_score();
         $score_leave = $player->getScore_leave();
         $die_1 = $player->getDie_1();
         $die_2 = $player->getDie_2();
@@ -188,7 +190,8 @@ class SXTPlayerManager extends \APP_DbObject
 
         $sql = "UPDATE 
                     player 
-                SET ".
+                SET 
+                    player_score = '".$player_score."', ".
                     $sql_score_leave."  
                     die_1 = ".(!empty($die_1) ? "'$die_1'" : "NULL").", 
                     die_2 = ".(!empty($die_2) ? "'$die_2'" : "NULL").", 

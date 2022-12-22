@@ -70,8 +70,11 @@ var jstpl_sxt_location_area_6 = '<div id="sxt_location_${player_id}_${area_id}_$
 var jstpl_sxt_score = '<div id="sxt_score_${player_id}_${id}" class="sxt_score"></div>';
 
 var jstpl_player_side_board = '<div class="sxt_psb_board">\
-    <div id="sxt_psb_leave_${player_id}" class="ctc_psb_leave"></div><span id="sxt_psb_leave_counter_${player_id}">0</span>\
+    <div id="sxt_psb_leave_${player_id}" class="sxt_psb_leave"></div><span id="sxt_psb_leave_counter_${player_id}">0</span>\
 </div>';
+
+var jstpl_game_log_dice = '<div class="sxt_log_dice sxt_log_dice_${die_value}"></div>';
+var jstpl_game_log_area = '<div class="sxt_log_area sxt_log_area_${area_id}"></div>';
 
 </script>  
 

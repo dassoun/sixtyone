@@ -17,6 +17,7 @@ namespace PhobyJuan\SixtyOne\Objects;
 class SXTPlayer implements \JsonSerializable
 {
     private int $player_id;
+    private int $player_score;
     private ?int $die_1;
     private ?int $die_2;
     private ?int $die_3;
@@ -99,6 +100,26 @@ class SXTPlayer implements \JsonSerializable
     public function setPlayer_id($player_id)
     {
         $this->player_id = $player_id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of score
+     */ 
+    public function getPlayer_score()
+    {
+        return $this->player_score;
+    }
+
+    /**
+     * Set the value of score
+     *
+     * @return  self
+     */ 
+    public function setPlayer_score($player_score)
+    {
+        $this->player_score = $player_score;
 
         return $this;
     }
@@ -1178,6 +1199,7 @@ class SXTPlayer implements \JsonSerializable
     {
         return [
             "player_id" => $this->getPlayer_id(),
+            "player_score" => $this->getPlayer_score(),
             "die_1" => $this->getDie_1(),
             "die_2" => $this->getDie_2(),
             "die_3" => $this->getDie_3(),

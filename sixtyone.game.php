@@ -409,6 +409,7 @@ class SixtyOne extends Table
             //  1 2 3       0 1 2
             case 5:
                 $area = $player->getArea_5();
+                // self::dump("area 5 : ", $area);
                 if ($area[0] == -1) {
                     if ($area[1] != $die_value || $die_value == 0 || $area[1] == 0) {
                         $res[] = 1;
@@ -424,7 +425,7 @@ class SixtyOne extends Table
                     }
                 }
                 if ($area[2] == -1) {
-                    if ($area[2] != $die_value || $die_value == 0 || $area[2] == 0) {
+                    if ($area[1] != $die_value || $die_value == 0 || $area[1] == 0) {
                         $res[] = 3;
                     }
                 }
@@ -739,11 +740,13 @@ class SixtyOne extends Table
 
         $this->playerManager->persist($player);
 
-        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a ${die_value} in aera ${area_id}.'), array(
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a ${sxt_log_dice} in aera ${sxt_log_area}.'), array(
             'die_value' => $die_value,
             'area_id' => $area_id,
             'location_id' => $location_id,
             'player_name' => self::getCurrentPlayerName(),
+            'sxt_log_dice' => $die_value,
+            'sxt_log_area' => $area_id,
         ) );
 
         // 3rd die
@@ -833,11 +836,12 @@ class SixtyOne extends Table
             $this->check_area_completion_for_player($player, $area_id);
         }
 
-        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a X in area ${area_id}.'), array(
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a X in area ${sxt_log_area}.'), array(
             'die_value' => 0,
             'area_id' => $area_id,
             'location_id' => $location_id,
             'player_name' => self::getCurrentPlayerName(),
+            'sxt_log_area' => $area_id,
         ) );
 
         $this->gamestate->setPlayerNonMultiactive( $player_id, "" );
@@ -1130,7 +1134,7 @@ class SixtyOne extends Table
             $cross_location_id = $player->getChosen_location_cross();
             $gained_bonus_id = $player->getGained_bonus();
 
-            self::notifyAllPlayers( "showTurn", clienttranslate('${player_name} placed a ${die_location_value} in area ${area_id}.'), array(
+            self::notifyAllPlayers( "showTurn", clienttranslate('${player_name} placed a ${sxt_log_dice} in area ${sxt_log_area}.'), array(
                 'player_id' => $player_id,
                 'player_name' => $info['player_name'],
                 'area_id' => $area_id,
@@ -1141,6 +1145,8 @@ class SixtyOne extends Table
                 'cross_area_id' => $cross_area_id,
                 'cross_location_id' => $cross_location_id,
                 'gained_bonus_id' => $gained_bonus_id,
+                'sxt_log_dice' => $die_location_value,
+                'sxt_log_area' => $area_id,
             ) );
 
             // Check area completion
@@ -1341,6 +1347,10 @@ class SixtyOne extends Table
 
             $scores[7] = $total;
 
+            $player->setPlayer_Score($total);
+            $this->playerManager->persist($player);
+
+            // Scores on player sheet
             $this->notifyAllPlayers( "finalScoring", "", array(
                 "player_id" => $player_id,
                 "scores" => $scores,
