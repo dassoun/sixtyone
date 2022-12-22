@@ -445,6 +445,21 @@
 .sxt_img_final_scoring_6 { background-position: -250px 0px; }
 .sxt_img_final_scoring_7 { background-position: -300px 0px; }
 
+/* Player side board */
+.ctc_psb_leave {
+    width: 16px;
+	height: 14px;
+	display: inline-block;
+    position: relative;
+    background-repeat: no-repeat;
+    margin-top: 4px;
+    margin-right: 3px;
+    background-image: url( 'img/psb_leave.png');
+}
+
+.ctc_psb_footprint_available {
+    background-image: url( 'img/psb_leave.png');
+}
 
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):

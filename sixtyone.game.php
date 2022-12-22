@@ -165,6 +165,19 @@ class SixtyOne extends Table
         $result['score_area_state'] = $this->score_area_state;
         $result['area_size'] = $this->area_size;
   
+        $players = $result['players'];
+        foreach ($players as $player_id => $info) {
+            $player = $this->playerManager->getById($player_id);
+            $result['players'][$player_id]['leave_counter'] = $player->get_total_score_leave();
+            // $result['counters']=[
+            // $result['counters']=[
+            //     'leave' => [ 
+            //     'counter_name' => 'leave_'.$player_id, 
+            //     'counter_value' => $player->get_total_score_leave(),
+            //     ],
+            // ];
+        }
+
         return $result;
     }
 
@@ -458,7 +471,8 @@ class SixtyOne extends Table
                 }
                 if ($found) {
                     if ($i > 0) {
-                        if ((abs($area[$i-1] - $die_value) == 1 || $die_value == 0 || $area[$i-1] == 0) && $area[$i] == -1) {
+                        if ((abs($area[$i-1] - $die_value) == 1 || $die_value == 0 || $area[$i-1] == 0) && $area[$i] == -1
+                            || ($die_value == 1 && $area[$i-1] == 6) || ($die_value == 6 && $area[$i-1] == 1)) {
                             $res[] = $i+1;
                         }
                     } else {
@@ -1116,8 +1130,9 @@ class SixtyOne extends Table
             $cross_location_id = $player->getChosen_location_cross();
             $gained_bonus_id = $player->getGained_bonus();
 
-            self::notifyAllPlayers( "showTurn", "", array(
+            self::notifyAllPlayers( "showTurn", clienttranslate('${player_name} placed a ${die_location_value} in area ${area_id}.'), array(
                 'player_id' => $player_id,
+                'player_name' => $info['player_name'],
                 'area_id' => $area_id,
                 'location_id' => $location_id,
                 'die_location_value' => $die_location_value,

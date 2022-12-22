@@ -81,6 +81,10 @@ function (dojo, declare) {
 
             
             for ( var player_id in gamedatas.players ) {
+                // Player side board
+                var player_board_div = $('player_board_'+player_id);
+                dojo.place( this.format_block('jstpl_player_side_board', { player_id:player_id } ), player_board_div );
+
                 // players name
                 $('sxt_player_name_'+player_id).innerHTML = gamedatas.players[player_id].name
                 dojo.style( 'sxt_player_name_'+player_id, 'color', '#'+gamedatas.players[player_id].color );
@@ -193,7 +197,7 @@ function (dojo, declare) {
                     } ), $ ( 'sxt_player_board_'+player_id ) );
 
                     this.slideToObjectPos( 'sxt_score_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, score_coords[i][0], score_coords[i][1] ).play();
-                }    
+                }
             }
 
             ///////////////////////////////////////////
@@ -201,6 +205,9 @@ function (dojo, declare) {
             ///////////////////////////////////////////
             for ( var player_id in gamedatas.players ) {
                 var player = gamedatas.players[player_id];
+
+                // Side board
+                this.updateLeavesCounters( player_id, player['leave_counter'] );
                 
                 // dice
                 if (this.player_id == player_id) {
@@ -630,6 +637,13 @@ function (dojo, declare) {
             script.
         
         */
+        updateLeavesCounters: function( player_id, value ) {
+            // console.log( '$$$$ : updateLeavesCounters' );
+
+            dojo.byId("sxt_psb_leave_counter_" + player_id).innerHTML = value;
+
+            // console.log( '$$$$ : End updateLeavesCounters' );
+        },
 
 
         ///////////////////////////////////////////////////
@@ -1011,6 +1025,8 @@ function (dojo, declare) {
             console.log( 'sxt_leave_'+player_id+'_'+leave_number );
 
             dojo.byId('sxt_leave_'+player_id+'_'+leave_number).innerHTML = total_score_leave;
+
+            this.updateLeavesCounters( player_id, total_score_leave )
         },
 
         notif_gainBonus: function( notif )
@@ -1059,6 +1075,8 @@ function (dojo, declare) {
             if (gained_bonus_id > -1) {
                 dojo.addClass('sxt_bonus_'+player_id+'_'+gained_bonus_id, 'sxt_bonus_acquired_'+gained_bonus_id);
             }
+
+            this.updateLeavesCounters( player_id, total_score_leave );
         },
 
         notif_scoreArea: function( notif )
