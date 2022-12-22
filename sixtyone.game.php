@@ -819,7 +819,7 @@ class SixtyOne extends Table
             $this->check_area_completion_for_player($player, $area_id);
         }
 
-        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a X in araa ${area_id}.'), array(
+        self::notifyPlayer( $player_id, "locationChosen", clienttranslate('${player_name} placed a X in area ${area_id}.'), array(
             'die_value' => 0,
             'area_id' => $area_id,
             'location_id' => $location_id,
