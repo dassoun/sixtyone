@@ -1125,6 +1125,10 @@ function (dojo, declare) {
             for (let [key, value] of Object.entries(scores)) {
                 console.log( 'sxt_score_'+player_id+'_'+(parseInt(key)+1) );
                 dojo.byId('sxt_score_'+player_id+'_'+(parseInt(key)+1)).innerHTML = value;
+
+                if (parseInt(key) == 7) {
+                    this.scoreCtrl[player_id].setValue(value);
+                }
             }
         },
    });             
