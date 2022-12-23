@@ -1134,7 +1134,16 @@ class SixtyOne extends Table
             $cross_location_id = $player->getChosen_location_cross();
             $gained_bonus_id = $player->getGained_bonus();
 
-            self::notifyAllPlayers( "showTurn", clienttranslate('${player_name} placed a ${sxt_log_dice} in area ${sxt_log_area}.'), array(
+            // Turn played
+            if ($player_die1 > 0) {
+                $notif_message = clienttranslate('${player_name} placed a ${sxt_log_dice} in area ${sxt_log_area}.');
+            } else {
+                // Turn passed
+                $notif_message = clienttranslate('${player_name} passed.');
+            }
+            
+
+            self::notifyAllPlayers( "showTurn", $notif_message, array(
                 'player_id' => $player_id,
                 'player_name' => $info['player_name'],
                 'area_id' => $area_id,

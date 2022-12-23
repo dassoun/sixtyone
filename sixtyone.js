@@ -1000,6 +1000,7 @@ function (dojo, declare) {
 
         notif_locationChosen: function( notif )
         {
+            console.log( "*** notif_locationChosen" );
             console.log( notif );
 
             let player_id = this.player_id;
@@ -1063,6 +1064,7 @@ function (dojo, declare) {
 
         notif_showTurn: function( notif )
         {
+            console.log( "*** notif_showTurn" );
             console.log( notif );
 
             // let player_id = this.player_id;
@@ -1081,8 +1083,7 @@ function (dojo, declare) {
             }
             if (leave_number > 0) {
                 leave_elt = dojo.byId('sxt_leave_'+player_id+'_'+leave_number);
-                if (leave_elt !== null) 
-                {
+                if (leave_elt !== null) {
                     leave_elt.innerHTML = total_score_leave;
                 }
             }
