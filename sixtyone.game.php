@@ -306,14 +306,17 @@ class SixtyOne extends Table
                 $area = $player->getArea_2();
                 $i = 0;
                 $found = false;
-                while ($i <= 4  && !$found) {
+                $already_exists = false;
+                while ($i <= 4  && !$found && !$already_exists) {
                     if ($area[$i] == -1) {
                         $found = true;
+                    } else if ($area[$i] == $die_value && $die_value != 0) {
+                        $already_exists = true;
                     } else {
                         $i++;
                     }
                 }
-                if ($found) {
+                if ($found && !$already_exists) {
                     if ($i > 0) {
                         if (($area[$i-1] != $die_value || $die_value == 0 || $area[$i-1] == 0) && $area[$i] == -1) {
                             $res[] = $i+1;
