@@ -528,6 +528,19 @@ class SixtyOne extends Table
         return $possibleMoveNumber;
     }
 
+    function getPossibleMovesNumberByArea($possibleMoves) {
+        $res = array();
+
+        foreach ($possibleMoves as $key => $possibleMove) {
+            $res[$key] = 0;
+            foreach ($possibleMove as $possibleLocation) {
+                $res[$key] += count($possibleLocation);
+            }
+        }
+
+        return $res;
+    }
+
     function check_area_completion_for_player(SXTPlayer $player, int $area_id)
     {
         $locations = $player->{'getArea_'.$area_id}();
@@ -961,7 +974,9 @@ class SixtyOne extends Table
 
         $player = $this->playerManager->getById($current_player_id);
         $res['possibleMovesNumber'] = $this->getPossibleMovesNumber($player);
-        $res['possibleMoves'] = $this->getPossibleMoves($player);
+        $possibleMoves = $this->getPossibleMoves($player);
+        $res['possibleMovesNumberByArea'] = $this->getPossibleMovesNumberByArea($possibleMoves);
+        $res['possibleMoves'] = $possibleMoves;
         
         
         $res['dice'] = array();

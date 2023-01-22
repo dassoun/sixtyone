@@ -352,6 +352,9 @@ function (dojo, declare) {
                 dice = args.args.dice;
                 console.log(dice);
 
+                possibleMovesNumberByArea = args.args.possibleMovesNumberByArea;
+                console.log(possibleMovesNumberByArea);
+
                 console.log('spectator : '+this.isSpectator);
                 console.log("dice: ");
                 console.log(dice);
@@ -366,19 +369,20 @@ function (dojo, declare) {
                 }
                 
                 for (let [key, value] of Object.entries(dice)) {
-
-                    let val = value;
-                    let index = areas.indexOf(val.toString());
-                    console.log('areas: ' + areas + ', value: ' + value + ', index: ' + index + ', ' + (typeof areas[0]) + ', ' + (typeof 'value'));
-                    if (index > -1) { // only splice array when item is found
-                        
-                        areas.splice(index, 1); // 2nd parameter means remove one item only
-
-                        let elmt = 'sxt_area_'+this.player_id+'_'+value;
-
-                        dojo.addClass(elmt, 'sxt_area_clickable');
+                    if (possibleMovesNumberByArea[value] > 0) {
+                        let val = value;
+                        let index = areas.indexOf(val.toString());
+                        console.log('areas: ' + areas + ', value: ' + value + ', index: ' + index + ', ' + (typeof areas[0]) + ', ' + (typeof 'value'));
+                        if (index > -1) { // only splice array when item is found
+                            
+                            areas.splice(index, 1); // 2nd parameter means remove one item only
     
-                        this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickArea(elmt) ) );
+                            let elmt = 'sxt_area_'+this.player_id+'_'+value;
+    
+                            dojo.addClass(elmt, 'sxt_area_clickable');
+        
+                            this.connections.push( dojo.connect( $(elmt) , 'click', () => this.onClickArea(elmt) ) );
+                        }
                     }
                 }
 
