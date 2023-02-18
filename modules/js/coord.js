@@ -107,3 +107,16 @@ const score_coords = [
     [820, 440],
     [820, 498],
 ];
+
+const area_tootip_coords = [
+    [747, 92],
+    [747, 150],
+    [747, 208],
+    [747, 266],
+    [747, 324],
+    [747, 382],
+];
+
+// const area_tootip_coords = [
+
+// ];

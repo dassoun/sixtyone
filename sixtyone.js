@@ -31,6 +31,25 @@ function (dojo, declare) {
             // Example:
             // this.myGlobalValue = 0;
 
+            this.tooltip_area = [
+                _("The two pumpkins: The player writes the number in the eye of one of the two pumpkins. Both pumpkins can be filled simultaneously. Once one eye busy, the second eye of the pumpkin must be identical. "+
+                "At the end of the game, the player gains 3 victory points for each complete pumpkin."),
+            
+                _("The Frog Pond: The player writes the numbers in the direction of the arrows, starting by the water lily with a frog. Each digit must be different. "+
+                "At the end of the game, the player wins the points of each water lily that contains a number."),
+            
+                _("Roasted marshmallows: The player writes the number in the marshmallow from one of the two skewers. Both skewers can be fulfilled simultaneously. Once a skewer started, it is necessary that each of its digits are identical. "+
+                "At the end of the game, the player gains 3 points of victory if the left skewer is complete and 5 points if the right skewer is complete."),
+            
+                _("Chocolate cups: The player writes the number in the cup which includes the latter. "+
+                "At the end of the game, the player wins 1 victory point for each cup that contains one number, two points for cup 4."),
+            
+                _("The fox hole: The player writes the number in one of the spaces in the burrow. Each adjacent square must contain a different number. In order to be able to fill in a box of upper floors, the two boxes below are completed. "+
+                "At the end of the game, the player wins the points of each square that contains a figure."),
+            
+                _("The mushroom corner: The player writes the numbers in the direction of the arrow, starting with the brown mushroom. The next digit should be strictly greater or less than 1 to the previous digit. It is possible to loop and therefore put a 6 after a 1 or a 1 after a 6. "+
+                "At the end of the game, the player earns the points of each mushroom that contains a number. ")
+            ];
         },
         
         /*
@@ -187,6 +206,26 @@ function (dojo, declare) {
                     } ), $ ( 'sxt_player_board_'+player_id ) );
 
                     this.slideToObjectPos( 'sxt_location_'+player_id+'_6_'+(i+1), 'sxt_player_board_'+player_id, locations_area_6_coords[i][0], locations_area_6_coords[i][1] ).play();
+                }
+
+                // tooltips area
+                for (let i = 0; i < area_tootip_coords.length; i++){
+                    dojo.place( this.format_block('jstpl_area_tooltip', {
+                        player_id: player_id,
+                        area_id: (i+1),
+                    } ), $ ( 'sxt_player_board_'+player_id ) );
+
+                    console.log('sxt_area_tooltip_'+player_id+'_'+(i+1));
+                    this.slideToObjectPos( 'sxt_area_tooltip_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, area_tootip_coords[i][0], area_tootip_coords[i][1] ).play();
+
+                    let html = "<div class=\"sxt_tooltip_container\">"+
+                    "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_"+(i+1)+"\"></div>"+
+                    "<div><hr></div>"+
+                    "<div>"+
+                    _(this.tooltip_area[i])+
+                    "</div>"+
+                    "<div>";
+                    this.addTooltipHtml( 'sxt_area_tooltip_'+player_id+'_'+(i+1), html, '' );
                 }
 
                 // Scores

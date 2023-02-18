@@ -73,6 +73,8 @@ var jstpl_player_side_board = '<div class="sxt_psb_board">\
     <div id="sxt_psb_leave_${player_id}" class="sxt_psb_leave"></div><span id="sxt_psb_leave_counter_${player_id}">0</span>\
 </div>';
 
+var jstpl_area_tooltip = '<div id="sxt_area_tooltip_${player_id}_${area_id}" class="sxt_area_tooltip"></div>';
+
 var jstpl_game_log_dice = '<div class="sxt_log_dice sxt_log_dice_${die_value}"></div>';
 var jstpl_game_log_area = '<div class="sxt_log_area sxt_log_area_${area_id}"></div>';
 

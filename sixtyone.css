@@ -485,6 +485,37 @@
 .sxt_log_area_5 { background-position: -112px 0px; }
 .sxt_log_area_6 { background-position: -140px 0px; }
 
+/**
+ * Tooltips
+ */
+.sxt_area_tooltip {
+    position: absolute;
+    /* background-color: blue;
+    opacity: .5; */
+    width: 60px;
+    height: 53px;
+}
+
+/* .sxt_area_rule_tooltip {
+    position: absolute;
+    background-color: blue;
+    opacity: .5;
+    width: 60px;
+    height: 53px;
+} */
+
+.sxt_tooltip_container {
+    font-family: 'Caveat Brush', cursive;
+    /* text-align: center; */
+    font-size: 16px;
+    width: 250px;
+    min-height: 120px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    column-gap: 5px;
+}
+
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
 
