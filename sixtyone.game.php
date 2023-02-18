@@ -1205,7 +1205,9 @@ class SixtyOne extends Table
 
                     $player = $this->playerManager->getById($player_id);
                     $score_area = $player->getScore_area();
-                    $score_area[$area_id-1] = $this->score_area_state["MISSED"];
+                    // #81364 data base error when update player
+                    //$score_area[$area_id-1] = $this->score_area_state["MISSED"];
+                    $score_area[$key-1] = $this->score_area_state["MISSED"];
                     $player->setScore_area($score_area);
 
                     $this->playerManager->persist($player);
