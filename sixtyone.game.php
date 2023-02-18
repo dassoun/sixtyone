@@ -433,7 +433,7 @@ class SixtyOne extends Table
                     }
                 }
                 if ($area[3] == -1 && ($area[0] != -1 && $area[1] != -1)) {
-                    if (($area[0] != $die_value && $area[1] != $die_value)
+                    if (($area[0] != $die_value && $area[1] != $die_value && $area[4] != $die_value)
                             || ($area[0] == 0 && $area[1] == 0)
                             || ($area[0] == 0 && $area[1] != $die_value)
                             || ($area[0] != $die_value && $area[1] == 0)
@@ -442,7 +442,7 @@ class SixtyOne extends Table
                     }
                 }
                 if ($area[4] == -1 && ($area[1] != -1 && $area[2] != -1)) {
-                    if (($area[1] != $die_value && $area[2] != $die_value)
+                    if (($area[1] != $die_value && $area[2] != $die_value && $area[3] != $die_value)
                             || ($area[1] == 0 && $area[2] == 0)
                             || ($area[1] == 0 && $area[2] != $die_value)
                             || ($area[1] != $die_value && $area[2] == 0)
