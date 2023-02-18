@@ -134,12 +134,6 @@ class SXTPlayerManager extends \APP_DbObject
         $chosen_location_cross = $player->getChosen_location_cross();
         $gained_bonus = $player->getGained_bonus();
         $score_area = $player->getScore_area();
-        // $score_area_1 = $player->getScore_area_1();
-        // $score_area_2 = $player->getScore_area_2(); 
-        // $score_area_3 = $player->getScore_area_3(); 
-        // $score_area_4 = $player->getScore_area_4(); 
-        // $score_area_5 = $player->getScore_area_5(); 
-        // $score_area_6 = $player->getScore_area_6(); 
         $area_1_1 = $player->getArea_1_1(); 
         $area_1_2 = $player->getArea_1_2(); 
         $area_1_3 = $player->getArea_1_3(); 
