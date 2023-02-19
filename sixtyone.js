@@ -219,7 +219,10 @@ function (dojo, declare) {
                     this.slideToObjectPos( 'sxt_area_tooltip_'+player_id+'_'+(i+1), 'sxt_player_board_'+player_id, area_tootip_coords[i][0], area_tootip_coords[i][1] ).play();
 
                     let html = "<div class=\"sxt_tooltip_container\">"+
+                    "<div class=\"sxt_tooltip_header\">"+
                     "<div class=\"sxt_img_final_scoring sxt_img_final_scoring_"+(i+1)+"\"></div>"+
+                    "<div class=\"sxt_img_area_rule sxt_img_area_rule_"+(i+1)+"\"></div>"+
+                    "</div>"+
                     "<div><hr></div>"+
                     "<div>"+
                     _(this.tooltip_area[i])+

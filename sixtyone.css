@@ -516,6 +516,26 @@
     column-gap: 5px;
 }
 
+.sxt_tooltip_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.sxt_img_area_rule {
+    display:inline-block;
+    height: 43px;
+    width: 65px;
+    background-image: url( 'img/area_rules_65_43.png' );
+}
+
+.sxt_img_area_rule_1 { background-position: 0px 0px; }
+.sxt_img_area_rule_2 { background-position: -65px 0px; }
+.sxt_img_area_rule_3 { background-position: -130px 0px; }
+.sxt_img_area_rule_4 { background-position: -195px 0px; }
+.sxt_img_area_rule_5 { background-position: -260px 0px; }
+.sxt_img_area_rule_6 { background-position: -325px 0px; }
+
 /*
     Example of CSS sprites (a black token and a white token, 20x20px each, embedded in the same "tokens.png" 40x20px image):
 
