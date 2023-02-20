@@ -227,7 +227,7 @@ function (dojo, declare) {
                     "<div>"+
                     _(this.tooltip_area[i])+
                     "</div>"+
-                    "<div>";
+                    "</div>";
                     this.addTooltipHtml( 'sxt_area_tooltip_'+player_id+'_'+(i+1), html, '' );
                 }
 
