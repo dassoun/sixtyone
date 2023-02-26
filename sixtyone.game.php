@@ -1100,6 +1100,12 @@ class SixtyOne extends Table
             'die_3' => $this->getGameStateValue( "die_3_value" ),
         ) );
 
+        // #82314
+        $players = $this->loadPlayersBasicInfos();
+        foreach ($players as $player_id => $info) {
+            self::giveExtraTime( $player_id );
+        }
+
         $this->gamestate->nextState("");
     }
 
