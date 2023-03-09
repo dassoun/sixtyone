@@ -434,27 +434,27 @@ class SixtyOne extends Table
                 }
                 if ($area[3] == -1 && ($area[0] != -1 && $area[1] != -1)) {
                     if (($area[0] != $die_value && $area[1] != $die_value && $area[4] != $die_value)
-                            || ($area[0] == 0 && $area[1] == 0)
+                            /*|| ($area[0] == 0 && $area[1] == 0)
                             || ($area[0] == 0 && $area[1] != $die_value)
-                            || ($area[0] != $die_value && $area[1] == 0)
+                            || ($area[0] != $die_value && $area[1] == 0)*/
                             || ($die_value == 0)) {
                         $res[] = 4;
                     }
                 }
                 if ($area[4] == -1 && ($area[1] != -1 && $area[2] != -1)) {
                     if (($area[1] != $die_value && $area[2] != $die_value && $area[3] != $die_value)
-                            || ($area[1] == 0 && $area[2] == 0)
+                            /*|| ($area[1] == 0 && $area[2] == 0)
                             || ($area[1] == 0 && $area[2] != $die_value)
-                            || ($area[1] != $die_value && $area[2] == 0)
+                            || ($area[1] != $die_value && $area[2] == 0)*/
                             || ($die_value == 0)) {
                         $res[] = 5;
                     }
                 }
                 if ($area[5] == -1 && ($area[3] != -1 && $area[4] != -1)) {
                     if (($area[3] != $die_value && $area[4] != $die_value)
-                            || ($area[3] == 0 && $area[4] == 0)
+                            /*|| ($area[3] == 0 && $area[4] == 0)
                             || ($area[3] == 0 && $area[4] != $die_value)
-                            || ($area[3] != $die_value && $area[2] == 0)
+                            || ($area[3] != $die_value && $area[2] == 0)*/
                             || ($die_value == 0)) {
                         $res[] = 6;
                     }
